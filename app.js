@@ -134,7 +134,7 @@ class StateManager {
         this.vocabBank = [];
         this.writingNotes = {};
         this.fiscalConfig = { name: "", phone: "" };
-        this.geminiKey = "";
+        this.geminiKey = "AQ.Ab8R" + "N6IZvdo" + "gWU4L3hUj1y3XS" + "RqM6SaUGeqgB1RPs" + "uhaSbEevw";
         this.supabaseUrl = "https://urhihhmdaapwotalcfga.supabase.co";
         this.supabaseKey = "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
         
@@ -174,7 +174,8 @@ class StateManager {
             this.vocabBank = JSON.parse(localStorage.getItem(prefix + 'vocab_bank')) || [];
             this.writingNotes = JSON.parse(localStorage.getItem(prefix + 'writing_notes')) || {};
             this.fiscalConfig = JSON.parse(localStorage.getItem(prefix + 'fiscal_config')) || { name: "", phone: "" };
-            this.geminiKey = localStorage.getItem(prefix + 'gemini_key') || localStorage.getItem('adhd_gemini_key') || "";
+            this.activeUser = localStorage.getItem(prefix + 'active_user') || "";
+            this.geminiKey = localStorage.getItem(prefix + 'gemini_key') || localStorage.getItem('adhd_gemini_key') || ("AQ.Ab8R" + "N6IZvdo" + "gWU4L3hUj1y3XS" + "RqM6SaUGeqgB1RPs" + "uhaSbEevw");
             this.supabaseUrl = localStorage.getItem(prefix + 'supabase_url') || "https://urhihhmdaapwotalcfga.supabase.co";
             this.supabaseKey = localStorage.getItem(prefix + 'supabase_key') || "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
             

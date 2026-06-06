@@ -3740,6 +3740,8 @@ function renderModulesAndLessons(levelId) {
     });
 }
 
+let currentStudyStep = 0;
+
 window.launchLessonStudy = function(levelId, modIdx, lesIdx) {
     currentStudyLevelId = levelId;
     currentStudyModIdx = modIdx;
@@ -3774,27 +3776,322 @@ document.getElementById('btn-start-lesson-focus').addEventListener('click', () =
     // Set title and content
     document.getElementById('lesson-view-title').textContent = `${currentStudyLessonObj.title}`;
     
-    const contentContainer = document.getElementById('lesson-view-content');
-    contentContainer.innerHTML = currentStudyLessonObj.content;
+    // Hide default quiz box & complete button initially
+    const quizBox = document.querySelector('.lesson-quiz-box');
+    if (quizBox) quizBox.classList.add('hidden');
     
-    // Setup audio speaker hooks for any button with class .speak-btn
-    contentContainer.querySelectorAll('.speak-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const textToSpeak = btn.getAttribute('data-text');
-            if (textToSpeak) {
-                speakEnglish(textToSpeak);
-            }
-        });
-    });
-    
-    // Render the comprehension checkpoint quiz
-    renderLessonCheckpoint(currentStudyLessonObj.quiz);
-    
-    // Reset complete button to disabled
     const completeBtn = document.getElementById('btn-complete-lesson');
     completeBtn.disabled = true;
     completeBtn.textContent = "Concluir Micro-Sprint (+15 XP / DM)";
+    
+    // Start at Step 1 (index 0)
+    currentStudyStep = 0;
+    renderStudyStep(currentStudyStep);
 });
+
+function renderStudyStep(stepIdx) {
+    const contentContainer = document.getElementById('lesson-view-content');
+    contentContainer.innerHTML = '';
+    
+    const lesson = currentStudyLessonObj;
+    
+    // Check if lesson has slides. If it doesn't, fall back to old format
+    if (!lesson.slides) {
+        contentContainer.innerHTML = lesson.content || "";
+        contentContainer.querySelectorAll('.speak-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const textToSpeak = btn.getAttribute('data-text');
+                if (textToSpeak) speakEnglish(textToSpeak);
+            });
+        });
+        
+        const quizBox = document.querySelector('.lesson-quiz-box');
+        if (quizBox) quizBox.classList.remove('hidden');
+        if (lesson.quiz) renderLessonCheckpoint(lesson.quiz);
+        return;
+    }
+    
+    const slide = lesson.slides[stepIdx];
+    if (!slide) return;
+    
+    const totalSteps = lesson.slides.length;
+    let progressBarHTML = `<div style="display: flex; gap: 4px; margin-bottom: 12px;">`;
+    for (let i = 0; i < totalSteps; i++) {
+        const color = i <= stepIdx ? 'var(--success)' : 'rgba(255, 255, 255, 0.1)';
+        progressBarHTML += `<div style="flex: 1; height: 6px; background-color: ${color}; border-radius: 3px;"></div>`;
+    }
+    progressBarHTML += `</div><div style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px;">Passo ${stepIdx + 1} de ${totalSteps}: ${slide.title}</div>`;
+    
+    const slideWrapper = document.createElement('div');
+    slideWrapper.className = 'slide-wrapper';
+    
+    if (slide.type === 'intro') {
+        slideWrapper.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 14px; line-height: 1.7;">${slide.content}</p>
+                <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px;">
+                    <button class="btn btn-outline btn-sm speak-btn" data-text="${slide.audioText}" style="font-size: 12px; gap: 6px;">
+                        🔊 Ouvir Pronúncia
+                    </button>
+                    <span style="font-size: 11px; color: var(--text-muted);">Clique para treinar sua audição.</span>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-sm w-full" id="btn-next-slide" style="margin-top: 12px; text-transform: none;">Avançar para Construção ➡️</button>
+        `;
+    } 
+    else if (slide.type === 'puzzle') {
+        slideWrapper.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">${slide.instruction}</p>
+                <strong style="color: #fff; font-size: 15px; display: block; margin-bottom: 16px; border-left: 3px solid var(--secondary); padding-left: 8px;">
+                    ${slide.portuguese}
+                </strong>
+                
+                <!-- Target Slots -->
+                <div id="puzzle-slots" style="min-height: 40px; border-bottom: 2px solid rgba(255,255,255,0.1); margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-bottom: 8px;">
+                    <!-- User selected words -->
+                </div>
+                
+                <!-- Word Buttons -->
+                <div id="puzzle-words" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+                    <!-- Scrambled words -->
+                </div>
+                
+                <div id="puzzle-feedback" style="font-size: 12px; margin-top: 12px; padding: 6px 10px; border-radius: 4px;" class="hidden"></div>
+            </div>
+            
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline btn-sm" id="btn-reset-puzzle" style="flex: 1; text-transform: none;">Limpar</button>
+                <button class="btn btn-primary btn-sm" id="btn-check-puzzle" style="flex: 2; text-transform: none;">Verificar 🧩</button>
+            </div>
+        `;
+    } 
+    else if (slide.type === 'listening') {
+        slideWrapper.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">${slide.instruction}</p>
+                
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <button class="btn btn-secondary speak-btn" data-text="${slide.audioText}" style="height: 44px; width: 44px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; padding: 0;">
+                        🔊
+                    </button>
+                    <span style="font-size: 12px; color: var(--secondary);">Clique para ouvir o áudio do nativo</span>
+                </div>
+                
+                <p style="font-size: 15px; font-weight: 500; margin-bottom: 16px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;">
+                    ${slide.sentence.replace("_____", "<span style='border-bottom: 2px solid var(--secondary); padding: 0 16px; color: var(--secondary); font-weight: bold;'>____</span>")}
+                </p>
+                
+                <div id="listening-options" style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Options -->
+                </div>
+                
+                <div id="listening-feedback" style="font-size: 12px; margin-top: 12px; padding: 6px 10px; border-radius: 4px;" class="hidden"></div>
+            </div>
+            <button class="btn btn-primary btn-sm w-full hidden" id="btn-next-slide" style="text-transform: none;">Avançar para Termos ➡️</button>
+        `;
+    } 
+    else if (slide.type === 'vocab') {
+        let termsHTML = '';
+        slide.terms.forEach(t => {
+            termsHTML += `
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <strong style="color: var(--secondary); font-size: 13px;">${t.term}</strong>
+                        <button class="btn btn-outline btn-xs speak-btn" data-text="${t.audioText || t.term}" style="padding: 0 6px; height: 20px; font-size: 10px;">🔊</button>
+                    </div>
+                    <p style="font-size: 11px; margin: 0; color: var(--text-muted); line-height: 1.4;">${t.definition}</p>
+                </div>
+            `;
+        });
+        
+        slideWrapper.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Estude os termos essenciais usados nesta lição:</p>
+                ${termsHTML}
+            </div>
+            <button class="btn btn-primary btn-sm w-full" id="btn-next-slide" style="text-transform: none;">Estudei os termos! ➡️</button>
+        `;
+    } 
+    else if (slide.type === 'checkpoint') {
+        slideWrapper.innerHTML = `
+            <div style="margin-bottom: 10px;">
+                <p style="font-size: 13px; color: var(--success); font-weight: bold; margin-bottom: 6px;">🏆 Excelente progresso!</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 0;">Responda à pergunta do checkpoint abaixo para concluir esta lição de 30 minutos de valor.</p>
+            </div>
+        `;
+        
+        // Show checkpoint box
+        const quizBox = document.querySelector('.lesson-quiz-box');
+        if (quizBox) {
+            quizBox.classList.remove('hidden');
+            renderLessonCheckpoint(slide.quiz);
+        }
+    }
+    
+    contentContainer.innerHTML = progressBarHTML;
+    contentContainer.appendChild(slideWrapper);
+    
+    // Bind speak buttons
+    contentContainer.querySelectorAll('.speak-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const textToSpeak = btn.getAttribute('data-text');
+            if (textToSpeak) speakEnglish(textToSpeak);
+        });
+    });
+    
+    // Bind Next slide button
+    const nextBtn = contentContainer.querySelector('#btn-next-slide');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentStudyStep++;
+            renderStudyStep(currentStudyStep);
+        });
+    }
+    
+    // Puzzle Game Logic
+    if (slide.type === 'puzzle') {
+        const puzzleSlots = contentContainer.querySelector('#puzzle-slots');
+        const puzzleWords = contentContainer.querySelector('#puzzle-words');
+        const checkBtn = contentContainer.querySelector('#btn-check-puzzle');
+        const resetBtn = contentContainer.querySelector('#btn-reset-puzzle');
+        const feedback = contentContainer.querySelector('#puzzle-feedback');
+        
+        let selectedWords = [];
+        
+        function renderPuzzle() {
+            puzzleSlots.innerHTML = '';
+            if (selectedWords.length === 0) {
+                puzzleSlots.innerHTML = `<span style="font-size: 12px; color: var(--text-muted); font-style: italic;">Clique nas palavras abaixo...</span>`;
+            } else {
+                selectedWords.forEach((word, idx) => {
+                    const badge = document.createElement('span');
+                    badge.style.cursor = 'pointer';
+                    badge.style.padding = '4px 8px';
+                    badge.style.borderRadius = '4px';
+                    badge.style.background = 'rgba(255, 255, 255, 0.08)';
+                    badge.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+                    badge.style.color = 'var(--secondary)';
+                    badge.style.fontSize = '12px';
+                    badge.style.display = 'inline-block';
+                    badge.textContent = word;
+                    badge.addEventListener('click', () => {
+                        selectedWords.splice(idx, 1);
+                        renderPuzzle();
+                    });
+                    puzzleSlots.appendChild(badge);
+                });
+            }
+            
+            puzzleWords.innerHTML = '';
+            slide.scrambledWords.forEach(word => {
+                const countSelected = selectedWords.filter(w => w === word).length;
+                const countAvailable = slide.scrambledWords.filter(w => w === word).length;
+                
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-xs btn-outline';
+                btn.style.fontSize = '11px';
+                btn.style.textTransform = 'none';
+                btn.textContent = word;
+                if (countSelected >= countAvailable) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.3';
+                } else {
+                    btn.addEventListener('click', () => {
+                        selectedWords.push(word);
+                        renderPuzzle();
+                    });
+                }
+                puzzleWords.appendChild(btn);
+            });
+        }
+        
+        resetBtn.addEventListener('click', () => {
+            selectedWords = [];
+            renderPuzzle();
+            feedback.classList.add('hidden');
+        });
+        
+        checkBtn.addEventListener('click', () => {
+            const answer = selectedWords.join(' ');
+            const correctStr = slide.correctOrder.join(' ');
+            
+            const clean = str => str.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s+/g," ").trim();
+            const isCorrect = clean(answer) === clean(correctStr);
+            feedback.classList.remove('hidden');
+            
+            if (isCorrect) {
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.border = '1px solid var(--success)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `<strong>Correto!</strong> Excelente montagem de frase.`;
+                audioPlayer.playDopamineTone();
+                
+                checkBtn.textContent = "Avançar para Escuta ➡️";
+                checkBtn.className = "btn btn-success btn-sm";
+                checkBtn.style.flex = "1";
+                resetBtn.classList.add('hidden');
+                
+                checkBtn.onclick = () => {
+                    currentStudyStep++;
+                    renderStudyStep(currentStudyStep);
+                };
+            } else {
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.border = '1px solid var(--danger)';
+                feedback.style.color = '#ef4444';
+                feedback.innerHTML = `<strong>Incorreto.</strong> Tente reorganizar os blocos em outra ordem.`;
+            }
+        });
+        
+        renderPuzzle();
+    }
+    
+    // Listening Drill Logic
+    if (slide.type === 'listening') {
+        const optionsContainer = contentContainer.querySelector('#listening-options');
+        const feedback = contentContainer.querySelector('#listening-feedback');
+        const nextSlideBtn = contentContainer.querySelector('#btn-next-slide');
+        
+        slide.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option';
+            btn.style.width = '100%';
+            btn.style.textAlign = 'left';
+            btn.style.fontSize = '12px';
+            btn.style.padding = '8px 12px';
+            btn.textContent = opt;
+            
+            btn.addEventListener('click', () => {
+                const allOpts = optionsContainer.querySelectorAll('.quiz-option');
+                allOpts.forEach(o => o.disabled = true);
+                
+                const isCorrect = idx === slide.correctIndex;
+                feedback.classList.remove('hidden');
+                
+                if (isCorrect) {
+                    btn.classList.add('correct');
+                    feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                    feedback.style.border = '1px solid var(--success)';
+                    feedback.style.color = 'var(--success)';
+                    feedback.innerHTML = `<strong>Correto!</strong> Você ouviu e preencheu: <em>${opt}</em>. <br>${slide.explanation}`;
+                    audioPlayer.playDopamineTone();
+                    nextSlideBtn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('incorrect');
+                    allOpts[slide.correctIndex].classList.add('correct');
+                    feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                    feedback.style.border = '1px solid var(--danger)';
+                    feedback.style.color = '#ef4444';
+                    feedback.innerHTML = `<strong>Incorreto.</strong> O áudio diz: <em>${slide.options[slide.correctIndex]}</em>. <br>${slide.explanation}`;
+                    nextSlideBtn.classList.remove('hidden');
+                }
+            });
+            optionsContainer.appendChild(btn);
+        });
+    }
+}
 
 function renderLessonCheckpoint(quizData) {
     const questionText = document.getElementById('lesson-quiz-question');

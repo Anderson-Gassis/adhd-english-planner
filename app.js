@@ -2984,6 +2984,13 @@ function initAuthPortal() {
     const goToLogin = document.getElementById('go-to-login');
     const logoutBtn = document.getElementById('btn-logout');
     
+    // Auto-hide portal if user is already logged in on reload
+    if (state.activeUser && portal) {
+        portal.classList.remove('active');
+        const userDisp = document.getElementById('active-user-display');
+        if (userDisp) userDisp.textContent = `Usuário: ${state.activeUser}`;
+    }
+    
     // Switch between login and register forms
     if (goToRegister) {
         goToRegister.addEventListener('click', (e) => {

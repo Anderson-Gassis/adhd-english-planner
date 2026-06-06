@@ -964,7 +964,20 @@
                     <input type="password" id="gemini-key-input" class="glass-input" placeholder="Cole sua API Key aqui (AIzaSy...)">
                     <span class="help-text">Obtenha uma chave gratuita no <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</span>
                 </div>
-                <div class="modal-actions">
+                
+                <div style="margin-top: 16px; border-top: 1px solid var(--border-glass); padding-top: 16px;"></div>
+                
+                <div class="input-group">
+                    <label for="supabase-url-input">Supabase Project URL</label>
+                    <input type="text" id="supabase-url-input" class="glass-input" placeholder="https://xxxx.supabase.co">
+                </div>
+                <div class="input-group" style="margin-top: 12px;">
+                    <label for="supabase-key-input">Supabase Anon Key</label>
+                    <input type="password" id="supabase-key-input" class="glass-input" placeholder="Cole sua Anon Key do Supabase aqui...">
+                    <span class="help-text">Insira suas credenciais Supabase para sincronizar progresso na nuvem. Deixe em branco para modo local.</span>
+                </div>
+                
+                <div class="modal-actions" style="margin-top: 16px;">
                     <button type="submit" class="btn btn-primary w-full">Salvar Configurações</button>
                 </div>
             </form>
@@ -1010,8 +1023,9 @@
     </div>
 
     <!-- Script Links -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="confetti.js?v=6"></script>
-    <script src="curriculum_data.js?v=6"></script>
+    <script src="curriculum_expanded.js?v=6"></script>
     <script src="app.js?v=6"></script>
 </body>
 </html>

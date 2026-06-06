@@ -135,6 +135,8 @@ class StateManager {
         this.writingNotes = {};
         this.fiscalConfig = { name: "", phone: "" };
         this.geminiKey = "";
+        this.supabaseUrl = "";
+        this.supabaseKey = "";
         
         // Gamification States
         this.level = 1;
@@ -173,6 +175,8 @@ class StateManager {
             this.writingNotes = JSON.parse(localStorage.getItem(prefix + 'writing_notes')) || {};
             this.fiscalConfig = JSON.parse(localStorage.getItem(prefix + 'fiscal_config')) || { name: "", phone: "" };
             this.geminiKey = localStorage.getItem(prefix + 'gemini_key') || localStorage.getItem('adhd_gemini_key') || "";
+            this.supabaseUrl = localStorage.getItem(prefix + 'supabase_url') || "";
+            this.supabaseKey = localStorage.getItem(prefix + 'supabase_key') || "";
             
             // Load Gamification
             this.level = parseInt(localStorage.getItem(prefix + 'level')) || 1;
@@ -220,6 +224,8 @@ class StateManager {
         localStorage.setItem(prefix + 'writing_notes', JSON.stringify(this.writingNotes));
         localStorage.setItem(prefix + 'fiscal_config', JSON.stringify(this.fiscalConfig));
         localStorage.setItem(prefix + 'gemini_key', this.geminiKey);
+        localStorage.setItem(prefix + 'supabase_url', this.supabaseUrl);
+        localStorage.setItem(prefix + 'supabase_key', this.supabaseKey);
         
         // Save Gamification
         localStorage.setItem(prefix + 'level', this.level);
@@ -246,6 +252,11 @@ class StateManager {
         this.users[this.activeUser].passedExams = this.passedExams;
         localStorage.setItem('adhd_users', JSON.stringify(this.users));
         localStorage.setItem(prefix + 'course_progress', JSON.stringify(this.courseProgress));
+        
+        // Sync profile to Supabase if client is active
+        if (typeof syncProfileToSupabase === 'function') {
+            syncProfileToSupabase();
+        }
     }
 
     addXP(amount) {
@@ -791,6 +802,7 @@ let timerController;
    APP INITIALIZATION
    ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
+    initSupabase();
     timerController = new TimerController();
     
     // Auth and CEFR Course initialization
@@ -1348,10 +1360,14 @@ function initSettingsModal() {
     const btnClose = document.getElementById('btn-close-settings');
     const form = document.getElementById('settings-form');
     const keyInput = document.getElementById('gemini-key-input');
+    const supabaseUrlInput = document.getElementById('supabase-url-input');
+    const supabaseKeyInput = document.getElementById('supabase-key-input');
     const apiWarning = document.getElementById('api-warning');
     
     btnOpen.addEventListener('click', () => {
         keyInput.value = state.geminiKey;
+        if (supabaseUrlInput) supabaseUrlInput.value = state.supabaseUrl;
+        if (supabaseKeyInput) supabaseKeyInput.value = state.supabaseKey;
         modal.classList.add('active');
     });
     
@@ -1362,7 +1378,12 @@ function initSettingsModal() {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         state.geminiKey = keyInput.value.trim();
+        if (supabaseUrlInput) state.supabaseUrl = supabaseUrlInput.value.trim();
+        if (supabaseKeyInput) state.supabaseKey = supabaseKeyInput.value.trim();
         state.saveState();
+        
+        // Initialize Supabase Client
+        initSupabase();
         
         modal.classList.remove('active');
         audioPlayer.playDopamineTone();
@@ -3023,6 +3044,18 @@ function initAuthPortal() {
                 localStorage.setItem('adhd_active_user', usernameInput);
                 state.loadState();
                 
+                // Supabase Auth Login sync
+                if (supabaseClient) {
+                    const email = usernameInput.includes('@') ? usernameInput : `${usernameInput}@adhd-english.local`;
+                    supabaseClient.auth.signInWithPassword({
+                        email: email,
+                        password: passwordInput
+                    }).then(({ error }) => {
+                        if (error) console.error("Supabase SignIn failed:", error.message);
+                        else console.log("Supabase User signed in successfully.");
+                    });
+                }
+                
                 portal.classList.remove('active');
                 document.getElementById('active-user-display').textContent = `Usuário: ${state.activeUser}`;
                 
@@ -3088,6 +3121,25 @@ function initAuthPortal() {
                 state.niche = nicheInput;
                 state.passedExams = [];
                 state.saveState();
+                
+                // Supabase Auth Sign Up sync
+                if (supabaseClient) {
+                    const email = usernameInput.includes('@') ? usernameInput : `${usernameInput}@adhd-english.local`;
+                    supabaseClient.auth.signUp({
+                        email: email,
+                        password: passwordInput,
+                        options: {
+                            data: {
+                                name: usernameInput,
+                                cefr_level: "A1",
+                                niche: nicheInput
+                            }
+                        }
+                    }).then(({ error }) => {
+                        if (error) console.error("Supabase SignUp failed:", error.message);
+                        else console.log("Supabase User signed up successfully.");
+                    });
+                }
                 
                 portal.classList.remove('active');
                 document.getElementById('active-user-display').textContent = `Usuário: ${state.activeUser}`;
@@ -3294,6 +3346,25 @@ function finishPlacementTest() {
     state.passedExams = [...state.users[username].passedExams];
     state.saveState();
     
+    // Supabase Auth Sign Up sync
+    if (supabaseClient) {
+        const email = username.includes('@') ? username : `${username}@adhd-english.local`;
+        supabaseClient.auth.signUp({
+            email: email,
+            password: tempRegistration.password,
+            options: {
+                data: {
+                    name: username,
+                    cefr_level: startingLevel,
+                    niche: tempRegistration.niche
+                }
+            }
+        }).then(({ error }) => {
+            if (error) console.error("Supabase SignUp (placement) failed:", error.message);
+            else console.log("Supabase User signed up successfully (placement).");
+        });
+    }
+    
     // Clear UI
     document.getElementById('placement-test-container').classList.add('hidden');
     document.getElementById('login-portal').classList.remove('active');
@@ -3388,6 +3459,22 @@ const EXAM_FALLBACK_QUESTIONS = {
     ]
 };
 
+let supabaseClient = null;
+
+function initSupabase() {
+    if (state.supabaseUrl && state.supabaseKey && window.supabase) {
+        try {
+            supabaseClient = window.supabase.createClient(state.supabaseUrl, state.supabaseKey);
+            console.log("Supabase Client initialized successfully.");
+        } catch(e) {
+            console.error("Failed to initialize Supabase:", e);
+            supabaseClient = null;
+        }
+    } else {
+        supabaseClient = null;
+    }
+}
+
 let activeExamLevel = "";
 let activeExamQuestions = [];
 let activeExamCurrentIdx = 0;
@@ -3436,13 +3523,18 @@ function renderCourseRoadmap() {
         
         const completedLessons = state.courseProgress[lvl.id] || [];
         const completedCount = completedLessons.length;
-        const totalLessons = 15; // 3 modules * 5 lessons
+        
+        const modules = CURRICULUM_DATA[lvl.id] || [];
+        let totalLessons = 0;
+        modules.forEach(mod => {
+            totalLessons += (mod.lessons || []).length;
+        });
         
         if (isCompleted) {
             cardStatusClass = "completed";
             statusTagText = "Concluído ✓";
             statusTagClass = "tag-completed";
-            actionButtonHTML = `<button class="btn btn-outline btn-sm btn-open-study" data-level="${lvl.id}" style="margin-top: 10px; width: 100%;">📚 Revisar Lições (15/15)</button>`;
+            actionButtonHTML = `<button class="btn btn-outline btn-sm btn-open-study" data-level="${lvl.id}" style="margin-top: 10px; width: 100%;">📚 Revisar Lições (${totalLessons}/${totalLessons})</button>`;
         } else if (isActive) {
             cardStatusClass = "active";
             statusTagText = "Em Progresso ⚡";
@@ -3452,7 +3544,7 @@ function renderCourseRoadmap() {
             if (isExamUnlocked) {
                 actionButtonHTML = `
                     <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%;">
-                        <button class="btn btn-secondary btn-sm btn-open-study" data-level="${lvl.id}">📚 Estudar Módulos (15/15)</button>
+                        <button class="btn btn-secondary btn-sm btn-open-study" data-level="${lvl.id}">📚 Estudar Módulos (${totalLessons}/${totalLessons})</button>
                         <button class="btn btn-success btn-sm btn-start-level-exam" data-level="${lvl.id}">🎓 Prestar Exame de Nível ${lvl.id}</button>
                     </div>
                 `;
@@ -3530,8 +3622,14 @@ function renderModulesAndLessons(levelId) {
     // Progress calculation
     const completedLessons = state.courseProgress[levelId] || [];
     const completedCount = completedLessons.length;
-    const totalLessons = 15;
-    const progressPct = Math.round((completedCount / totalLessons) * 100);
+    
+    const modules = CURRICULUM_DATA[levelId] || [];
+    let totalLessons = 0;
+    modules.forEach(mod => {
+        totalLessons += (mod.lessons || []).length;
+    });
+    
+    const progressPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
     
     document.getElementById('level-study-progress-pct').textContent = `${progressPct}% Concluído`;
     document.getElementById('level-study-progress-bar').style.width = `${progressPct}%`;
@@ -3558,8 +3656,6 @@ function renderModulesAndLessons(levelId) {
     // Render the 3 modules and 5 lessons each
     const listContainer = document.getElementById('modules-list-container');
     listContainer.innerHTML = '';
-    
-    const modules = CURRICULUM_DATA[levelId] || [];
     
     modules.forEach((mod, modIdx) => {
         const modCard = document.createElement('div');
@@ -3799,6 +3895,9 @@ document.getElementById('btn-complete-lesson').addEventListener('click', () => {
     state.addXP(15);
     state.saveState();
     
+    // Sync to Supabase
+    syncLessonProgressToSupabase(levelId, lessonId);
+    
     audioPlayer.playLevelUpTone();
     window.confetti.start();
     setTimeout(() => window.confetti.stop(), 1500);
@@ -3814,6 +3913,120 @@ document.getElementById('btn-back-to-roadmap').addEventListener('click', () => {
     document.getElementById('course-header-section').classList.remove('hidden');
     renderCourseRoadmap();
 });
+
+function getRandomElements(arr, count) {
+    if (!arr || arr.length === 0) return [];
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
+
+async function syncLessonProgressToSupabase(levelId, lessonId) {
+    if (!supabaseClient) return;
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) return;
+        
+        const parts = lessonId.split('_');
+        if (parts.length < 3) return;
+        
+        const modulePart = parts[1]; // "m1"
+        const lessonPart = parts[2]; // "l1"
+        
+        const moduleNumber = parseInt(modulePart.substring(1), 10);
+        const orderIndex = parseInt(lessonPart.substring(1), 10);
+        
+        const { data: modData, error: modErr } = await supabaseClient
+            .from('modules')
+            .select('id')
+            .eq('cefr_level', levelId)
+            .eq('module_number', moduleNumber)
+            .maybeSingle();
+            
+        if (modErr || !modData) {
+            console.warn("Module not found in Supabase for sync:", levelId, moduleNumber);
+            return;
+        }
+        
+        const { data: lesData, error: lesErr } = await supabaseClient
+            .from('lessons')
+            .select('id')
+            .eq('module_id', modData.id)
+            .eq('order_index', orderIndex)
+            .maybeSingle();
+            
+        if (lesErr || !lesData) {
+            console.warn("Lesson not found in Supabase for sync:", lessonId);
+            return;
+        }
+        
+        const { error: insErr } = await supabaseClient
+            .from('user_progress')
+            .upsert({
+                user_id: user.id,
+                lesson_id: lesData.id,
+                xp_awarded: 15
+            }, { onConflict: 'user_id,lesson_id' });
+            
+        if (insErr) {
+            console.error("Error upserting user progress in Supabase:", insErr.message);
+        } else {
+            console.log("Progress synced to Supabase for:", lessonId);
+        }
+    } catch(e) {
+        console.error("Failed to sync progress to Supabase:", e);
+    }
+}
+
+async function syncTestAttemptToSupabase(levelId, score, questionsArray, passed) {
+    if (!supabaseClient) return;
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) return;
+        
+        const { error } = await supabaseClient
+            .from('test_attempts')
+            .insert({
+                user_id: user.id,
+                cefr_level: levelId,
+                score: score,
+                questions_asked_array: questionsArray.map(q => q.id || q.question),
+                passed: passed
+            });
+            
+        if (error) {
+            console.error("Error inserting test attempt in Supabase:", error.message);
+        } else {
+            console.log("Test attempt synced to Supabase.");
+        }
+    } catch(e) {
+        console.error("Failed to sync test attempt to Supabase:", e);
+    }
+}
+
+async function syncProfileToSupabase() {
+    if (!supabaseClient) return;
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) return;
+        
+        const { error } = await supabaseClient
+            .from('profiles')
+            .update({
+                cefr_level: state.cefrLevel,
+                niche: state.niche,
+                xp: state.xp,
+                coins: state.coins,
+                streak_shields: state.streakShields
+            })
+            .eq('id', user.id);
+            
+        if (error) {
+            console.error("Error updating profile in Supabase:", error.message);
+        }
+    } catch(e) {
+        console.error("Failed to sync profile to Supabase:", e);
+    }
+}
 
 async function startLevelExam(levelId) {
     activeExamLevel = levelId;
@@ -3838,10 +4051,69 @@ async function startLevelExam(levelId) {
     document.getElementById('exam-title').textContent = `Exame de Nível ${levelId} (${state.niche})`;
     document.getElementById('exam-niche-loading').textContent = state.niche;
     
-    if (state.geminiKey) {
-        // Online Generation
-        try {
-            const sysInstruction = `Você é um avaliador linguístico de elite. Com base no nível CEFR e no nicho profissional do estudante, gere um exame de proficiência de múltipla escolha com exatamente 10 questões relevantes e práticas.
+    if (levelId === "A1") {
+        let questions = [];
+        if (supabaseClient) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('question_bank')
+                    .select('*')
+                    .eq('cefr_level', 'A1');
+                if (error) throw error;
+                if (data && data.length >= 30) {
+                    questions = data.map(q => ({
+                        id: q.id,
+                        question: q.question_text,
+                        options: q.options_json,
+                        correctIndex: q.correct_option,
+                        explanation: q.explanation,
+                        component: q.component
+                    }));
+                }
+            } catch (err) {
+                console.warn("Failed to fetch A1 questions from Supabase, falling back to local pool:", err);
+            }
+        }
+        
+        const pool = (questions.length >= 30) ? questions : null;
+        let vocabQuestions = [];
+        let grammarQuestions = [];
+        let listeningQuestions = [];
+        let pronunciationQuestions = [];
+        
+        if (pool) {
+            const vocabPool = pool.filter(q => q.component === 'vocabulary');
+            const grammarPool = pool.filter(q => q.component === 'grammar');
+            const listeningPool = pool.filter(q => q.component === 'listening');
+            const pronPool = pool.filter(q => q.component === 'pronunciation');
+            
+            if (vocabPool.length >= 7 && grammarPool.length >= 8 && listeningPool.length >= 8 && pronPool.length >= 7) {
+                vocabQuestions = getRandomElements(vocabPool, 7);
+                grammarQuestions = getRandomElements(grammarPool, 8);
+                listeningQuestions = getRandomElements(listeningPool, 8);
+                pronunciationQuestions = getRandomElements(pronPool, 7);
+            }
+        }
+        
+        if (vocabQuestions.length === 0) {
+            const localPool = window.QUESTION_POOL_A1 || QUESTION_POOL_A1;
+            vocabQuestions = getRandomElements(localPool.vocabulary, 7);
+            grammarQuestions = getRandomElements(localPool.grammar, 8);
+            listeningQuestions = getRandomElements(localPool.listening, 8);
+            pronunciationQuestions = getRandomElements(localPool.pronunciation, 7);
+        }
+        
+        activeExamQuestions = [
+            ...vocabQuestions,
+            ...grammarQuestions,
+            ...listeningQuestions,
+            ...pronunciationQuestions
+        ];
+        activeExamQuestions.sort(() => 0.5 - Math.random());
+    } else {
+        if (state.geminiKey) {
+            try {
+                const sysInstruction = `Você é um avaliador linguístico de elite. Com base no nível CEFR e no nicho profissional do estudante, gere um exame de proficiência de múltipla escolha com exatamente 10 questões relevantes e práticas.
 Você deve responder ESTREITAMENTE no formato JSON com as chaves:
 - 'questions': um array de exatamente 10 objetos, contendo:
   - 'question': a frase com lacuna ou pergunta gramatical/contextual profissional
@@ -3850,21 +4122,21 @@ Você deve responder ESTREITAMENTE no formato JSON com as chaves:
   - 'explanation': a explicação em português explicando a resposta correta e por que as outras estão incorretas.
 Todas as frases devem estar contextualizadas com o nicho profissional do estudante: '${state.niche}'.`;
 
-            const prompt = `Gere um Exame de Nível CEFR '${levelId}' para o nicho de interesse '${state.niche}'.`;
-            
-            const res = await callGemini(prompt, sysInstruction);
-            if (res && Array.isArray(res.questions) && res.questions.length === 10) {
-                activeExamQuestions = res.questions;
-            } else {
-                throw new Error("Formato inválido retornado pelo Gemini para prova");
+                const prompt = `Gere um Exame de Nível CEFR '${levelId}' para o nicho de interesse '${state.niche}'.`;
+                
+                const res = await callGemini(prompt, sysInstruction);
+                if (res && Array.isArray(res.questions) && res.questions.length === 10) {
+                    activeExamQuestions = res.questions;
+                } else {
+                    throw new Error("Formato inválido retornado pelo Gemini para prova");
+                }
+            } catch (e) {
+                console.error("Falha ao gerar prova via Gemini, usando fallback local", e);
+                activeExamQuestions = EXAM_FALLBACK_QUESTIONS[levelId] || EXAM_FALLBACK_QUESTIONS["A1"];
             }
-        } catch (e) {
-            console.error("Falha ao gerar prova via Gemini, usando fallback local", e);
+        } else {
             activeExamQuestions = EXAM_FALLBACK_QUESTIONS[levelId] || EXAM_FALLBACK_QUESTIONS["A1"];
         }
-    } else {
-        // Offline Fallback
-        activeExamQuestions = EXAM_FALLBACK_QUESTIONS[levelId] || EXAM_FALLBACK_QUESTIONS["A1"];
     }
     
     // Hide loading, show quiz
@@ -3884,8 +4156,8 @@ function showExamQuestion() {
     
     const qData = activeExamQuestions[activeExamCurrentIdx];
     qBox.textContent = qData.question;
-    progressText.textContent = `Questão ${activeExamCurrentIdx + 1} de 10`;
-    scoreText.textContent = `Acertos: ${activeExamScore}/10`;
+    progressText.textContent = `Questão ${activeExamCurrentIdx + 1} de ${activeExamQuestions.length}`;
+    scoreText.textContent = `Acertos: ${activeExamScore}/${activeExamQuestions.length}`;
     
     qData.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
@@ -3938,7 +4210,10 @@ function showExamResults() {
     const resultsBox = document.getElementById('exam-results-box');
     resultsBox.classList.remove('hidden');
     
-    const passed = activeExamScore >= 7;
+    const totalQuestions = activeExamQuestions.length;
+    const approvalThreshold = Math.ceil(totalQuestions * 0.7);
+    const passed = activeExamScore >= approvalThreshold;
+    const pct = Math.round((activeExamScore / totalQuestions) * 100);
     const title = document.getElementById('exam-results-title');
     const desc = document.getElementById('exam-results-desc');
     const explanationsList = document.getElementById('exam-explanations-list');
@@ -3946,9 +4221,9 @@ function showExamResults() {
     explanationsList.innerHTML = '';
     
     if (passed) {
-        title.textContent = `Aprovado! 🏆 Nota: ${activeExamScore}/10`;
+        title.textContent = `Aprovado! 🏆 Nota: ${activeExamScore}/${totalQuestions}`;
         title.style.color = 'var(--success)';
-        desc.innerHTML = `Excelente performance! Você obteve um aproveitamento de <strong>${activeExamScore * 10}%</strong> e desbloqueou o próximo nível da escala CEFR.`;
+        desc.innerHTML = `Excelente performance! Você obteve um aproveitamento de <strong>${pct}%</strong> e desbloqueou o próximo nível da escala CEFR.`;
         
         state.addXP(200); // 200 XP reward
         
@@ -3970,10 +4245,13 @@ function showExamResults() {
         window.confetti.start();
         setTimeout(() => window.confetti.stop(), 3000);
     } else {
-        title.textContent = `Reprovado! ❌ Nota: ${activeExamScore}/10`;
+        title.textContent = `Reprovado! ❌ Nota: ${activeExamScore}/${totalQuestions}`;
         title.style.color = 'var(--danger)';
-        desc.innerHTML = `Você obteve <strong>${activeExamScore * 10}%</strong> de aproveitamento. Para passar, você precisa acertar pelo menos <strong>7 de 10 questões</strong>. Revise os pontos abaixo e tente novamente!`;
+        desc.innerHTML = `Você obteve <strong>${pct}%</strong> de aproveitamento. Para passar, você precisa acertar pelo menos <strong>${approvalThreshold} de ${totalQuestions} questões</strong>. Revise os pontos abaixo e tente novamente!`;
     }
+    
+    // Sync attempt to Supabase
+    syncTestAttemptToSupabase(activeExamLevel, activeExamScore, activeExamQuestions, passed);
     
     if (activeExamExplanations.length > 0) {
         explanationsList.innerHTML = '<h4>Revisão Pedagógica dos Erros:</h4>';

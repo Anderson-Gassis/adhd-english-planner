@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD English Planner - 8 Weeks to Fluency</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Canvas for Confetti -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="app-container">
+        <!-- Sidebar: Grid de 56 Dias (Visual Progress Tracker) & Badges -->
+        <aside class="sidebar glass">
+            <div class="sidebar-header">
+                <span class="logo-icon">🔥</span>
+                <div>
+                    <h2>ADHD English</h2>
+                    <span class="badge-premium">ELITE PLAN</span>
+                </div>
+            </div>
+
+            <!-- Gamification Level Status -->
+            <div class="level-status glass">
+                <div class="level-header">
+                    <span class="lvl-label">Nível <strong id="user-level">1</strong></span>
+                    <span class="rank-badge" id="user-rank">English Novice</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="level-progress-bar" style="width: 0%;"></div>
+                </div>
+                <div class="xp-stats" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span id="user-coins-display" style="font-weight: 700; color: var(--warning);">🪙 0 DM</span>
+                    <span id="user-xp-display">0 / 200 XP</span>
+                </div>
+                <div class="shields-status" id="user-shields-display" title="Escudos de Ofensa ativos para salvar sua sequência">
+                    🛡️ 0 Escudos
+                </div>
+            </div>
+            
+            <!-- Overall Plan Progress -->
+            <div class="progress-summary">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="overall-progress-bar" style="width: 0%;"></div>
+                </div>
+                <div class="progress-stats">
+                    <span>Progresso Geral</span>
+                    <strong id="progress-percentage">0%</strong>
+                </div>
+            </div>
+
+            <!-- 56 Days Navigation -->
+            <div class="days-grid-container">
+                <h3>MAPA DOS 56 DIAS</h3>
+                <div class="days-grid" id="days-grid">
+                    <!-- Gerado Dinamicamente via JS -->
+                </div>
+            </div>
+
+            <!-- Achievements / Badges Panel -->
+            <div class="badges-container">
+                <h3>CONQUISTAS DO ATLETA</h3>
+                <div class="badges-grid" id="badges-grid">
+                    <div class="badge-icon locked" id="badge-first-step" title="Primeiro Passo: Salve o primeiro dia no planner.">🚀</div>
+                    <div class="badge-icon locked" id="badge-perfect-day" title="Incorrigível: Atinja score diário de 10/10.">👑</div>
+                    <div class="badge-icon locked" id="badge-golden-streak" title="Semana de Ouro: Complete 7 dias seguidos com score >= 8.">🏆</div>
+                    <div class="badge-icon locked" id="badge-vocab-miner" title="Minerador Master: Cadastre 30 palavras no Banco de Vocábulos.">🔍</div>
+                    <div class="badge-icon locked" id="badge-timer-master" title="Foco Absoluto: Complete 10 blocos de tempo na Arena.">⏱️</div>
+                    <div class="badge-icon locked" id="badge-writer-silver" title="Escritor Prata: Acumule 500+ palavras escritas no diário.">✍️</div>
+                </div>
+            </div>
+
+            <!-- Navigation Mode Selector (Tabs) -->
+            <nav class="nav-modes">
+                <button class="btn btn-tab active" data-tab="daily">📋 Rotina Diária</button>
+                <button class="btn btn-tab" data-tab="tutor">🧠 Tutor IA & Jogos</button>
+                <button class="btn btn-tab" data-tab="adhd">⚡ Ferramentas TDAH</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="main-header glass">
+                <div class="header-left">
+                    <span id="current-week-label">Semana 1: Imersão & Rotina</span>
+                    <h1 id="current-day-title">Dia 1</h1>
+                </div>
+                <div class="header-right">
+                    <!-- Sound / ADHD Focus player in Header -->
+                    <div class="focus-player glass">
+                        <span class="player-icon">🎧</span>
+                        <div class="player-controls">
+                            <span class="player-label">Sons de Foco (TDAH):</span>
+                            <div class="btn-group">
+                                <button class="btn-sound active" data-sound="none">Mute</button>
+                                <button class="btn-sound" data-sound="brown">Brown</button>
+                                <button class="btn-sound" data-sound="binaural">Binaural</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Settings Button -->
+                    <button class="btn btn-secondary btn-icon-only" id="btn-settings" title="Configurar Gemini API">⚙️</button>
+                </div>
+            </header>
+
+            <!-- TAB 1: DAILY PLANNER DASHBOARD (Original Layout) -->
+            <div id="tab-content-daily" class="tab-pane active">
+                <div class="dashboard-grid">
+                    
+                    <!-- Card 1: Metas da Semana -->
+                    <section class="card week-goals glass">
+                        <div class="card-header">
+                            <span class="icon">🎯</span>
+                            <h2>Foco da Semana</h2>
+                        </div>
+                        <div class="goals-content">
+                            <div class="goal-item">
+                                <span class="badge main">META PRINCIPAL</span>
+                                <p id="week-main-goal">Carregando...</p>
+                            </div>
+                            <div class="goal-item">
+                                <span class="badge sec">META SECUNDÁRIA</span>
+                                <p id="week-sec-goal">Carregando...</p>
+                            </div>
+                            <div class="weekly-metrics">
+                                <div class="metric-mini">
+                                    <span>Carga Horária</span>
+                                    <strong id="week-hours">31.5 hrs</strong>
+                                </div>
+                                <div class="metric-mini">
+                                    <span>Indicador de Sucesso</span>
+                                    <strong id="week-indicator">Carregando...</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 2: Cronômetro Inteligente -->
+                    <section class="card timer-card glass">
+                        <div class="card-header">
+                            <span class="icon">⏱️</span>
+                            <h2>Arena de Foco</h2>
+                        </div>
+                        <div class="timer-display">
+                            <svg class="progress-ring" width="160" height="160">
+                                <circle class="progress-ring__circle-bg" stroke="#1f2937" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
+                                <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
+                            </svg>
+                            <div class="timer-text" id="timer-time">15:00</div>
+                        </div>
+                        <div class="timer-controls">
+                            <!-- Main timer controls -->
+                            <div id="timer-main-controls">
+                                <select id="timer-activity-select" class="glass-select">
+                                    <option value="900" data-label="Duolingo Quick Start">Duolingo - 15 min</option>
+                                    <option value="3600" data-label="Comprehensible Input">Input YouTube/Podcast - 60 min</option>
+                                    <option value="1800" data-label="Active Reading">Leitura Ativa - 30 min</option>
+                                    <option value="1800" data-label="AI Writing Synthesis">Escrita & Síntese - 30 min</option>
+                                    <option value="900" data-label="Anki Flashcards Review">Anki SRS - 15 min</option>
+                                    <option value="3600" data-label="YAY Talks Conversation">YAY Talks - 60 min</option>
+                                    <option value="3600" data-label="Active Movie Immersion">Série & Shadowing - 60 min</option>
+                                </select>
+                                <div class="timer-buttons" style="margin-top: 10px;">
+                                    <button id="btn-timer-start" class="btn btn-primary">Iniciar</button>
+                                    <button id="btn-timer-pause" class="btn btn-secondary" disabled>Pausar</button>
+                                    <button id="btn-timer-reset" class="btn btn-outline">Reset</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Dopamine Break Overlay -->
+                            <div id="dopamine-break-overlay" class="break-overlay hidden" style="margin-top: 10px;">
+                                <h3>⏸️ Pausa Saudável TDAH</h3>
+                                <p>Evite distrações! Escolha uma atividade de foco:</p>
+                                <div class="break-options">
+                                    <button class="btn btn-sm btn-outline btn-break-act" data-time="60" data-desc="Respiração profunda (1 min)">🧘 Respirar (1m)</button>
+                                    <button class="btn btn-sm btn-outline btn-break-act" data-time="180" data-desc="Alongamento físico leve (3 min)">🚶 Alongar (3m)</button>
+                                    <button class="btn btn-sm btn-outline btn-break-act" data-time="120" data-desc="Beba um copo d'água devagar (2 min)">💧 Beber Água (2m)</button>
+                                </div>
+                                <div class="break-timer-display hidden" id="break-timer-box" style="margin-top: 10px;">
+                                    <div id="break-timer-desc" style="font-size: 11px; color: var(--text-muted);">Respiração profunda...</div>
+                                    <strong id="break-timer-time">03:00</strong>
+                                    <button class="btn btn-xs btn-outline" id="btn-cancel-break" style="margin-top: 5px;">Pular Pausa</button>
+                                </div>
+                                <button class="btn btn-success w-full" id="btn-resume-timer" style="margin-top: 10px;">Retomar Estudos</button>
+                            </div>
+                        </div>
+                        <p class="timer-tip" id="timer-tip">Dica TDAH: Ligue o fone com som de foco antes de começar!</p>
+                    </section>
+
+                    <!-- Card 3: Checklists de Execução Diária -->
+                    <section class="card checklist-card glass">
+                        <div class="card-header">
+                            <span class="icon">⚡</span>
+                            <h2>Rotina Diária</h2>
+                            <div class="des-badge">DES Score: <span id="des-score">0</span>/10</div>
+                        </div>
+                        
+                        <div class="blocks-container">
+                            <div class="block-section">
+                                <h3>🌅 BLOCO 1: MANHÃ (Foco Cognitivo)</h3>
+                                <ul class="checklist" id="morning-checklist">
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="0.5" data-id="duolingo">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">Duolingo & Foco (15 min)</span>
+                                            <span class="points-tag">+0.5 pt</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="1.5" data-id="listening">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">YouTube/Podcast + Notas (60 min)</span>
+                                            <span class="points-tag">+1.5 pts</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="1" data-id="reading">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">Leitura Ativa (30 min)</span>
+                                            <span class="points-tag">+1 pt</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="1" data-id="writing">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">Escrita & Síntese IA (30 min)</span>
+                                            <span class="points-tag">+1 pt</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="0.5" data-id="anki">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">Revisão no Anki (15 min)</span>
+                                            <span class="points-tag">+0.5 pt</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="block-section">
+                                <h3>🌃 BLOCO 2: NOITE (Imersão & Output)</h3>
+                                <ul class="checklist" id="evening-checklist">
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="1.5" data-id="yaytalks">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">YAY Talks Conversação (60 min)</span>
+                                            <span class="points-tag">+1.5 pts</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="1" data-id="immersion">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">Imersão & Shadowing (60 min)</span>
+                                            <span class="points-tag">+1 pt</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="1.5" data-id="tutor_games">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">Tutor IA & Jogos (Quiz/Flashcards - 15 min)</span>
+                                            <span class="points-tag">+1.5 pts</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="check-item">
+                                            <input type="checkbox" class="task-checkbox" data-points="1.5" data-id="adhd_tools">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="task-name">Ferramentas TDAH (Leitor/Shop - 15 min)</span>
+                                            <span class="points-tag">+1.5 pts</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button id="btn-save-day" class="btn btn-success w-full">💾 Gravar Score do Dia</button>
+                            <button id="btn-use-shield" class="btn btn-secondary w-full hidden" style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">🛡️ Usar Escudo de Ofensa (Possui <span id="shield-count-label">0</span>)</button>
+                        </div>
+                    </section>
+
+                    <!-- Card 4: Minerador de Vocabulário Ativo -->
+                    <section class="card vocabulary-card glass">
+                        <div class="card-header">
+                            <span class="icon">🔍</span>
+                            <h2>Minerador de Vocabulário</h2>
+                        </div>
+                        <form id="vocab-form" class="vocab-form">
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="vocab-word">Palavra/Expressão</label>
+                                    <input type="text" id="vocab-word" placeholder="Ex: give up" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="vocab-translation">Tradução/Significado</label>
+                                    <input type="text" id="vocab-translation" placeholder="Ex: desistir" required>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Crie 3 Frases de Personalização (Ativação Dopaminérgica):</label>
+                                <input type="text" class="vocab-sentence" id="vocab-s1" placeholder="Frase 1 (Sua realidade)" required>
+                                <input type="text" class="vocab-sentence" id="vocab-s2" placeholder="Frase 2 (Sua realidade)" required>
+                                <input type="text" class="vocab-sentence" id="vocab-s3" placeholder="Frase 3 (Sua realidade)" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-full">📥 Adicionar ao Banco de Vocábulos</button>
+                        </form>
+
+                        <div class="vocab-list-section">
+                            <div class="vocab-list-header">
+                                <h3>Banco Minerado (<span id="vocab-count">0</span>)</h3>
+                                <button id="btn-export-anki" class="btn btn-sm btn-outline">📤 Exportar p/ Anki (CSV)</button>
+                            </div>
+                            <div class="vocab-list" id="vocab-list">
+                                <!-- Inserido dinamicamente via JS -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 5: Espaço de Escrita e Prompt IA -->
+                    <section class="card writing-card glass">
+                        <div class="card-header">
+                            <span class="icon">✍️</span>
+                            <h2>Workspace de Escrita</h2>
+                            <span class="word-count" id="word-count">0 palavras</span>
+                        </div>
+                        
+                        <div class="writing-controls">
+                            <label for="writing-type" class="sr-only">Tipo de Escrita</label>
+                            <select id="writing-type" class="glass-select">
+                                <option value="journal">Daily Journaling (Seg/Qua/Sex)</option>
+                                <option value="summary">Summary Writing (Ter/Qui)</option>
+                                <option value="essay">Opinion Essay (Sáb)</option>
+                            </select>
+                        </div>
+
+                        <textarea id="writing-textarea" placeholder="Escreva seu texto em inglês aqui... Não se preocupe em errar agora, a IA vai fazer o polimento para você!"></textarea>
+
+                        <div class="card-footer">
+                            <button id="btn-copy-prompt" class="btn btn-primary w-full">📋 Copiar Prompt de Correção IA</button>
+                        </div>
+                    </section>
+
+                    <!-- Card 6: Accountability -->
+                    <section class="card accountability-card glass">
+                        <div class="card-header">
+                            <span class="icon">🚨</span>
+                            <h2>Sistema de Cobrança Extrema</h2>
+                        </div>
+                        <div class="fiscal-status">
+                            <div class="fiscal-info">
+                                <span class="label">Fiscal de Monitoramento:</span>
+                                <div class="fiscal-input-wrapper">
+                                    <input type="text" id="fiscal-name" class="glass-input" placeholder="Nome do seu Fiscal">
+                                    <input type="text" id="fiscal-phone" class="glass-input" placeholder="Telefone (DDI+DDD+N)">
+                                </div>
+                            </div>
+                            <div class="status-warning" id="status-warning">
+                                <span class="icon-warning">⚠️</span>
+                                <p><strong>Aviso:</strong> Envie o report diário até <strong>22h30</strong> para evitar a multa por procrastinação acordada!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="report-box glass">
+                            <h4>Relatório do WhatsApp Pré-formatado:</h4>
+                            <div class="report-text" id="report-text">
+                                Selecione as tarefas do dia para gerar seu relatório de accountability.
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button id="btn-send-whatsapp" class="btn btn-whatsapp w-full">💬 Enviar para WhatsApp do Fiscal</button>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <!-- TAB 2: AI TUTOR & CHALLENGES (New Interactive Features) -->
+            <div id="tab-content-tutor" class="tab-pane">
+                <!-- AI API Config warning if missing -->
+                <div class="alert alert-info glass" id="api-warning">
+                    <span>💡</span>
+                    <p>Você está no <strong>Modo Local Offline</strong>. Para habilitar correções gramaticais inteligentes e quizzes dinâmicos com IA, configure uma chave de API gratuita do Gemini clicando na engrenagem no canto superior direito.</p>
+                </div>
+
+                <div class="tutor-layout">
+                    <!-- Navigation Sub-Menu for tutor sub-tabs -->
+                    <div class="tutor-sidebar glass">
+                        <button class="btn btn-tutor-sub active" data-subtab="challenge">🎯 Desafio Temático IA</button>
+                        <button class="btn btn-tutor-sub" data-subtab="quiz">❓ Quiz de Vocabulário</button>
+                        <button class="btn btn-tutor-sub" data-subtab="speed">⚡ Speed Word Battle (60s)</button>
+                        <button class="btn btn-tutor-sub" data-subtab="flashcards">🧠 Flashcards Inteligentes</button>
+                    </div>
+
+                    <!-- Tutor Sub-tab contents -->
+                    <div class="tutor-main">
+                        
+                        <!-- Subtab: Desafio Temático -->
+                        <div id="subtab-content-challenge" class="tutor-pane active">
+                            <section class="card glass">
+                                <div class="card-header">
+                                    <span class="icon">🎯</span>
+                                    <h2>Desafio do Dia (Foco Ativo)</h2>
+                                    <button class="btn btn-sm btn-outline ml-auto" id="btn-generate-challenge">⚡ Gerar Novo Desafio</button>
+                                </div>
+                                <div class="challenge-prompt-box glass" id="challenge-prompt">
+                                    Clique no botão acima para gerar seu desafio baseado no foco da semana!
+                                </div>
+                                <textarea id="challenge-user-input" class="glass-textarea" placeholder="Digite sua resposta em inglês aqui..." disabled></textarea>
+                                
+                                <div class="challenge-actions">
+                                    <button class="btn btn-primary" id="btn-submit-challenge" disabled>🧑‍🏫 Enviar para Avaliação (+30 XP)</button>
+                                </div>
+
+                                <div class="tutor-feedback-area glass hidden" id="challenge-feedback-box">
+                                    <h3>Avaliação do Tutor IA:</h3>
+                                    <div class="feedback-grid">
+                                        <div class="feedback-item">
+                                            <span>Pontuação:</span>
+                                            <strong id="feedback-score">0 / 100</strong>
+                                        </div>
+                                        <div class="feedback-item">
+                                            <span>Nota CEFR:</span>
+                                            <strong id="feedback-cefr">B1</strong>
+                                        </div>
+                                    </div>
+                                    <div class="feedback-text">
+                                        <h4>Correção Gramatical:</h4>
+                                        <p id="feedback-corrections">Tudo ok.</p>
+                                    </div>
+                                    <div class="feedback-text">
+                                        <h4>Como um nativo falaria (Natural Phrasing):</h4>
+                                        <p id="feedback-natural" class="native-phrase">Everything ok.</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Subtab: Quiz de Vocabulário -->
+                        <div id="subtab-content-quiz" class="tutor-pane">
+                            <section class="card glass">
+                                <div class="card-header">
+                                    <span class="icon">❓</span>
+                                    <h2>Quiz de Ativação de Vocabulário</h2>
+                                    <button class="btn btn-sm btn-outline ml-auto" id="btn-next-quiz">Próxima Pergunta</button>
+                                </div>
+                                
+                                <div class="quiz-question-box" style="display: flex; align-items: center; justify-content: center; gap: 12px; padding: 20px;">
+                                    <span id="quiz-question" style="flex: 1; text-align: center;">Cadastre pelo menos 1 palavra no seu Banco de Vocabulário de manhã para liberar o Quiz à noite!</span>
+                                    <button class="btn btn-tts hidden" id="btn-quiz-speak" title="Ouvir frase" style="background: none; border: none; color: var(--secondary); cursor: pointer; font-size: 20px; padding: 4px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 4px var(--secondary-glow));">🔊</button>
+                                </div>
+
+                                <div class="quiz-options-container" id="quiz-options">
+                                    <!-- Options generated dynamically -->
+                                </div>
+
+                                <div class="quiz-feedback-box glass hidden" id="quiz-feedback" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px;">
+                                    <span class="icon" id="quiz-feedback-icon" style="font-size: 24px;">🎉</span>
+                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                                        <p id="quiz-feedback-text" style="margin: 0; font-size: 13px; line-height: 1.4;">Correto! Você ganhou +20 XP!</p>
+                                        <button class="btn btn-xs btn-outline hidden" id="btn-quiz-save-word" style="margin-top: 4px; align-self: flex-start; font-size: 10px; padding: 3px 8px;">➕ Salvar no meu Minerador</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Subtab: Speed Word Battle -->
+                        <div id="subtab-content-speed" class="tutor-pane">
+                            <section class="card glass">
+                                <div class="card-header">
+                                    <span class="icon">⚡</span>
+                                    <h2>Speed Word Battle (Batalha Contra o Tempo)</h2>
+                                    <div class="speed-timer" id="speed-timer-display">60s</div>
+                                </div>
+                                <div class="speed-intro" id="speed-intro-box">
+                                    <p>Escreva o máximo de palavras que você conseguir dentro do tema e da letra sorteada. Cada palavra aceita garante <strong>+5 XP</strong>!</p>
+                                    <button class="btn btn-success" id="btn-start-speed">🔥 INICIAR DESAFIO DE 60s</button>
+                                </div>
+
+                                <div class="speed-game-area hidden" id="speed-game-area">
+                                    <div class="speed-prompt">
+                                        Tema: <strong id="speed-prompt-topic">Profissões</strong> | Letra Inicial: <strong id="speed-prompt-letter">S</strong>
+                                    </div>
+                                    <div class="speed-input-group">
+                                        <input type="text" id="speed-word-input" class="glass-input" placeholder="Escreva a palavra e aperte Enter..." autocomplete="off">
+                                    </div>
+                                    
+                                    <div class="speed-stats-grid">
+                                        <div class="stat-box">
+                                            <span>Aceitas:</span>
+                                            <strong id="speed-count-accepted">0</strong>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span>Acumulado:</span>
+                                            <strong id="speed-xp-earned">+0 XP</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="speed-words-list" id="speed-words-list">
+                                        <!-- Words entered will show here -->
+                                    </div>
+                                </div>
+
+                                <!-- Speed Word Battle Loading Evaluation -->
+                                <div class="speed-loading-box glass hidden" id="speed-loading-box" style="text-align: center; padding: 24px;">
+                                    <span class="icon" style="font-size: 36px; display: block; margin-bottom: 12px; animation: pulse 1.5s infinite ease-in-out;">🧠</span>
+                                    <h4 style="font-family: var(--font-heading); font-size: 16px; color: #fff;">Tutor IA avaliando palavras...</h4>
+                                    <p class="help-text" style="font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.4;">Aguarde enquanto a IA valida a ortografia, a letra inicial e a adequação de cada termo ao tema sorteado.</p>
+                                </div>
+
+                                <div class="speed-result-box glass hidden" id="speed-result-box" style="margin-top: 15px; padding: 20px; border-radius: 12px; text-align: left; width: 100%;">
+                                    <h3 style="text-align: center; margin-bottom: 8px; font-family: var(--font-heading);">Fim de Jogo! 🏁</h3>
+                                    <p style="text-align: center; font-size: 14px; margin-bottom: 16px; color: #e5e7eb;">
+                                        Você acertou <strong id="speed-final-count" style="color: var(--secondary);">0</strong> de <strong id="speed-final-total" style="color: #fff;">0</strong> palavras e faturou <strong id="speed-final-xp" style="color: var(--primary);">+0 XP</strong>!
+                                    </p>
+                                    
+                                    <div class="speed-details-list" id="speed-details-list" style="max-height: 160px; overflow-y: auto; background: rgba(0, 0, 0, 0.25); padding: 8px; border-radius: 8px; border: 1px solid var(--border-glass); font-size: 11px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; width: 100%;">
+                                        <!-- Word by word validation results will show here -->
+                                    </div>
+                                    
+                                    <div style="display: flex; justify-content: center; width: 100%;">
+                                        <button class="btn btn-outline" id="btn-retry-speed" style="min-width: 150px;">Jogar Novamente</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Subtab: Flashcards Inteligentes -->
+                        <div id="subtab-content-flashcards" class="tutor-pane">
+                            <section class="card glass">
+                                <div class="card-header">
+                                    <span class="icon">🧠</span>
+                                    <h2>Flashcards Inteligentes IA</h2>
+                                    <div class="flashcards-stats ml-auto" style="font-size: 12px; color: var(--text-muted);">
+                                        Conhecidas: <strong id="flashcard-known-count" style="color: var(--secondary);">0</strong> | 
+                                        Novas: <strong id="flashcard-new-count" style="color: var(--primary);">0</strong>
+                                    </div>
+                                </div>
+                                
+                                <div class="flashcard-setup" id="flashcard-setup-area">
+                                    <p class="help-text" style="font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-bottom: 12px;">
+                                        Escolha uma duração para sua sessão. A IA vai gerar termos relevantes e variados para o seu nível de estudos da semana e criará uma pilha de flashcards interativos para você expandir seu vocabulário.
+                                    </p>
+                                    <div class="setup-controls" style="display: flex; gap: 12px; align-items: center; width: 100%;">
+                                        <select id="flashcard-duration-select" class="glass-select" style="max-width: 250px;">
+                                            <option value="10">Sessão Rápida (10 cards / ~5 min)</option>
+                                            <option value="20">Sessão Média (20 cards / ~10 min)</option>
+                                            <option value="40">Sessão Foco (40 cards / ~20 min)</option>
+                                        </select>
+                                        <button class="btn btn-success" id="btn-start-flashcards">🚀 Iniciar Sessão de Cards</button>
+                                    </div>
+                                </div>
+
+                                <div class="flashcard-game-area hidden" id="flashcard-game-area" style="width: 100%;">
+                                    <div class="flashcard-progress-container" style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 6px;">
+                                        <span id="flashcard-progress-text" style="color: var(--text-muted);">Card 1 de 10</span>
+                                        <span id="flashcard-xp-reward" style="color: var(--secondary); font-weight: bold;">+0 XP</span>
+                                    </div>
+                                    <div class="flashcard-progress-bar" style="background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 16px;">
+                                        <div id="flashcard-progress-fill" style="background: var(--primary); height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+                                    </div>
+                                    
+                                    <div class="flashcard-wrapper" style="perspective: 1000px; width: 100%;">
+                                        <div class="flashcard-inner" id="flashcard-card" style="transition: transform 0.6s; transform-style: preserve-3d; position: relative; width: 100%; height: 220px; cursor: pointer;">
+                                            <!-- Front Side -->
+                                            <div class="flashcard-front glass" style="backface-visibility: hidden; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(15, 12, 25, 0.85); gap: 10px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                                                <span class="word-pos-tag" id="card-pos" style="font-size: 10px; font-weight: bold; background: var(--primary-glow); border: 1px solid var(--primary); color: #fff; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;">VERB</span>
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <h2 id="card-word" style="font-family: var(--font-heading); font-size: 32px; color: #fff; text-shadow: 0 0 10px var(--primary-glow); letter-spacing: 0.5px; margin: 0;">Writing</h2>
+                                                    <button class="btn-tts" id="btn-flashcard-speak-word" title="Ouvir pronúncia" style="background: none; border: none; color: var(--secondary); cursor: pointer; font-size: 22px; display: flex; align-items: center; justify-content: center; padding: 4px; filter: drop-shadow(0 0 4px var(--secondary-glow)); line-height: 1;">🔊</button>
+                                                </div>
+                                                <span style="font-size: 11px; color: var(--text-muted); margin-top: 10px; display: flex; align-items: center; gap: 4px;">Clique para revelar tradução 🔄</span>
+                                            </div>
+                                            <!-- Back Side -->
+                                            <div class="flashcard-back glass" style="backface-visibility: hidden; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(10, 25, 20, 0.92); border-color: rgba(0, 245, 212, 0.2); transform: rotateY(180deg); gap: 12px; padding: 20px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                                                <h3 id="card-translation" style="font-family: var(--font-heading); font-size: 22px; color: var(--secondary); text-shadow: 0 0 8px var(--secondary-glow);">Escrita / Redação</h3>
+                                                <div style="height: 1px; background: var(--border-glass); width: 80%; margin: 4px 0;"></div>
+                                                <div style="display: flex; align-items: center; gap: 10px; justify-content: center; width: 100%; max-width: 90%;">
+                                                    <p id="card-example" style="font-size: 13px; line-height: 1.6; font-style: italic; color: #e5e7eb; margin: 0; flex: 1;">"I practice writing every day."</p>
+                                                    <button class="btn-tts" id="btn-flashcard-speak-example" title="Ouvir frase de exemplo" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; padding: 4px; filter: drop-shadow(0 0 4px var(--primary-glow)); line-height: 1;">🔊</button>
+                                                </div>
+                                                <span style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Você já conhecia esta palavra? Escolha abaixo:</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flashcard-actions hidden" id="flashcard-buttons" style="display: flex; gap: 12px; margin-top: 20px; justify-content: center; width: 100%;">
+                                        <button class="btn btn-secondary" id="btn-card-known" style="flex: 1; font-size: 12px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 6px;">✔️ Já Conheço (Não Repetir)</button>
+                                        <button class="btn btn-primary" id="btn-card-new" style="flex: 1; font-size: 12px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 6px;">➕ Estudar (Palavra Nova)</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TAB 3: ADHD TOOLS (Bionic Reading, XP Shop & Diagnostics) -->
+            <div id="tab-content-adhd" class="tab-pane">
+                <div class="adhd-grid">
+                    <!-- Card 1: XP Shop -->
+                    <section class="card shop-card glass">
+                        <div class="card-header">
+                            <span class="icon">🛒</span>
+                            <h2>Dopamine Shop (XP Shop)</h2>
+                            <span class="coins-badge">Saldo: <strong id="shop-coins-display">0</strong> DM</span>
+                        </div>
+                        <div class="shop-items">
+                            <div class="shop-item glass">
+                                <div class="item-icon">🛡️</div>
+                                <div class="item-details">
+                                    <h3>Escudo de Ofensa</h3>
+                                    <p>Evita que você perca sua sequência de dias caso esqueça de preencher ou salvar por 1 dia.</p>
+                                    <button class="btn btn-primary btn-sm btn-buy" data-item="shield">Comprar (500 DM)</button>
+                                </div>
+                            </div>
+                            <div class="shop-item glass">
+                                <div class="item-icon">✨</div>
+                                <div class="item-details">
+                                    <h3>Super Dopamina Booster</h3>
+                                    <p>Sente-se desmotivado? Dispare uma explosão sonora e visual de confetes na tela imediatamente!</p>
+                                    <button class="btn btn-primary btn-sm btn-buy" data-item="celebration">Comprar (150 DM)</button>
+                                </div>
+                            </div>
+                            <div class="shop-item glass">
+                                <div class="item-icon">⚡</div>
+                                <div class="item-details">
+                                    <h3>Pílula de Foco (+100 XP)</h3>
+                                    <p>Adicione 100 XP diretamente ao seu nível atual para avançar mais rápido na Liga.</p>
+                                    <button class="btn btn-primary btn-sm btn-buy" data-item="focus">Comprar (100 DM)</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 2: Bionic Reading Converter -->
+                    <section class="card bionic-card glass">
+                        <div class="card-header">
+                            <span class="icon">📖</span>
+                            <h2>Leitor Biônico (ADHD Focus Reader)</h2>
+                            <button class="btn btn-sm btn-outline ml-auto" id="btn-generate-bionic">⚡ Gerar Texto IA (Gemini)</button>
+                        </div>
+                        
+                        <div class="bionic-editor-area" id="bionic-editor-area">
+                            <p class="help-text" style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+                                A Leitura Biônica destaca o início das palavras. Isso cria pontos de fixação artificial que guiam seus olhos, ajudando cérebros com TDAH a ler inglês mais rápido e sem perder o foco.
+                            </p>
+                            <textarea id="bionic-input" class="glass-textarea" style="height: 150px;" placeholder="Cole qualquer texto em inglês aqui para converter..."></textarea>
+                            <button class="btn btn-success w-full" id="btn-convert-bionic">⚡ Converter para Leitura Biônica</button>
+                        </div>
+                        
+                        <div class="bionic-reader-area hidden" id="bionic-reader-area">
+                            <div class="bionic-controls" style="display: flex; gap: 8px; align-items: center;">
+                                <button class="btn btn-sm btn-outline" id="btn-bionic-edit">✍️ Editar Texto</button>
+                                <button class="btn btn-sm btn-outline btn-tts" id="btn-bionic-speak" title="Ouvir texto completo" style="display: inline-flex; align-items: center; gap: 4px; color: var(--secondary);">🔊 Ouvir Texto</button>
+                                <div class="font-controls" style="margin-left: auto;">
+                                    <button class="btn btn-sm btn-secondary btn-icon-only" id="btn-font-dec" style="width: 32px; height: 32px; border-radius: 6px;">A-</button>
+                                    <button class="btn btn-sm btn-secondary btn-icon-only" id="btn-font-inc" style="width: 32px; height: 32px; border-radius: 6px;">A+</button>
+                                </div>
+                            </div>
+                            <div class="bionic-output-box glass" id="bionic-output">
+                                <!-- Texto formatado aparecerá aqui -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 3: Audio Diagnostics & Console -->
+                    <section class="card debug-card glass">
+                        <div class="card-header">
+                            <span class="icon">🛠️</span>
+                            <h2>Diagnóstico de Foco e Áudio (Console TDAH)</h2>
+                        </div>
+                        <div class="audio-debugger">
+                            <p class="help-text" style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+                                Se os ruídos (Mute, Brown, Binaural) ou os sons de comemoração não estiverem sendo reproduzidos no seu fone de ouvido, utilize o console abaixo para identificar problemas e testar seu driver de áudio do navegador.
+                            </p>
+                            <div class="debug-log-box" id="audio-debug-log">
+                                <div>[LOG] Aguardando interação de áudio...</div>
+                            </div>
+                            <div class="debug-actions">
+                                <button type="button" class="btn btn-secondary" id="btn-test-tone">🔊 Testar Driver de Áudio (Tom de 1s)</button>
+                                <button type="button" class="btn btn-outline" id="btn-clear-logs">Limpar Console</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL: Configurações da API Key -->
+    <div class="modal-backdrop" id="modal-settings">
+        <div class="modal-content glass">
+            <button class="btn-close-modal" id="btn-close-settings">✕</button>
+            <h2>Configurações da Inteligência Artificial</h2>
+            <p>Conecte o planner diretamente ao modelo <strong>Gemini 2.5 Flash</strong> da Google para ter correções imediatas e dinâmicas.</p>
+            
+            <form id="settings-form" class="settings-form">
+                <div class="input-group">
+                    <label for="gemini-key-input">Gemini API Key</label>
+                    <input type="password" id="gemini-key-input" class="glass-input" placeholder="Cole sua API Key aqui (AIzaSy...)">
+                    <span class="help-text">Obtenha uma chave gratuita no <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</span>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary w-full">Salvar Configurações</button>
+                </div>
+            </form>
+
+            <hr class="modal-divider">
+            <h2>Sincronização de Agenda</h2>
+            <p>Escolha o seu método de sincronização para os 6 blocos diários de estudos (para as próximas 8 semanas):</p>
+            
+            <div class="calendar-sync-options">
+                <div class="sync-option-block">
+                    <h4>Método 1: Adicionar Online (Recomendado)</h4>
+                    <p class="help-text">Clique nos links abaixo para abrir cada bloco recorrente diretamente na sua Google Agenda online e salve.</p>
+                    <div class="calendar-online-links">
+                        <button type="button" class="btn btn-sm btn-outline btn-calendar-link" data-event="0">1. Kickstart Matinal</button>
+                        <button type="button" class="btn btn-sm btn-outline btn-calendar-link" data-event="1">2. Imersão Ativa</button>
+                        <button type="button" class="btn btn-sm btn-outline btn-calendar-link" data-event="2">3. Leitura e Escrita</button>
+                        <button type="button" class="btn btn-sm btn-outline btn-calendar-link" data-event="3">4. Anki SRS</button>
+                        <button type="button" class="btn btn-sm btn-outline btn-calendar-link" data-event="4">5. YAY Talks</button>
+                        <button type="button" class="btn btn-sm btn-outline btn-calendar-link" data-event="5">6. Imersão Cinema</button>
+                    </div>
+                </div>
+                
+                <div class="modal-divider-light"></div>
+                
+                <div class="sync-option-block">
+                    <h4>Método 2: Importação em Lote (Arquivo Único)</h4>
+                    <p class="help-text">Esta é a melhor opção para sincronizar tudo! Baixe o arquivo contendo todos os 6 blocos com seus horários de uma só vez e importe-o nas Configurações do seu Google Agenda (Configurações &gt; Importar e Exportar &gt; Selecionar arquivo .ics e enviar). Isso sincroniza a rotina completa simultaneamente.</p>
+                    <button type="button" class="btn btn-secondary w-full" id="btn-export-calendar">📅 Exportar Todos os Blocos (.ICS)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Level Up Event -->
+    <div class="modal-backdrop" id="modal-level-up">
+        <div class="modal-content glass level-up-content text-center">
+            <div class="level-up-badge">✨ LEVEL UP! ✨</div>
+            <h2 id="level-up-title">Nível 2</h2>
+            <p id="level-up-rank-name">Grammar Padawan</p>
+            <p class="congrats-text">Sua consistência está gerando conexões neurais fortíssimas. Continue no fluxo!</p>
+            <button class="btn btn-primary" id="btn-level-up-close">Continuar na Jornada</button>
+        </div>
+    </div>
+
+    <!-- Script Links -->
+    <script src="confetti.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -156,6 +156,7 @@ class StateManager {
         this.cefrLevel = "A1";
         this.niche = "Geral";
         this.passedExams = [];
+        this.courseProgress = { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
         
         if (this.activeUser) {
             this.loadState();
@@ -197,6 +198,14 @@ class StateManager {
             this.cefrLevel = uData.cefrLevel || "A1";
             this.niche = uData.niche || "Geral";
             this.passedExams = uData.passedExams || [];
+            try {
+                this.courseProgress = JSON.parse(localStorage.getItem(prefix + 'course_progress')) || { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
+                if (Array.isArray(this.courseProgress) || typeof this.courseProgress !== 'object') {
+                    this.courseProgress = { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
+                }
+            } catch(e) {
+                this.courseProgress = { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
+            }
         } catch (e) {
             console.error("Falha ao ler localStorage", e);
         }
@@ -236,6 +245,7 @@ class StateManager {
         this.users[this.activeUser].niche = this.niche;
         this.users[this.activeUser].passedExams = this.passedExams;
         localStorage.setItem('adhd_users', JSON.stringify(this.users));
+        localStorage.setItem(prefix + 'course_progress', JSON.stringify(this.courseProgress));
     }
 
     addXP(amount) {
@@ -3377,6 +3387,23 @@ let activeExamCurrentIdx = 0;
 let activeExamScore = 0;
 let activeExamExplanations = [];
 
+let currentSelectedLevelId = "";
+let currentStudyLevelId = "";
+let currentStudyModIdx = 0;
+let currentStudyLesIdx = 0;
+let currentStudyLessonObj = null;
+
+function getVictoryMessage(levelId) {
+    const messages = {
+        "A1": "Você acabou de destravar a capacidade de se apresentar e mapear sua rotina inteiramente em inglês. Você não é mais um zero à esquerda no idioma.",
+        "A2": "Parabéns! Agora você consegue viajar para qualquer lugar do mundo sem passar fome ou ficar preso na imigração. Você já sabe o básico funcional.",
+        "B1": "Sua mente parou de traduzir palavra por palavra e você começou a formular os blocos de pensamento diretamente em inglês! A independência é sua.",
+        "B2": "Você concluiu o nível corporativo! Agora você percebe que consegue conduzir uma reunião inteira em inglês com segurança técnica e persuasão.",
+        "C1/C2": "Você atingiu a maestria executiva! Você tem a epifania de que não é apenas fluente, mas sim uma liderança respeitável e articulada internacionalmente."
+    };
+    return messages[levelId] || "Parabéns por concluir esta jornada de estudos!";
+}
+
 function renderCourseRoadmap() {
     const container = document.getElementById('course-roadmap');
     if (!container) return;
@@ -3400,20 +3427,41 @@ function renderCourseRoadmap() {
         let statusTagClass = "tag-locked";
         let actionButtonHTML = "";
         
+        const completedLessons = state.courseProgress[lvl.id] || [];
+        const completedCount = completedLessons.length;
+        const totalLessons = 15; // 3 modules * 5 lessons
+        
         if (isCompleted) {
             cardStatusClass = "completed";
             statusTagText = "Concluído ✓";
             statusTagClass = "tag-completed";
+            actionButtonHTML = `<button class="btn btn-outline btn-sm btn-open-study" data-level="${lvl.id}" style="margin-top: 10px; width: 100%;">📚 Revisar Lições (15/15)</button>`;
         } else if (isActive) {
             cardStatusClass = "active";
             statusTagText = "Em Progresso ⚡";
             statusTagClass = "tag-active";
             
-            actionButtonHTML = `<button class="btn btn-primary btn-sm btn-start-level-exam" data-level="${lvl.id}" style="margin-top: 10px;">🎓 Prestar Exame de Nível ${lvl.id}</button>`;
+            const isExamUnlocked = completedCount >= totalLessons;
+            if (isExamUnlocked) {
+                actionButtonHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%;">
+                        <button class="btn btn-secondary btn-sm btn-open-study" data-level="${lvl.id}">📚 Estudar Módulos (15/15)</button>
+                        <button class="btn btn-success btn-sm btn-start-level-exam" data-level="${lvl.id}">🎓 Prestar Exame de Nível ${lvl.id}</button>
+                    </div>
+                `;
+            } else {
+                actionButtonHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%;">
+                        <button class="btn btn-primary btn-sm btn-open-study" data-level="${lvl.id}">📚 Estudar Módulos (${completedCount}/${totalLessons})</button>
+                        <button class="btn btn-primary btn-sm btn-start-level-exam" data-level="${lvl.id}" style="opacity: 0.5; cursor: not-allowed;" disabled>🔒 Prova Bloqueada (${completedCount}/${totalLessons})</button>
+                    </div>
+                `;
+            }
         }
         
         const card = document.createElement('div');
         card.className = `roadmap-level-card glass ${cardStatusClass}`;
+        card.style.cursor = isLocked ? 'default' : 'pointer';
         card.innerHTML = `
             <div class="roadmap-dot">${isCompleted ? '✓' : idx + 1}</div>
             <div class="roadmap-level-info">
@@ -3427,17 +3475,338 @@ function renderCourseRoadmap() {
             </div>
         `;
         
+        // Add click on active/completed cards to open study view directly
+        if (!isLocked) {
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON') {
+                    renderModulesAndLessons(lvl.id);
+                }
+            });
+        }
+        
         container.appendChild(card);
+    });
+    
+    // Bind click handlers for study buttons
+    document.querySelectorAll('.btn-open-study').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const levelId = btn.dataset.level;
+            renderModulesAndLessons(levelId);
+        });
     });
     
     // Bind click handlers for the exam buttons
     document.querySelectorAll('.btn-start-level-exam').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
             const levelId = btn.dataset.level;
             startLevelExam(levelId);
         });
     });
 }
+
+function renderModulesAndLessons(levelId) {
+    currentSelectedLevelId = levelId;
+    
+    // Hide roadmap and header card
+    document.getElementById('course-roadmap').classList.add('hidden');
+    document.getElementById('course-header-section').classList.add('hidden');
+    
+    const modulesContainer = document.getElementById('course-modules-container');
+    modulesContainer.classList.remove('hidden');
+    
+    // Set selected level title
+    const levelName = CEFR_LEVELS_INFO.find(l => l.id === levelId)?.name || levelId;
+    document.getElementById('selected-level-title').textContent = `${levelName} - Módulos de Estudo`;
+    
+    // Progress calculation
+    const completedLessons = state.courseProgress[levelId] || [];
+    const completedCount = completedLessons.length;
+    const totalLessons = 15;
+    const progressPct = Math.round((completedCount / totalLessons) * 100);
+    
+    document.getElementById('level-study-progress-pct').textContent = `${progressPct}% Concluído`;
+    document.getElementById('level-study-progress-bar').style.width = `${progressPct}%`;
+    
+    // Victory message check
+    const victoryBox = document.getElementById('level-victory-box');
+    const examBtn = document.getElementById('btn-course-start-exam');
+    if (progressPct === 100) {
+        victoryBox.classList.remove('hidden');
+        document.getElementById('level-victory-message-text').textContent = getVictoryMessage(levelId);
+        examBtn.disabled = false;
+        examBtn.textContent = `Prestar Exame de Nível ${levelId}`;
+    } else {
+        victoryBox.classList.add('hidden');
+        examBtn.disabled = true;
+        examBtn.textContent = `🔒 Exame Bloqueado (${completedCount}/${totalLessons} Lições)`;
+    }
+    
+    // Bind Start Exam button in Modules View
+    examBtn.onclick = () => {
+        startLevelExam(levelId);
+    };
+    
+    // Render the 3 modules and 5 lessons each
+    const listContainer = document.getElementById('modules-list-container');
+    listContainer.innerHTML = '';
+    
+    const modules = CURRICULUM_DATA[levelId] || [];
+    
+    modules.forEach((mod, modIdx) => {
+        const modCard = document.createElement('div');
+        modCard.className = 'card glass';
+        modCard.style.padding = '16px';
+        modCard.style.marginBottom = '10px';
+        modCard.style.background = 'rgba(255, 255, 255, 0.01)';
+        modCard.style.border = '1px solid var(--border-glass)';
+        modCard.style.borderRadius = '10px';
+        
+        // Count how many lessons are completed in this module
+        const modLessons = mod.lessons || [];
+        const completedInMod = modLessons.filter(l => completedLessons.includes(l.id)).length;
+        const modPct = Math.round((completedInMod / modLessons.length) * 100);
+        
+        let lessonsHTML = "";
+        
+        modLessons.forEach((lesson, lesIdx) => {
+            const isFinished = completedLessons.includes(lesson.id);
+            // Check lock logic: first lesson is unlocked, subsequent ones unlocked if previous is finished
+            let isUnlocked = false;
+            if (lesIdx === 0) {
+                isUnlocked = true;
+            } else {
+                const prevLessonId = modLessons[lesIdx - 1].id;
+                isUnlocked = completedLessons.includes(prevLessonId);
+            }
+            
+            // Or if previous module is complete
+            if (modIdx > 0 && lesIdx === 0) {
+                const prevMod = modules[modIdx - 1];
+                const prevModLastLessonId = prevMod.lessons[prevMod.lessons.length - 1].id;
+                isUnlocked = completedLessons.includes(prevModLastLessonId);
+            }
+            
+            let statusIcon = "🔒";
+            let rowStyle = "opacity: 0.5; cursor: not-allowed;";
+            let clickAttr = "";
+            let btnClass = "btn-secondary";
+            let btnText = "Bloqueada";
+            
+            if (isFinished) {
+                statusIcon = "✅";
+                rowStyle = "";
+                btnClass = "btn-outline";
+                btnText = "Revisar";
+                clickAttr = `onclick="launchLessonStudy('${levelId}', ${modIdx}, ${lesIdx})"`;
+            } else if (isUnlocked) {
+                statusIcon = "⚡";
+                rowStyle = "";
+                btnClass = "btn-primary";
+                btnText = "Iniciar (3 min)";
+                clickAttr = `onclick="launchLessonStudy('${levelId}', ${modIdx}, ${lesIdx})"`;
+            }
+            
+            lessonsHTML += `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); ${rowStyle}">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 16px;">${statusIcon}</span>
+                        <div>
+                            <strong style="color: #fff; font-size: 13px;">Lição ${lesIdx + 1}: ${lesson.title}</strong>
+                            <div style="font-size: 11px; color: var(--text-muted);">Duração: 3 min • Checkpoint +15 XP</div>
+                        </div>
+                    </div>
+                    ${isUnlocked ? `<button class="btn btn-sm ${btnClass}" ${clickAttr} style="height: 30px; font-size: 11px; padding: 0 10px;">${btnText}</button>` : `<span style="font-size: 11px; color: var(--text-muted); padding-right: 10px;">Bloqueada</span>`}
+                </div>
+            `;
+        });
+        
+        modCard.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+                <div>
+                    <h3 style="margin: 0; font-family: var(--font-heading); font-size: 16px; color: var(--secondary);">Módulo ${modIdx + 1}: ${mod.title}</h3>
+                </div>
+                <span style="font-size: 12px; font-weight: bold; color: var(--success);">${modPct}%</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                ${lessonsHTML}
+            </div>
+        `;
+        listContainer.appendChild(modCard);
+    });
+}
+
+window.launchLessonStudy = function(levelId, modIdx, lesIdx) {
+    currentStudyLevelId = levelId;
+    currentStudyModIdx = modIdx;
+    currentStudyLesIdx = lesIdx;
+    
+    const modules = CURRICULUM_DATA[levelId] || [];
+    const mod = modules[modIdx];
+    const lesson = mod ? mod.lessons[lesIdx] : null;
+    if (!lesson) return;
+    
+    currentStudyLessonObj = lesson;
+    
+    // Hide modules list view
+    document.getElementById('course-modules-container').classList.add('hidden');
+    
+    // Show ADHD Cognitive Transition Overlay
+    const overlay = document.getElementById('lesson-transition-overlay');
+    const msgText = document.getElementById('transition-message-text');
+    msgText.innerHTML = `Esqueça o mundo lá fora por 3 minutos.<br><br>Vamos focar apenas no conteúdo:<br><strong style="color: var(--secondary); font-size: 16px;">${lesson.title}</strong>`;
+    overlay.classList.add('active');
+};
+
+// Bind transition overlay "Focar Agora" button
+document.getElementById('btn-start-lesson-focus').addEventListener('click', () => {
+    // Hide transition overlay
+    document.getElementById('lesson-transition-overlay').classList.remove('active');
+    
+    // Show lesson study view
+    const studyView = document.getElementById('lesson-study-view');
+    studyView.classList.remove('hidden');
+    
+    // Set title and content
+    document.getElementById('lesson-view-title').textContent = `${currentStudyLessonObj.title}`;
+    
+    const contentContainer = document.getElementById('lesson-view-content');
+    contentContainer.innerHTML = currentStudyLessonObj.content;
+    
+    // Setup audio speaker hooks for any button with class .speak-btn
+    contentContainer.querySelectorAll('.speak-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const textToSpeak = btn.getAttribute('data-text');
+            if (textToSpeak) {
+                speakEnglish(textToSpeak);
+            }
+        });
+    });
+    
+    // Render the comprehension checkpoint quiz
+    renderLessonCheckpoint(currentStudyLessonObj.quiz);
+    
+    // Reset complete button to disabled
+    const completeBtn = document.getElementById('btn-complete-lesson');
+    completeBtn.disabled = true;
+    completeBtn.textContent = "Concluir Micro-Sprint (+15 XP / DM)";
+});
+
+function renderLessonCheckpoint(quizData) {
+    const questionText = document.getElementById('lesson-quiz-question');
+    const optionsContainer = document.getElementById('lesson-quiz-options');
+    const feedbackBox = document.getElementById('lesson-quiz-feedback');
+    
+    feedbackBox.classList.add('hidden');
+    feedbackBox.innerHTML = '';
+    optionsContainer.innerHTML = '';
+    
+    questionText.textContent = quizData.question;
+    
+    quizData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.style.width = '100%';
+        btn.style.textAlign = 'left';
+        btn.style.fontSize = '12px';
+        btn.style.padding = '10px 14px';
+        btn.textContent = `${idx + 1}. ${opt}`;
+        
+        btn.addEventListener('click', () => {
+            // Disable options
+            const allOpts = optionsContainer.querySelectorAll('.quiz-option');
+            allOpts.forEach(o => o.disabled = true);
+            
+            const isCorrect = idx === quizData.correctIndex;
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedbackBox.className = 'lesson-quiz-feedback';
+                feedbackBox.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedbackBox.style.border = '1px solid var(--success)';
+                feedbackBox.style.color = 'var(--success)';
+                feedbackBox.style.marginTop = '12px';
+                feedbackBox.style.padding = '8px 12px';
+                feedbackBox.style.borderRadius = '6px';
+                feedbackBox.innerHTML = `<strong>Correto!</strong> ${quizData.explanation}`;
+                
+                audioPlayer.playDopamineTone();
+                window.confetti.start();
+                setTimeout(() => window.confetti.stop(), 800);
+                
+                // Enable Complete Button
+                const completeBtn = document.getElementById('btn-complete-lesson');
+                completeBtn.disabled = false;
+            } else {
+                btn.classList.add('incorrect');
+                allOpts[quizData.correctIndex].classList.add('correct');
+                
+                feedbackBox.className = 'lesson-quiz-feedback';
+                feedbackBox.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedbackBox.style.border = '1px solid var(--danger)';
+                feedbackBox.style.color = '#ef4444';
+                feedbackBox.style.marginTop = '12px';
+                feedbackBox.style.padding = '8px 12px';
+                feedbackBox.style.borderRadius = '6px';
+                
+                feedbackBox.innerHTML = `<strong>Incorreto.</strong> ${quizData.explanation}<br><br>`;
+                const retryBtn = document.createElement('button');
+                retryBtn.className = 'btn btn-sm btn-outline';
+                retryBtn.style.fontSize = '11px';
+                retryBtn.style.padding = '4px 8px';
+                retryBtn.style.height = '26px';
+                retryBtn.textContent = 'Tentar Novamente';
+                retryBtn.addEventListener('click', () => {
+                    renderLessonCheckpoint(quizData);
+                });
+                feedbackBox.appendChild(retryBtn);
+            }
+            feedbackBox.classList.remove('hidden');
+        });
+        
+        optionsContainer.appendChild(btn);
+    });
+}
+
+// Bind other buttons in study view
+document.getElementById('btn-exit-lesson').addEventListener('click', () => {
+    if (confirm("Sair da lição? Seu progresso nesta lição não será salvo.")) {
+        document.getElementById('lesson-study-view').classList.add('hidden');
+        document.getElementById('course-modules-container').classList.remove('hidden');
+        renderModulesAndLessons(currentSelectedLevelId);
+    }
+});
+
+document.getElementById('btn-complete-lesson').addEventListener('click', () => {
+    const levelId = currentStudyLevelId;
+    const lessonId = currentStudyLessonObj.id;
+    
+    if (!state.courseProgress[levelId]) {
+        state.courseProgress[levelId] = [];
+    }
+    
+    if (!state.courseProgress[levelId].includes(lessonId)) {
+        state.courseProgress[levelId].push(lessonId);
+    }
+    
+    state.addXP(15);
+    state.saveState();
+    
+    audioPlayer.playLevelUpTone();
+    window.confetti.start();
+    setTimeout(() => window.confetti.stop(), 1500);
+    
+    document.getElementById('lesson-study-view').classList.add('hidden');
+    document.getElementById('course-modules-container').classList.remove('hidden');
+    renderModulesAndLessons(levelId);
+});
+
+document.getElementById('btn-back-to-roadmap').addEventListener('click', () => {
+    document.getElementById('course-modules-container').classList.add('hidden');
+    document.getElementById('course-roadmap').classList.remove('hidden');
+    document.getElementById('course-header-section').classList.remove('hidden');
+    renderCourseRoadmap();
+});
 
 async function startLevelExam(levelId) {
     activeExamLevel = levelId;

@@ -135,8 +135,8 @@ class StateManager {
         this.writingNotes = {};
         this.fiscalConfig = { name: "", phone: "" };
         this.geminiKey = "";
-        this.supabaseUrl = "";
-        this.supabaseKey = "";
+        this.supabaseUrl = "https://urhihhmdaapwotalcfga.supabase.co";
+        this.supabaseKey = "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
         
         // Gamification States
         this.level = 1;
@@ -175,8 +175,8 @@ class StateManager {
             this.writingNotes = JSON.parse(localStorage.getItem(prefix + 'writing_notes')) || {};
             this.fiscalConfig = JSON.parse(localStorage.getItem(prefix + 'fiscal_config')) || { name: "", phone: "" };
             this.geminiKey = localStorage.getItem(prefix + 'gemini_key') || localStorage.getItem('adhd_gemini_key') || "";
-            this.supabaseUrl = localStorage.getItem(prefix + 'supabase_url') || "";
-            this.supabaseKey = localStorage.getItem(prefix + 'supabase_key') || "";
+            this.supabaseUrl = localStorage.getItem(prefix + 'supabase_url') || "https://urhihhmdaapwotalcfga.supabase.co";
+            this.supabaseKey = localStorage.getItem(prefix + 'supabase_key') || "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
             
             // Load Gamification
             this.level = parseInt(localStorage.getItem(prefix + 'level')) || 1;

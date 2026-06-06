@@ -914,6 +914,12 @@ function initSoundButtons() {
             buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
+            // Força a criação e o resumo síncrono do contexto para evitar bloqueio do navegador
+            audioPlayer.initCtx();
+            if (audioPlayer.audioCtx && audioPlayer.audioCtx.state === 'suspended') {
+                audioPlayer.audioCtx.resume();
+            }
+            
             const type = btn.dataset.sound;
             audioPlayer.setSound(type);
         });
@@ -3766,6 +3772,12 @@ window.launchLessonStudy = function(levelId, modIdx, lesIdx) {
 
 // Bind transition overlay "Focar Agora" button
 document.getElementById('btn-start-lesson-focus').addEventListener('click', () => {
+    // Força o desbloqueio do áudio na primeira interação da lição
+    audioPlayer.initCtx();
+    if (audioPlayer.audioCtx && audioPlayer.audioCtx.state === 'suspended') {
+        audioPlayer.audioCtx.resume();
+    }
+    
     // Hide transition overlay
     document.getElementById('lesson-transition-overlay').classList.remove('active');
     

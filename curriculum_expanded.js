@@ -648,3 +648,219 @@ const QUESTION_POOL_A1 = {
         { id: "a1_p50", question: "Como se pronuncia a palavra 'Sprint backlog'?", options: ["/sprint béc-lóg/ (com s inicial e g final secos)", "/is-sprint backlogue/", "/es-printi béc-lógui/", "/sprint béc-lo-gui/"], correctIndex: 0, explanation: "Pronúncia seca sem vogais fantasmas nas extremidades." }
     ]
 };
+
+
+/* ==========================================
+   GLOBAL QUESTION POOLS (A2 - C2) placeholders
+   ========================================== */
+const QUESTION_POOL_A2 = {
+    vocabulary: [
+        { id: "A2_V001", question: "Placeholder A2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "A2_V002", question: "Placeholder A2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "A2_V003", question: "Placeholder A2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "A2_V004", question: "Placeholder A2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "A2_V005", question: "Placeholder A2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "A2_V006", question: "Placeholder A2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "A2_V007", question: "Placeholder A2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" }
+    ],
+    grammar: [
+        { id: "A2_G001", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "A2_G002", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "A2_G003", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "A2_G004", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "A2_G005", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "A2_G006", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "A2_G007", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "A2_G008", question: "Placeholder A2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" }
+    ],
+    listening: [
+        { id: "A2_L001", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "A2_L002", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "A2_L003", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "A2_L004", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "A2_L005", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "A2_L006", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "A2_L007", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "A2_L008", question: "Placeholder A2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" }
+    ],
+    pronunciation: [
+        { id: "A2_P001", question: "Placeholder A2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "A2_P002", question: "Placeholder A2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "A2_P003", question: "Placeholder A2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "A2_P004", question: "Placeholder A2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "A2_P005", question: "Placeholder A2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "A2_P006", question: "Placeholder A2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "A2_P007", question: "Placeholder A2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" }
+    ]
+};
+
+const QUESTION_POOL_B1 = {
+    vocabulary: [
+        { id: "B1_V001", question: "Placeholder B1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B1_V002", question: "Placeholder B1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B1_V003", question: "Placeholder B1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B1_V004", question: "Placeholder B1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B1_V005", question: "Placeholder B1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B1_V006", question: "Placeholder B1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B1_V007", question: "Placeholder B1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" }
+    ],
+    grammar: [
+        { id: "B1_G001", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B1_G002", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B1_G003", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B1_G004", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B1_G005", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B1_G006", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B1_G007", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B1_G008", question: "Placeholder B1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" }
+    ],
+    listening: [
+        { id: "B1_L001", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B1_L002", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B1_L003", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B1_L004", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B1_L005", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B1_L006", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B1_L007", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B1_L008", question: "Placeholder B1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" }
+    ],
+    pronunciation: [
+        { id: "B1_P001", question: "Placeholder B1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B1_P002", question: "Placeholder B1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B1_P003", question: "Placeholder B1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B1_P004", question: "Placeholder B1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B1_P005", question: "Placeholder B1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B1_P006", question: "Placeholder B1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B1_P007", question: "Placeholder B1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" }
+    ]
+};
+
+const QUESTION_POOL_B2 = {
+    vocabulary: [
+        { id: "B2_V001", question: "Placeholder B2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B2_V002", question: "Placeholder B2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B2_V003", question: "Placeholder B2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B2_V004", question: "Placeholder B2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B2_V005", question: "Placeholder B2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B2_V006", question: "Placeholder B2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "B2_V007", question: "Placeholder B2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" }
+    ],
+    grammar: [
+        { id: "B2_G001", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B2_G002", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B2_G003", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B2_G004", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B2_G005", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B2_G006", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B2_G007", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "B2_G008", question: "Placeholder B2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" }
+    ],
+    listening: [
+        { id: "B2_L001", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B2_L002", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B2_L003", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B2_L004", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B2_L005", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B2_L006", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B2_L007", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "B2_L008", question: "Placeholder B2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" }
+    ],
+    pronunciation: [
+        { id: "B2_P001", question: "Placeholder B2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B2_P002", question: "Placeholder B2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B2_P003", question: "Placeholder B2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B2_P004", question: "Placeholder B2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B2_P005", question: "Placeholder B2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B2_P006", question: "Placeholder B2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "B2_P007", question: "Placeholder B2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" }
+    ]
+};
+
+const QUESTION_POOL_C1 = {
+    vocabulary: [
+        { id: "C1_V001", question: "Placeholder C1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C1_V002", question: "Placeholder C1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C1_V003", question: "Placeholder C1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C1_V004", question: "Placeholder C1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C1_V005", question: "Placeholder C1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C1_V006", question: "Placeholder C1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C1_V007", question: "Placeholder C1 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" }
+    ],
+    grammar: [
+        { id: "C1_G001", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C1_G002", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C1_G003", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C1_G004", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C1_G005", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C1_G006", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C1_G007", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C1_G008", question: "Placeholder C1 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" }
+    ],
+    listening: [
+        { id: "C1_L001", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C1_L002", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C1_L003", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C1_L004", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C1_L005", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C1_L006", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C1_L007", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C1_L008", question: "Placeholder C1 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" }
+    ],
+    pronunciation: [
+        { id: "C1_P001", question: "Placeholder C1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C1_P002", question: "Placeholder C1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C1_P003", question: "Placeholder C1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C1_P004", question: "Placeholder C1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C1_P005", question: "Placeholder C1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C1_P006", question: "Placeholder C1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C1_P007", question: "Placeholder C1 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" }
+    ]
+};
+
+const QUESTION_POOL_C2 = {
+    vocabulary: [
+        { id: "C2_V001", question: "Placeholder C2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C2_V002", question: "Placeholder C2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C2_V003", question: "Placeholder C2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C2_V004", question: "Placeholder C2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C2_V005", question: "Placeholder C2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C2_V006", question: "Placeholder C2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" },
+        { id: "C2_V007", question: "Placeholder C2 Vocab", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "vocabulary" }
+    ],
+    grammar: [
+        { id: "C2_G001", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C2_G002", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C2_G003", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C2_G004", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C2_G005", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C2_G006", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C2_G007", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" },
+        { id: "C2_G008", question: "Placeholder C2 Grammar", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "grammar" }
+    ],
+    listening: [
+        { id: "C2_L001", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C2_L002", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C2_L003", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C2_L004", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C2_L005", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C2_L006", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C2_L007", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" },
+        { id: "C2_L008", question: "Placeholder C2 Listening", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "listening" }
+    ],
+    pronunciation: [
+        { id: "C2_P001", question: "Placeholder C2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C2_P002", question: "Placeholder C2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C2_P003", question: "Placeholder C2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C2_P004", question: "Placeholder C2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C2_P005", question: "Placeholder C2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C2_P006", question: "Placeholder C2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" },
+        { id: "C2_P007", question: "Placeholder C2 Pron", options: ["A", "B", "C", "D"], correctIndex: 0, explanation: "Placeholder", component: "pronunciation" }
+    ]
+};
+
+
+window.QUESTION_POOL_A2 = QUESTION_POOL_A2;
+window.QUESTION_POOL_B1 = QUESTION_POOL_B1;
+window.QUESTION_POOL_B2 = QUESTION_POOL_B2;
+window.QUESTION_POOL_C1 = QUESTION_POOL_C1;
+window.QUESTION_POOL_C2 = QUESTION_POOL_C2;

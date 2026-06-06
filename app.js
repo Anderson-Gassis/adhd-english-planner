@@ -3041,6 +3041,7 @@ function initAuthPortal() {
             e.preventDefault();
             loginForm.classList.add('hidden');
             registerForm.classList.remove('hidden');
+            document.getElementById('forgot-password-form').classList.add('hidden');
         });
     }
     
@@ -3048,7 +3049,57 @@ function initAuthPortal() {
         goToLogin.addEventListener('click', (e) => {
             e.preventDefault();
             registerForm.classList.add('hidden');
+            document.getElementById('forgot-password-form').classList.add('hidden');
             loginForm.classList.remove('hidden');
+        });
+    }
+    
+    const goToForgot = document.getElementById('go-to-forgot-password');
+    const forgotForm = document.getElementById('forgot-password-form');
+    const goToLoginFromForgot = document.getElementById('go-to-login-from-forgot');
+
+    if (goToForgot && forgotForm) {
+        goToForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            registerForm.classList.add('hidden');
+            forgotForm.classList.remove('hidden');
+        });
+    }
+
+    if (goToLoginFromForgot) {
+        goToLoginFromForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+    }
+
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('forgot-email').value.trim();
+            if (!emailInput) return;
+            
+            const btn = document.getElementById('btn-submit-forgot-password');
+            const msg = document.getElementById('forgot-password-msg');
+            
+            btn.disabled = true;
+            btn.textContent = "Enviando...";
+            
+            if (supabaseClient) {
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(emailInput);
+                if (error) {
+                    alert("Erro ao enviar recuperação: " + error.message);
+                } else {
+                    msg.style.display = 'block';
+                }
+            } else {
+                alert("Supabase não configurado. Tentativa local (não envia e-mail).");
+            }
+            
+            btn.disabled = false;
+            btn.textContent = "Enviar Link de Recuperação";
         });
     }
     
@@ -3056,22 +3107,21 @@ function initAuthPortal() {
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const usernameInput = document.getElementById('login-username').value.trim();
+            const emailInput = document.getElementById('login-email').value.trim();
             const passwordInput = document.getElementById('login-password').value;
             
-            if (!usernameInput || !passwordInput) return;
+            if (!emailInput || !passwordInput) return;
             
             const users = state.users;
-            if (users[usernameInput] && users[usernameInput].password === passwordInput) {
-                state.activeUser = usernameInput;
-                localStorage.setItem('adhd_active_user', usernameInput);
+            if (users[emailInput] && users[emailInput].password === passwordInput) {
+                state.activeUser = emailInput;
+                localStorage.setItem('adhd_active_user', emailInput);
                 state.loadState();
                 
                 // Supabase Auth Login sync
                 if (supabaseClient) {
-                    const email = usernameInput.includes('@') ? usernameInput : `${usernameInput}@adhd-english.local`;
                     supabaseClient.auth.signInWithPassword({
-                        email: email,
+                        email: emailInput,
                         password: passwordInput
                     }).then(({ error }) => {
                         if (error) console.error("Supabase SignIn failed:", error.message);
@@ -3103,15 +3153,15 @@ function initAuthPortal() {
     if (registerForm) {
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const usernameInput = document.getElementById('reg-username').value.trim();
+            const emailInput = document.getElementById('reg-email').value.trim();
             const passwordInput = document.getElementById('reg-password').value;
             const nicheInput = document.getElementById('reg-niche').value;
             const startMode = document.querySelector('input[name="start-mode"]:checked').value;
             
-            if (!usernameInput || !passwordInput) return;
+            if (!emailInput || !passwordInput) return;
             
-            if (state.users[usernameInput]) {
-                alert("Esse nome de usuário já está cadastrado!");
+            if (state.users[emailInput]) {
+                alert("Esse e-mail já está cadastrado!");
                 return;
             }
             
@@ -3120,7 +3170,7 @@ function initAuthPortal() {
                 document.getElementById('placement-test-container').classList.remove('hidden');
                 
                 tempRegistration = {
-                    username: usernameInput,
+                    username: emailInput, // username is now email
                     password: passwordInput,
                     niche: nicheInput
                 };
@@ -3128,7 +3178,7 @@ function initAuthPortal() {
                 startPlacementTest();
             } else {
                 // Register directly as A1
-                state.users[usernameInput] = {
+                state.users[emailInput] = {
                     password: passwordInput,
                     niche: nicheInput,
                     cefrLevel: "A1",
@@ -3136,8 +3186,8 @@ function initAuthPortal() {
                 };
                 localStorage.setItem('adhd_users', JSON.stringify(state.users));
                 
-                state.activeUser = usernameInput;
-                localStorage.setItem('adhd_active_user', usernameInput);
+                state.activeUser = emailInput;
+                localStorage.setItem('adhd_active_user', emailInput);
                 state.loadState();
                 
                 state.cefrLevel = "A1";
@@ -3147,13 +3197,12 @@ function initAuthPortal() {
                 
                 // Supabase Auth Sign Up sync
                 if (supabaseClient) {
-                    const email = usernameInput.includes('@') ? usernameInput : `${usernameInput}@adhd-english.local`;
                     supabaseClient.auth.signUp({
-                        email: email,
+                        email: emailInput,
                         password: passwordInput,
                         options: {
                             data: {
-                                name: usernameInput,
+                                name: emailInput,
                                 cefr_level: "A1",
                                 niche: nicheInput
                             }
@@ -3179,7 +3228,7 @@ function initAuthPortal() {
                 window.confetti.start();
                 setTimeout(() => window.confetti.stop(), 2000);
                 
-                alert(`Perfil de ${usernameInput} criado com sucesso no nível A1!`);
+                alert(`Perfil seguro com E-mail (${emailInput}) criado com sucesso no nível A1!`);
             }
         });
     }
@@ -4377,93 +4426,77 @@ async function startLevelExam(levelId) {
     document.getElementById('exam-title').textContent = `Exame de Nível ${levelId} (${state.niche})`;
     document.getElementById('exam-niche-loading').textContent = state.niche;
     
-    if (levelId === "A1") {
-        let questions = [];
-        if (supabaseClient) {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('question_bank')
-                    .select('*')
-                    .eq('cefr_level', 'A1');
-                if (error) throw error;
-                if (data && data.length >= 30) {
-                    questions = data.map(q => ({
-                        id: q.id,
-                        question: q.question_text,
-                        options: q.options_json,
-                        correctIndex: q.correct_option,
-                        explanation: q.explanation,
-                        component: q.component
-                    }));
-                }
-            } catch (err) {
-                console.warn("Failed to fetch A1 questions from Supabase, falling back to local pool:", err);
+    // O Teste Adaptativo de 30 questões agora é Universal para todos os níveis (A1-C2)
+    let questions = [];
+    if (supabaseClient) {
+        try {
+            const { data, error } = await supabaseClient
+                .from('question_bank')
+                .select('*')
+                .eq('cefr_level', levelId);
+            if (error) throw error;
+            if (data && data.length >= 30) {
+                questions = data.map(q => ({
+                    id: q.id,
+                    question: q.question_text,
+                    options: q.options_json,
+                    correctIndex: q.correct_option,
+                    explanation: q.explanation,
+                    component: q.component
+                }));
             }
+        } catch (err) {
+            console.warn(`Failed to fetch ${levelId} questions from Supabase, falling back to local pool:`, err);
         }
+    }
+    
+    const pool = (questions.length >= 30) ? questions : null;
+    let vocabQuestions = [];
+    let grammarQuestions = [];
+    let listeningQuestions = [];
+    let pronunciationQuestions = [];
+    
+    if (pool) {
+        const vocabPool = pool.filter(q => q.component === 'vocabulary');
+        const grammarPool = pool.filter(q => q.component === 'grammar');
+        const listeningPool = pool.filter(q => q.component === 'listening');
+        const pronPool = pool.filter(q => q.component === 'pronunciation');
         
-        const pool = (questions.length >= 30) ? questions : null;
-        let vocabQuestions = [];
-        let grammarQuestions = [];
-        let listeningQuestions = [];
-        let pronunciationQuestions = [];
-        
-        if (pool) {
-            const vocabPool = pool.filter(q => q.component === 'vocabulary');
-            const grammarPool = pool.filter(q => q.component === 'grammar');
-            const listeningPool = pool.filter(q => q.component === 'listening');
-            const pronPool = pool.filter(q => q.component === 'pronunciation');
-            
-            if (vocabPool.length >= 7 && grammarPool.length >= 8 && listeningPool.length >= 8 && pronPool.length >= 7) {
-                vocabQuestions = getRandomElements(vocabPool, 7);
-                grammarQuestions = getRandomElements(grammarPool, 8);
-                listeningQuestions = getRandomElements(listeningPool, 8);
-                pronunciationQuestions = getRandomElements(pronPool, 7);
-            }
+        if (vocabPool.length >= 7 && grammarPool.length >= 8 && listeningPool.length >= 8 && pronPool.length >= 7) {
+            vocabQuestions = getRandomElements(vocabPool, 7);
+            grammarQuestions = getRandomElements(grammarPool, 8);
+            listeningQuestions = getRandomElements(listeningPool, 8);
+            pronunciationQuestions = getRandomElements(pronPool, 7);
         }
+    }
+    
+    if (vocabQuestions.length === 0) {
+        // Fallback dinâmico para os dicionários locais
+        const poolName = `QUESTION_POOL_${levelId}`;
+        const localPool = window[poolName];
         
-        if (vocabQuestions.length === 0) {
-            const localPool = window.QUESTION_POOL_A1 || QUESTION_POOL_A1;
+        if (localPool) {
             vocabQuestions = getRandomElements(localPool.vocabulary, 7);
             grammarQuestions = getRandomElements(localPool.grammar, 8);
             listeningQuestions = getRandomElements(localPool.listening, 8);
             pronunciationQuestions = getRandomElements(localPool.pronunciation, 7);
-        }
-        
-        activeExamQuestions = [
-            ...vocabQuestions,
-            ...grammarQuestions,
-            ...listeningQuestions,
-            ...pronunciationQuestions
-        ];
-        activeExamQuestions.sort(() => 0.5 - Math.random());
-    } else {
-        if (state.geminiKey) {
-            try {
-                const sysInstruction = `Você é um avaliador linguístico de elite. Com base no nível CEFR e no nicho profissional do estudante, gere um exame de proficiência de múltipla escolha com exatamente 10 questões relevantes e práticas.
-Você deve responder ESTREITAMENTE no formato JSON com as chaves:
-- 'questions': um array de exatamente 10 objetos, contendo:
-  - 'question': a frase com lacuna ou pergunta gramatical/contextual profissional
-  - 'options': array de exatamente 4 opções de resposta em inglês
-  - 'correctIndex': número de 0 a 3 correspondendo à resposta correta
-  - 'explanation': a explicação em português explicando a resposta correta e por que as outras estão incorretas.
-Todas as frases devem estar contextualizadas com o nicho profissional do estudante: '${state.niche}'.`;
-
-                const prompt = `Gere um Exame de Nível CEFR '${levelId}' para o nicho de interesse '${state.niche}'.`;
-                
-                const res = await callGemini(prompt, sysInstruction);
-                if (res && Array.isArray(res.questions) && res.questions.length === 10) {
-                    activeExamQuestions = res.questions;
-                } else {
-                    throw new Error("Formato inválido retornado pelo Gemini para prova");
-                }
-            } catch (e) {
-                console.error("Falha ao gerar prova via Gemini, usando fallback local", e);
-                activeExamQuestions = EXAM_FALLBACK_QUESTIONS[levelId] || EXAM_FALLBACK_QUESTIONS["A1"];
-            }
         } else {
-            activeExamQuestions = EXAM_FALLBACK_QUESTIONS[levelId] || EXAM_FALLBACK_QUESTIONS["A1"];
+            console.error(`Pool local ${poolName} não encontrado. Abortando exame.`);
+            alert("Banco de questões ainda não carregado para este nível.");
+            loadingBox.style.display = 'none';
+            examCard.classList.add('hidden');
+            document.getElementById('course-roadmap').classList.remove('hidden');
+            return;
         }
     }
+    
+    activeExamQuestions = [
+        ...vocabQuestions,
+        ...grammarQuestions,
+        ...listeningQuestions,
+        ...pronunciationQuestions
+    ];
+    activeExamQuestions.sort(() => 0.5 - Math.random());
     
     // Hide loading, show quiz
     loadingBox.style.display = 'none';

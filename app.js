@@ -104,6 +104,12 @@ function speakEnglish(text) {
         window.speechSynthesis.cancel(); // Stop active speech
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-US';
+        
+        // Get audio speed from selector
+        const speedSelect = document.getElementById('audio-speed-select');
+        const speed = speedSelect ? parseFloat(speedSelect.value) : 1.0;
+        utterance.rate = speed;
+        
         const voices = synthVoices.length > 0 ? synthVoices : window.speechSynthesis.getVoices();
         const enVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Google')) || 
                         voices.find(v => v.lang.startsWith('en')) || 
@@ -120,6 +126,9 @@ function speakEnglish(text) {
    ========================================== */
 class StateManager {
     constructor() {
+        this.activeUser = localStorage.getItem('adhd_active_user') || null;
+        this.users = JSON.parse(localStorage.getItem('adhd_users')) || {};
+
         this.currentDay = 1;
         this.daysData = {};
         this.vocabBank = [];
@@ -142,65 +151,91 @@ class StateManager {
         // Flashcard States
         this.knownWords = [];
         this.learnedWordsCount = 0;
+
+        // CEFR Progress & Niche
+        this.cefrLevel = "A1";
+        this.niche = "Geral";
+        this.passedExams = [];
         
-        this.loadState();
+        if (this.activeUser) {
+            this.loadState();
+        }
     }
 
     loadState() {
+        if (!this.activeUser) return;
         try {
-            this.currentDay = parseInt(localStorage.getItem('adhd_current_day')) || 1;
-            this.daysData = JSON.parse(localStorage.getItem('adhd_days_data')) || {};
-            this.vocabBank = JSON.parse(localStorage.getItem('adhd_vocab_bank')) || [];
-            this.writingNotes = JSON.parse(localStorage.getItem('adhd_writing_notes')) || {};
-            this.fiscalConfig = JSON.parse(localStorage.getItem('adhd_fiscal_config')) || { name: "", phone: "" };
-            this.geminiKey = localStorage.getItem('adhd_gemini_key') || "";
+            const prefix = `adhd_user_${this.activeUser}_`;
+            this.currentDay = parseInt(localStorage.getItem(prefix + 'current_day')) || 1;
+            this.daysData = JSON.parse(localStorage.getItem(prefix + 'days_data')) || {};
+            this.vocabBank = JSON.parse(localStorage.getItem(prefix + 'vocab_bank')) || [];
+            this.writingNotes = JSON.parse(localStorage.getItem(prefix + 'writing_notes')) || {};
+            this.fiscalConfig = JSON.parse(localStorage.getItem(prefix + 'fiscal_config')) || { name: "", phone: "" };
+            this.geminiKey = localStorage.getItem(prefix + 'gemini_key') || localStorage.getItem('adhd_gemini_key') || "";
             
             // Load Gamification
-            this.level = parseInt(localStorage.getItem('adhd_level')) || 1;
-            this.xp = parseInt(localStorage.getItem('adhd_xp')) || 0;
-            this.unlockedBadges = JSON.parse(localStorage.getItem('adhd_unlocked_badges')) || [];
-            this.timersCompleted = parseInt(localStorage.getItem('adhd_timers_completed')) || 0;
-            this.wordsWrittenAccumulated = parseInt(localStorage.getItem('adhd_words_written')) || 0;
+            this.level = parseInt(localStorage.getItem(prefix + 'level')) || 1;
+            this.xp = parseInt(localStorage.getItem(prefix + 'xp')) || 0;
+            this.unlockedBadges = JSON.parse(localStorage.getItem(prefix + 'unlocked_badges')) || [];
+            this.timersCompleted = parseInt(localStorage.getItem(prefix + 'timers_completed')) || 0;
+            this.wordsWrittenAccumulated = parseInt(localStorage.getItem(prefix + 'words_written')) || 0;
             
             // Load ADHD
-            this.coins = parseInt(localStorage.getItem('adhd_coins')) || 0;
-            this.streakShields = parseInt(localStorage.getItem('adhd_streak_shields')) || 0;
-            this.shieldedDays = JSON.parse(localStorage.getItem('adhd_shielded_days')) || [];
+            this.coins = parseInt(localStorage.getItem(prefix + 'coins')) || 0;
+            this.streakShields = parseInt(localStorage.getItem(prefix + 'streak_shields')) || 0;
+            this.shieldedDays = JSON.parse(localStorage.getItem(prefix + 'shielded_days')) || [];
             
             // Load Flashcards
-            this.knownWords = JSON.parse(localStorage.getItem('adhd_known_words')) || [];
+            this.knownWords = JSON.parse(localStorage.getItem(prefix + 'known_words')) || [];
             if (!Array.isArray(this.knownWords)) {
                 this.knownWords = [];
             }
-            this.learnedWordsCount = parseInt(localStorage.getItem('adhd_learned_words_count')) || 0;
+            this.learnedWordsCount = parseInt(localStorage.getItem(prefix + 'learned_words_count')) || 0;
+
+            // Load CEFR & Niche metadata
+            const uData = this.users[this.activeUser] || {};
+            this.cefrLevel = uData.cefrLevel || "A1";
+            this.niche = uData.niche || "Geral";
+            this.passedExams = uData.passedExams || [];
         } catch (e) {
             console.error("Falha ao ler localStorage", e);
         }
     }
 
     saveState() {
-        localStorage.setItem('adhd_current_day', this.currentDay);
-        localStorage.setItem('adhd_days_data', JSON.stringify(this.daysData));
-        localStorage.setItem('adhd_vocab_bank', JSON.stringify(this.vocabBank));
-        localStorage.setItem('adhd_writing_notes', JSON.stringify(this.writingNotes));
-        localStorage.setItem('adhd_fiscal_config', JSON.stringify(this.fiscalConfig));
-        localStorage.setItem('adhd_gemini_key', this.geminiKey);
+        if (!this.activeUser) return;
+        const prefix = `adhd_user_${this.activeUser}_`;
+        localStorage.setItem(prefix + 'current_day', this.currentDay);
+        localStorage.setItem(prefix + 'days_data', JSON.stringify(this.daysData));
+        localStorage.setItem(prefix + 'vocab_bank', JSON.stringify(this.vocabBank));
+        localStorage.setItem(prefix + 'writing_notes', JSON.stringify(this.writingNotes));
+        localStorage.setItem(prefix + 'fiscal_config', JSON.stringify(this.fiscalConfig));
+        localStorage.setItem(prefix + 'gemini_key', this.geminiKey);
         
         // Save Gamification
-        localStorage.setItem('adhd_level', this.level);
-        localStorage.setItem('adhd_xp', this.xp);
-        localStorage.setItem('adhd_unlocked_badges', JSON.stringify(this.unlockedBadges));
-        localStorage.setItem('adhd_timers_completed', this.timersCompleted);
-        localStorage.setItem('adhd_words_written', this.wordsWrittenAccumulated);
+        localStorage.setItem(prefix + 'level', this.level);
+        localStorage.setItem(prefix + 'xp', this.xp);
+        localStorage.setItem(prefix + 'unlocked_badges', JSON.stringify(this.unlockedBadges));
+        localStorage.setItem(prefix + 'timers_completed', this.timersCompleted);
+        localStorage.setItem(prefix + 'words_written', this.wordsWrittenAccumulated);
         
         // Save ADHD
-        localStorage.setItem('adhd_coins', this.coins);
-        localStorage.setItem('adhd_streak_shields', this.streakShields);
-        localStorage.setItem('adhd_shielded_days', JSON.stringify(this.shieldedDays));
+        localStorage.setItem(prefix + 'coins', this.coins);
+        localStorage.setItem(prefix + 'streak_shields', this.streakShields);
+        localStorage.setItem(prefix + 'shielded_days', JSON.stringify(this.shieldedDays));
         
         // Save Flashcards
-        localStorage.setItem('adhd_known_words', JSON.stringify(this.knownWords));
-        localStorage.setItem('adhd_learned_words_count', this.learnedWordsCount);
+        localStorage.setItem(prefix + 'known_words', JSON.stringify(this.knownWords));
+        localStorage.setItem(prefix + 'learned_words_count', this.learnedWordsCount);
+
+        // Save CEFR metadata
+        if (!this.users[this.activeUser]) {
+            this.users[this.activeUser] = {};
+        }
+        this.users[this.activeUser].cefrLevel = this.cefrLevel;
+        this.users[this.activeUser].niche = this.niche;
+        this.users[this.activeUser].passedExams = this.passedExams;
+        localStorage.setItem('adhd_users', JSON.stringify(this.users));
     }
 
     addXP(amount) {
@@ -606,6 +641,21 @@ class TimerController {
         if (this.running) return;
         audioPlayer.initCtx();
         
+        // Auto-redirect tabs based on timer selection for focus alignment
+        const selectedOpt = this.select.options[this.select.selectedIndex];
+        const label = selectedOpt.dataset.label;
+        if (label === "Flashcards Inteligentes IA") {
+            const tutorTabBtn = document.querySelector('[data-tab="tutor"]');
+            if (tutorTabBtn) tutorTabBtn.click();
+            const flashcardSubBtn = document.querySelector('[data-subtab="flashcards"]');
+            if (flashcardSubBtn) flashcardSubBtn.click();
+        } else if (label === "Tutor de Jogos IA") {
+            const tutorTabBtn = document.querySelector('[data-tab="tutor"]');
+            if (tutorTabBtn) tutorTabBtn.click();
+            const quizSubBtn = document.querySelector('[data-subtab="quiz"]');
+            if (quizSubBtn) quizSubBtn.click();
+        }
+        
         this.running = true;
         this.btnStart.disabled = true;
         this.btnPause.disabled = false;
@@ -733,6 +783,10 @@ let timerController;
 document.addEventListener('DOMContentLoaded', () => {
     timerController = new TimerController();
     
+    // Auth and CEFR Course initialization
+    initAuthPortal();
+    renderCourseRoadmap();
+    
     initGrid();
     loadDay(state.currentDay);
     initSoundButtons();
@@ -751,6 +805,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initDopamineShop();
     initAudioDebugger();
     initStreakShieldButton();
+    
+    // Audio speed change log
+    const speedSelect = document.getElementById('audio-speed-select');
+    if (speedSelect) {
+        speedSelect.addEventListener('change', () => {
+            logAudio(`Velocidade do áudio alterada para ${speedSelect.value}x`);
+        });
+    }
     
     // Updates HUD
     updateLevelHUD();
@@ -1752,7 +1814,14 @@ async function generateChallenge() {
     }
     
     try {
-        const sysInstruction = "Você é um professor de inglês com Ph.D. em TDAH. O usuário está na Semana X de um plano intensivo. Gere um desafio de escrita interativo curto em português sobre o conteúdo daquela semana, exigindo uma resposta em inglês de 1 a 3 frases. Retorne estritamente um JSON com a chave: 'challenge' (string contendo a descrição do desafio em português).";
+        const sysInstruction = `Você é um Tutor de Inglês de Elite especializado em Neurociência Cognitiva e Ensino de Pessoas com TDAH. O aluno tem o nicho profissional de '${state.niche}' e seu nível CEFR é '${state.cefrLevel}'.
+Gere um desafio de escrita interativo curto em português sobre o conteúdo daquela semana, adaptando-o para o nicho de '${state.niche}' e nível de proficiência '${state.cefrLevel}'.
+Use técnicas neurodidáticas de acordo com o nível CEFR do aluno:
+- A1/A2: Sprints de escrita curtos (escrever frases simples baseadas em modelos).
+- B1: Escrita contextualizada e Shadowing de pronúncia baseada em texto.
+- B2: Roleplay profissional ou resolução de Crise Corporativa onde ele precisa escrever um e-mail ou nota de resposta.
+- C1/C2: Argumentação executiva de alto nível e reescrita de e-mails formais (Prompt Engineering).
+Retorne estritamente um JSON com a chave: 'challenge' (string contendo a descrição do desafio em português).`;
         const prompt = `Gere o desafio para a Semana ${weekNum} (Meta: ${weekConfig.title} / Conteúdo: ${weekConfig.mainGoal}).`;
         
         const res = await callGemini(prompt, sysInstruction);
@@ -1804,11 +1873,12 @@ async function evaluateChallenge() {
     }
     
     try {
-        const sysInstruction = `Você é um professor nativo de inglês. O aluno responderá a um desafio linguístico. Avalie a resposta dele de forma construtiva e retorne um objeto JSON estrito com as seguintes chaves:
+        const sysInstruction = `Você é um Tutor de Inglês de Elite especializado em Neurociência Cognitiva e Ensino de Pessoas com TDAH. Avalie a resposta do aluno de nível CEFR '${state.cefrLevel}' e nicho '${state.niche}'.
+O aluno responderá a um desafio linguístico corporativo/profissional. Avalie a resposta dele de forma construtiva e retorne um objeto JSON estrito com as seguintes chaves:
 - 'score' (número inteiro de 0 a 100 correspondendo à precisão)
 - 'cefr' (string correspondente ao nível, ex: A2, B1, B2)
-- 'corrections' (string curta em português listando erros ou aconselhando melhorias)
-- 'natural' (string contendo a versão ideal da resposta reescrita de forma natural por um nativo)`;
+- 'corrections' (string curta em português listando erros ou aconselhando melhorias com incentivo dopaminérgico neurocientífico)
+- 'natural' (string contendo a versão ideal da resposta reescrita de forma natural por um nativo de inglês da área de '${state.niche}')`;
         
         const prompt = `Desafio: "${activeChallengeText}"\nResposta do aluno: "${responseText}"`;
         const res = await callGemini(prompt, sysInstruction);
@@ -2892,4 +2962,681 @@ function nextFlashcard() {
         updateLevelHUD();
     }
 }
+
+/* ==========================================
+   PORTAL DE ACESSO & MULTI-USUÁRIOS (AUTH)
+   ========================================== */
+function initAuthPortal() {
+    const portal = document.getElementById('login-portal');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const goToRegister = document.getElementById('go-to-register');
+    const goToLogin = document.getElementById('go-to-login');
+    const logoutBtn = document.getElementById('btn-logout');
+    
+    // Switch between login and register forms
+    if (goToRegister) {
+        goToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        });
+    }
+    
+    if (goToLogin) {
+        goToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+    }
+    
+    // Login Submit
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const usernameInput = document.getElementById('login-username').value.trim();
+            const passwordInput = document.getElementById('login-password').value;
+            
+            if (!usernameInput || !passwordInput) return;
+            
+            const users = state.users;
+            if (users[usernameInput] && users[usernameInput].password === passwordInput) {
+                state.activeUser = usernameInput;
+                localStorage.setItem('adhd_active_user', usernameInput);
+                state.loadState();
+                
+                portal.classList.remove('active');
+                document.getElementById('active-user-display').textContent = `Usuário: ${state.activeUser}`;
+                
+                // Reload dashboard data
+                loadDay(state.currentDay);
+                initGrid();
+                updateLevelHUD();
+                renderBadges();
+                calculateOverallProgress();
+                renderCourseRoadmap();
+                
+                audioPlayer.playDopamineTone();
+                window.confetti.start();
+                setTimeout(() => window.confetti.stop(), 2000);
+            } else {
+                alert("Usuário ou senha incorretos!");
+            }
+        });
+    }
+    
+    // Register Submit
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const usernameInput = document.getElementById('reg-username').value.trim();
+            const passwordInput = document.getElementById('reg-password').value;
+            const nicheInput = document.getElementById('reg-niche').value;
+            const startMode = document.querySelector('input[name="start-mode"]:checked').value;
+            
+            if (!usernameInput || !passwordInput) return;
+            
+            if (state.users[usernameInput]) {
+                alert("Esse nome de usuário já está cadastrado!");
+                return;
+            }
+            
+            if (startMode === 'placement') {
+                registerForm.classList.add('hidden');
+                document.getElementById('placement-test-container').classList.remove('hidden');
+                
+                tempRegistration = {
+                    username: usernameInput,
+                    password: passwordInput,
+                    niche: nicheInput
+                };
+                
+                startPlacementTest();
+            } else {
+                // Register directly as A1
+                state.users[usernameInput] = {
+                    password: passwordInput,
+                    niche: nicheInput,
+                    cefrLevel: "A1",
+                    passedExams: []
+                };
+                localStorage.setItem('adhd_users', JSON.stringify(state.users));
+                
+                state.activeUser = usernameInput;
+                localStorage.setItem('adhd_active_user', usernameInput);
+                state.loadState();
+                
+                state.cefrLevel = "A1";
+                state.niche = nicheInput;
+                state.passedExams = [];
+                state.saveState();
+                
+                portal.classList.remove('active');
+                document.getElementById('active-user-display').textContent = `Usuário: ${state.activeUser}`;
+                
+                // Reload dashboard data
+                loadDay(state.currentDay);
+                initGrid();
+                updateLevelHUD();
+                renderBadges();
+                calculateOverallProgress();
+                renderCourseRoadmap();
+                
+                audioPlayer.playDopamineTone();
+                window.confetti.start();
+                setTimeout(() => window.confetti.stop(), 2000);
+                
+                alert(`Perfil de ${usernameInput} criado com sucesso no nível A1!`);
+            }
+        });
+    }
+    
+    // Logout Button
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if (confirm("Deseja realmente sair da conta atual?")) {
+                state.activeUser = null;
+                localStorage.removeItem('adhd_active_user');
+                
+                // Reset visual states
+                portal.classList.add('active');
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                document.getElementById('placement-test-container').classList.add('hidden');
+                
+                // Reset form fields
+                loginForm.reset();
+                registerForm.reset();
+            }
+        });
+    }
+    
+    // Initial Auth State check
+    if (state.activeUser) {
+        portal.classList.remove('active');
+        document.getElementById('active-user-display').textContent = `Usuário: ${state.activeUser}`;
+    } else {
+        portal.classList.add('active');
+    }
+}
+
+/* ==========================================
+   PLACEMENT TEST (TESTE DE NIVELAMENTO)
+   ========================================== */
+const PLACEMENT_QUESTIONS = [
+    {
+        question: "1. Complete a frase: 'Hello! I _____ a software developer.'",
+        options: ["am", "is", "are", "be"],
+        correct: 0,
+        level: "A1"
+    },
+    {
+        question: "2. Complete a frase: 'She _____ English every day to improve.'",
+        options: ["study", "studies", "studying", "studied"],
+        correct: 1,
+        level: "A1"
+    },
+    {
+        question: "3. Complete a frase: 'Yesterday, we _____ a very productive meeting.'",
+        options: ["have", "has", "had", "having"],
+        correct: 2,
+        level: "A2"
+    },
+    {
+        question: "4. Complete a frase: 'I can't talk right now because I _____ on a critical release.'",
+        options: ["work", "am working", "worked", "was worked"],
+        correct: 1,
+        level: "A2"
+    },
+    {
+        question: "5. Complete a frase: 'If we _____ the server, we will lose all active users.'",
+        options: ["will stop", "stopped", "stop", "would stop"],
+        correct: 2,
+        level: "B1"
+    },
+    {
+        question: "6. Complete a frase: 'They have been working on this feature _____ three weeks.'",
+        options: ["for", "since", "during", "ago"],
+        correct: 0,
+        level: "B1"
+    },
+    {
+        question: "7. Complete a frase: 'By the time the manager arrived, the team _____ the hotfix.'",
+        options: ["already deployed", "had already deployed", "has already deployed", "would deploy"],
+        correct: 1,
+        level: "B2"
+    },
+    {
+        question: "8. Complete a frase: 'I look forward to _____ you at the global technology forum.'",
+        options: ["meet", "meeting", "met", "will meet"],
+        correct: 1,
+        level: "B2"
+    },
+    {
+        question: "9. Complete a frase: 'The architect recommended that the API endpoint _____ refactored immediately.'",
+        options: ["is", "be", "was", "should being"],
+        correct: 1,
+        level: "C1"
+    },
+    {
+        question: "10. Complete a frase: 'Seldom _____ such an elegant solution to a complex coding issue.'",
+        options: ["we have seen", "have we seen", "did we saw", "we saw"],
+        correct: 1,
+        level: "C2"
+    }
+];
+
+let tempRegistration = null;
+let placementCurrentIdx = 0;
+let placementScore = 0;
+
+function startPlacementTest() {
+    placementCurrentIdx = 0;
+    placementScore = 0;
+    showPlacementQuestion();
+}
+
+function showPlacementQuestion() {
+    const qBox = document.getElementById('placement-question-box');
+    const optsContainer = document.getElementById('placement-options');
+    const progressText = document.getElementById('placement-progress-text');
+    const scoreText = document.getElementById('placement-score-text');
+    
+    optsContainer.innerHTML = '';
+    
+    const qData = PLACEMENT_QUESTIONS[placementCurrentIdx];
+    qBox.textContent = qData.question;
+    progressText.textContent = `Questão ${placementCurrentIdx + 1} de 10`;
+    scoreText.textContent = `Acertos: ${placementScore}`;
+    
+    qData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.classList.add('quiz-option');
+        btn.style.width = '100%';
+        btn.style.textAlign = 'left';
+        btn.textContent = `${idx + 1}. ${opt}`;
+        btn.addEventListener('click', () => handlePlacementAnswer(idx));
+        optsContainer.appendChild(btn);
+    });
+}
+
+function handlePlacementAnswer(selectedIdx) {
+    const qData = PLACEMENT_QUESTIONS[placementCurrentIdx];
+    if (selectedIdx === qData.correct) {
+        placementScore++;
+        audioPlayer.playDopamineTone();
+    }
+    
+    placementCurrentIdx++;
+    if (placementCurrentIdx < PLACEMENT_QUESTIONS.length) {
+        showPlacementQuestion();
+    } else {
+        finishPlacementTest();
+    }
+}
+
+function finishPlacementTest() {
+    let startingLevel = "A1";
+    if (placementScore >= 9) {
+        startingLevel = "C1/C2";
+    } else if (placementScore >= 7) {
+        startingLevel = "B2";
+    } else if (placementScore >= 5) {
+        startingLevel = "B1";
+    } else if (placementScore >= 3) {
+        startingLevel = "A2";
+    }
+    
+    const username = tempRegistration.username;
+    
+    // Register the user profile
+    state.users[username] = {
+        password: tempRegistration.password,
+        niche: tempRegistration.niche,
+        cefrLevel: startingLevel,
+        passedExams: []
+    };
+    
+    // Unblock past exams
+    const allLevels = ["A1", "A2", "B1", "B2", "C1/C2"];
+    const startIdx = allLevels.indexOf(startingLevel);
+    for (let i = 0; i < startIdx; i++) {
+        state.users[username].passedExams.push(allLevels[i]);
+    }
+    
+    localStorage.setItem('adhd_users', JSON.stringify(state.users));
+    
+    // Log in
+    state.activeUser = username;
+    localStorage.setItem('adhd_active_user', username);
+    state.loadState();
+    
+    state.cefrLevel = startingLevel;
+    state.niche = tempRegistration.niche;
+    state.passedExams = [...state.users[username].passedExams];
+    state.saveState();
+    
+    // Clear UI
+    document.getElementById('placement-test-container').classList.add('hidden');
+    document.getElementById('login-portal').classList.remove('active');
+    document.getElementById('active-user-display').textContent = `Usuário: ${state.activeUser}`;
+    
+    // Reload dashboard
+    loadDay(state.currentDay);
+    initGrid();
+    updateLevelHUD();
+    renderBadges();
+    calculateOverallProgress();
+    renderCourseRoadmap();
+    
+    audioPlayer.playLevelUpTone();
+    window.confetti.start();
+    setTimeout(() => window.confetti.stop(), 3000);
+    
+    alert(`Teste concluído! Você acertou ${placementScore}/10 questões.\nSeu nível inicial foi definido como ${startingLevel} (${tempRegistration.niche}).`);
+}
+
+/* ==========================================
+   COURSE MAP & LEVEL EXAMS ENGINE
+   ========================================== */
+const CEFR_LEVELS_INFO = [
+    { id: "A1", name: "A1 - Iniciante (Beginner)", desc: "Compreensão de frases simples, saudações básicas e apresentação pessoal no presente." },
+    { id: "A2", name: "A2 - Básico (Elementary)", desc: "Descrição de rotinas, passado simples, direções e comunicação de necessidades cotidianas." },
+    { id: "B1", name: "B1 - Intermediário (Intermediate)", desc: "Relatos de experiências, hipóteses, planos futuros e compreensão de pontos principais no trabalho." },
+    { id: "B2", name: "B2 - Pós-Intermediário (Upper-Intermediate)", desc: "Argumentação lógica, conversas fluídas sobre temas abstratos e terminologias da sua área profissional." },
+    { id: "C1/C2", name: "C1/C2 - Avançado (Advanced/Mastery)", desc: "Uso fluente e flexível do inglês para fins acadêmicos e corporativos complexos. Comunicação natural." }
+];
+
+const EXAM_FALLBACK_QUESTIONS = {
+    "A1": [
+        { question: "Complete: 'My name is Sarah. I _____ a project coordinator.'", options: ["is", "am", "are", "be"], correctIndex: 1, explanation: "Com o pronome 'I', usamos a conjugação 'am' do verbo to be." },
+        { question: "Complete: 'They _____ in a large tech office in São Paulo.'", options: ["work", "works", "working", "worker"], correctIndex: 0, explanation: "Com o pronome 'They' (plural), o verbo no presente simples não recebe terminação '-s'." },
+        { question: "Complete: 'Does he _____ English for business?'", options: ["study", "studies", "studying", "studied"], correctIndex: 0, explanation: "Na pergunta com auxiliar 'Does', o verbo principal permanece na sua forma base ('study')." },
+        { question: "Complete: 'We have meetings _____ Mondays.'", options: ["at", "in", "on", "to"], correctIndex: 2, explanation: "Usamos a preposição 'on' para dias da semana." },
+        { question: "Complete: 'Where _____ you work?'", options: ["do", "does", "is", "are"], correctIndex: 0, explanation: "Usamos o auxiliar 'do' para perguntas no presente com o pronome 'you'." },
+        { question: "Complete: 'She has _____ computer on her desk.'", options: ["a", "an", "the", "some"], correctIndex: 0, explanation: "Usamos o artigo indefinido 'a' antes de palavras iniciadas com som de consoante." },
+        { question: "Complete: 'These _____ our new servers.'", options: ["is", "am", "are", "be"], correctIndex: 2, explanation: "Para o pronome demonstrativo plural 'These', usamos o verbo 'are'." },
+        { question: "Complete: 'I usually _____ work at 8:00 AM.'", options: ["start", "starts", "starting", "started"], correctIndex: 0, explanation: "Com 'I', o verbo no presente simples fica na forma base." },
+        { question: "Complete: 'He _____ speak French, only English.'", options: ["don't", "doesn't", "not", "isn't"], correctIndex: 1, explanation: "Para a terceira pessoa do singular ('he'), o auxiliar negativo correspondente é 'doesn't'." },
+        { question: "Complete: 'Thank you _____ your help.'", options: ["by", "for", "to", "at"], correctIndex: 1, explanation: "A expressão correta para agradecer por algo é 'thank you for'." }
+    ],
+    "A2": [
+        { question: "Complete: 'Last year, we _____ our cloud system to Amazon Web Services.'", options: ["migrate", "migrated", "migrating", "migrates"], correctIndex: 1, explanation: "A expressão temporal 'Last year' exige o verbo no passado simples ('migrated')." },
+        { question: "Complete: 'He _____ writing the API integration yet.'", options: ["hasn't finished", "didn't finish", "wasn't finish", "isn't finished"], correctIndex: 0, explanation: "A presença de 'yet' indica que devemos usar o Present Perfect negativo ('hasn't finished')." },
+        { question: "Complete: 'I am not interested _____ working over the weekend.'", options: ["at", "in", "on", "for"], correctIndex: 1, explanation: "O adjetivo 'interested' rege a preposição 'in'." },
+        { question: "Complete: 'Our application is _____ than theirs.'", options: ["fast", "faster", "more fast", "fastest"], correctIndex: 1, explanation: "Para adjetivos curtos de uma sílaba, o comparativo é formado adicionando '-er' ('faster')." },
+        { question: "Complete: 'While I was coding, the electricity _____ out.'", options: ["go", "goes", "went", "gone"], correctIndex: 2, explanation: "Uma ação contínua no passado ('while I was coding') interrompida por outra pontual ('went out') no passado simples." },
+        { question: "Complete: 'How _____ database servers do we need?'", options: ["much", "many", "some", "any"], correctIndex: 1, explanation: "Para substantivos contáveis no plural ('servers'), usamos 'how many'." },
+        { question: "Complete: 'You _____ log in before accessing the admin dashboard.'", options: ["must", "can't", "might", "don't"], correctIndex: 0, explanation: "O verbo modal 'must' indica uma obrigação ou necessidade absoluta." },
+        { question: "Complete: 'We did not _____ any bugs during testing yesterday.'", options: ["found", "find", "finding", "finds"], correctIndex: 1, explanation: "Após o auxiliar negativo 'did not', o verbo principal deve retornar ao infinitivo sem 'to' ('find')." },
+        { question: "Complete: 'If it rains, we _____ cancel the outdoor team building event.'", options: ["will", "would", "had", "are"], correctIndex: 0, explanation: "Primeira condicional: 'if' + present simple, seguido de 'will' + infinitivo." },
+        { question: "Complete: 'They _____ to a new workspace last Monday.'", options: ["move", "moved", "moving", "will move"], correctIndex: 1, explanation: "O marcador 'last Monday' exige o passado simples ('moved')." }
+    ],
+    "B1": [
+        { question: "Complete: 'If we _____ more tests, we would have found the bug earlier.'", options: ["run", "ran", "had run", "would run"], correctIndex: 2, explanation: "Terceira condicional: expressa arrependimento sobre o passado com 'if' + past perfect ('had run')." },
+        { question: "Complete: 'The backend developer has been coding _____ five hours straight.'", options: ["since", "for", "during", "while"], correctIndex: 1, explanation: "Usamos 'for' para indicar a duração de um período de tempo ('five hours')." },
+        { question: "Complete: 'I look forward to _____ the product roadmap with the client.'", options: ["discuss", "discussing", "discussed", "will discuss"], correctIndex: 1, explanation: "A expressão 'look forward to' é seguida de verbo com terminação '-ing' ('discussing')." },
+        { question: "Complete: 'We _____ the project deadline if we work together.'", options: ["meet", "will meet", "would meet", "met"], correctIndex: 1, explanation: "Primeira condicional realista expressa com Present Simple e futuro com 'will'." },
+        { question: "Complete: 'Our CEO, _____ founded the startup in 2021, just resigned.'", options: ["who", "whom", "which", "whose"], correctIndex: 0, explanation: "Usamos o pronome relativo 'who' para fazer referência a pessoas no papel de sujeito." },
+        { question: "Complete: 'The software _____ tested thoroughly before release.'", options: ["must be", "must to be", "should being", "is must"], correctIndex: 0, explanation: "A estrutura passiva de obrigação com modal é 'must be' + particípio ('tested')." },
+        { question: "Complete: 'He suggested _____ the sprint by one week.'", options: ["postpone", "to postpone", "postponing", "postponed"], correctIndex: 2, explanation: "O verbo 'suggest' exige o uso de gerúndio ('postponing') para a ação sugerida." },
+        { question: "Complete: 'She was tired because she _____ all night for the deployment.'", options: ["worked", "has worked", "had been working", "was working"], correctIndex: 2, explanation: "Past Perfect Continuous usado para descrever a causa de um estado passado ('had been working')." },
+        { question: "Complete: 'I _____ play video games every day, but now I don't have time.'", options: ["usually", "used to", "use to", "would to"], correctIndex: 1, explanation: "A expressão 'used to' indica um hábito ou estado no passado que não ocorre mais." },
+        { question: "Complete: 'By next Friday, we _____ the migration process.'", options: ["finish", "will have finished", "finished", "will finish"], correctIndex: 1, explanation: "O marcador futuro 'By next Friday' exige o uso do Future Perfect ('will have finished')." }
+    ],
+    "B2": [
+        { question: "Complete: 'We had to call off the database migration due to _____ server loads.'", options: ["unprecedented", "unprecedently", "precedent", "precede"], correctIndex: 0, explanation: "O adjetivo adequado para descrever 'cargas sem precedentes' é 'unprecedented'." },
+        { question: "Complete: 'The team managed _____ the hotfix without resetting the server.'", options: ["deploying", "to deploy", "deploy", "in deploying"], correctIndex: 1, explanation: "O verbo 'manage' exige o uso de infinitivo com 'to' ('to deploy')." },
+        { question: "Complete: 'I would rather you _____ the source code directly without review.'", options: ["don't edit", "didn't edit", "not edit", "won't edit"], correctIndex: 1, explanation: "A expressão 'would rather you' exige o uso de subjuntivo passado ('didn't edit') para indicar preferência sobre ação de outrem." },
+        { question: "Complete: 'No sooner _____ the server than it crashed again.'", options: ["we had rebooted", "had we rebooted", "we rebooted", "did we rebooted"], correctIndex: 1, explanation: "Inversão negativa após 'No sooner' exige 'had we rebooted' (had we + past participle)." },
+        { question: "Complete: 'It is essential that everyone _____ the daily standup meetings.'", options: ["attend", "attends", "attended", "should attending"], correctIndex: 0, explanation: "Após construções de importância subjetiva ('It is essential that...'), usamos a forma base do subjuntivo ('attend')." },
+        { question: "Complete: 'We are committed to _____ high software quality metrics.'", options: ["maintain", "maintaining", "maintenance", "will maintain"], correctIndex: 1, explanation: "A expressão 'committed to' possui 'to' como preposição, exigindo verbo em '-ing' ('maintaining')." },
+        { question: "Complete: 'Had we known about the memory leak, we _____ the code.'", options: ["would refactor", "would have refactored", "refactored", "had refactored"], correctIndex: 1, explanation: "Terceira condicional invertida ('Had we known...') exige 'would have refactored' na oração principal." },
+        { question: "Complete: 'The software security audit was _____ complex.'", options: ["extremely", "extreme", "extremity", "extremeness"], correctIndex: 0, explanation: "Usamos o advérbio 'extremely' para modificar o adjetivo 'complex'." },
+        { question: "Complete: 'She acts as though she _____ the lead architect, but she isn't.'", options: ["is", "was", "were", "be"], correctIndex: 2, explanation: "Expressões hipotéticas com 'as though' exigem o subjuntivo 'were' para indicar irrealidade." },
+        { question: "Complete: 'I apologize for any inconvenience this delay _____ caused.'", options: ["may have", "might having", "could had", "must to"], correctIndex: 0, explanation: "A estrutura de probabilidade sobre o passado correta é 'may have' + particípio." }
+    ],
+    "C1/C2": [
+        { question: "Complete: 'Only after the audit was complete _____ the true vulnerability.'", options: ["we did realize", "did we realize", "we realized", "had we realized"], correctIndex: 1, explanation: "Inversão adverbial com 'Only after...' exige inversão auxiliar-sujeito ('did we realize')." },
+        { question: "Complete: 'Under no circumstances _____ credentials be shared via public chat.'", options: ["should", "must to", "ought", "need"], correctIndex: 0, explanation: "A expressão limitativa 'Under no circumstances' exige inversão de modal ('should credentials be...')." },
+        { question: "Complete: 'The new system architecture was designed to prevent any single point _____ failure.'", options: ["of", "for", "to", "by"], correctIndex: 0, explanation: "A locução correta em inglês é 'single point of failure' (ponto único de falha)." },
+        { question: "Complete: 'Her promotion was contingent _____ her completing the international certification.'", options: ["to", "upon", "for", "at"], correctIndex: 1, explanation: "O adjetivo 'contingent' rege a preposição 'upon' ou 'on' (dependente de)." },
+        { question: "Complete: 'But for the technical lead's swift action, the database _____ completely corrupted.'", options: ["would be", "would have been", "was", "had been"], correctIndex: 1, explanation: "A estrutura condicional hipotética 'But for...' exige 'would have been' na oração principal." },
+        { question: "Complete: 'The developer was reprimanded for having _____ ignored security protocols.'", options: ["flagrantly", "flagrant", "flagrance", "flagrantly to"], correctIndex: 0, explanation: "O advérbio apropriado para indicar ação insolente e descarada é 'flagrantly'." },
+        { question: "Complete: 'Little _____ they suspect that the system had already been compromised.'", options: ["did", "had", "would", "do"], correctIndex: 0, explanation: "Inversão negativa de limitação com 'Little' exige 'did' no passado simples ('Little did they suspect...')." },
+        { question: "Complete: 'He is known for speaking his mind, regardless _____ the consequences.'", options: ["to", "of", "for", "by"], correctIndex: 1, explanation: "A locução prepositiva correta é 'regardless of' (independentemente de)." },
+        { question: "Complete: 'It is crucial that the server load _____ monitored 24/7.'", options: ["is", "be", "was", "has been"], correctIndex: 1, explanation: "Construções de importância ('It is crucial that...') exigem o subjuntivo base ('be')." },
+        { question: "Complete: 'They negotiated the terms of the SLA, albeit _____ some reluctance.'", options: ["with", "for", "by", "in"], correctIndex: 0, explanation: "A conjunção concessiva 'albeit' introduz adjuntos adverbiais, no caso 'with some reluctance' (embora com alguma relutância)." }
+    ]
+};
+
+let activeExamLevel = "";
+let activeExamQuestions = [];
+let activeExamCurrentIdx = 0;
+let activeExamScore = 0;
+let activeExamExplanations = [];
+
+function renderCourseRoadmap() {
+    const container = document.getElementById('course-roadmap');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    const activeLevel = state.cefrLevel;
+    const passedExams = state.passedExams || [];
+    
+    // Update header badge
+    const badgeEl = document.getElementById('active-cefr-badge');
+    if (badgeEl) badgeEl.textContent = `Nível Ativo: ${activeLevel}`;
+    
+    CEFR_LEVELS_INFO.forEach((lvl, idx) => {
+        const isCompleted = passedExams.includes(lvl.id);
+        const isActive = activeLevel === lvl.id;
+        const isLocked = !isCompleted && !isActive;
+        
+        let cardStatusClass = "locked";
+        let statusTagText = "Trancado 🔒";
+        let statusTagClass = "tag-locked";
+        let actionButtonHTML = "";
+        
+        if (isCompleted) {
+            cardStatusClass = "completed";
+            statusTagText = "Concluído ✓";
+            statusTagClass = "tag-completed";
+        } else if (isActive) {
+            cardStatusClass = "active";
+            statusTagText = "Em Progresso ⚡";
+            statusTagClass = "tag-active";
+            
+            actionButtonHTML = `<button class="btn btn-primary btn-sm btn-start-level-exam" data-level="${lvl.id}" style="margin-top: 10px;">🎓 Prestar Exame de Nível ${lvl.id}</button>`;
+        }
+        
+        const card = document.createElement('div');
+        card.className = `roadmap-level-card glass ${cardStatusClass}`;
+        card.innerHTML = `
+            <div class="roadmap-dot">${isCompleted ? '✓' : idx + 1}</div>
+            <div class="roadmap-level-info">
+                <div class="roadmap-level-title">
+                    <span>${lvl.name}</span>
+                    <span class="roadmap-level-status-tag ${statusTagClass}">${statusTagText}</span>
+                </div>
+                <div class="roadmap-level-desc">${lvl.desc}</div>
+                <div style="font-size: 11px; color: var(--secondary); font-weight: 500; margin-top: 4px;">Nicho de Estudos: ${state.niche}</div>
+                ${actionButtonHTML}
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+    
+    // Bind click handlers for the exam buttons
+    document.querySelectorAll('.btn-start-level-exam').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const levelId = btn.dataset.level;
+            startLevelExam(levelId);
+        });
+    });
+}
+
+async function startLevelExam(levelId) {
+    activeExamLevel = levelId;
+    activeExamCurrentIdx = 0;
+    activeExamScore = 0;
+    activeExamExplanations = [];
+    
+    // Hide roadmap grid, show exam card
+    document.getElementById('course-roadmap').classList.add('hidden');
+    const examCard = document.getElementById('active-exam-container');
+    examCard.classList.remove('hidden');
+    
+    // Show loading box, hide questions/results
+    const loadingBox = document.getElementById('exam-loading-box');
+    const quizBox = document.getElementById('exam-quiz-box');
+    const resultsBox = document.getElementById('exam-results-box');
+    
+    loadingBox.style.display = 'block';
+    quizBox.style.display = 'none';
+    resultsBox.classList.add('hidden');
+    
+    document.getElementById('exam-title').textContent = `Exame de Nível ${levelId} (${state.niche})`;
+    document.getElementById('exam-niche-loading').textContent = state.niche;
+    
+    if (state.geminiKey) {
+        // Online Generation
+        try {
+            const sysInstruction = `Você é um avaliador linguístico de elite. Com base no nível CEFR e no nicho profissional do estudante, gere um exame de proficiência de múltipla escolha com exatamente 10 questões relevantes e práticas.
+Você deve responder ESTREITAMENTE no formato JSON com as chaves:
+- 'questions': um array de exatamente 10 objetos, contendo:
+  - 'question': a frase com lacuna ou pergunta gramatical/contextual profissional
+  - 'options': array de exatamente 4 opções de resposta em inglês
+  - 'correctIndex': número de 0 a 3 correspondendo à resposta correta
+  - 'explanation': a explicação em português explicando a resposta correta e por que as outras estão incorretas.
+Todas as frases devem estar contextualizadas com o nicho profissional do estudante: '${state.niche}'.`;
+
+            const prompt = `Gere um Exame de Nível CEFR '${levelId}' para o nicho de interesse '${state.niche}'.`;
+            
+            const res = await callGemini(prompt, sysInstruction);
+            if (res && Array.isArray(res.questions) && res.questions.length === 10) {
+                activeExamQuestions = res.questions;
+            } else {
+                throw new Error("Formato inválido retornado pelo Gemini para prova");
+            }
+        } catch (e) {
+            console.error("Falha ao gerar prova via Gemini, usando fallback local", e);
+            activeExamQuestions = EXAM_FALLBACK_QUESTIONS[levelId] || EXAM_FALLBACK_QUESTIONS["A1"];
+        }
+    } else {
+        // Offline Fallback
+        activeExamQuestions = EXAM_FALLBACK_QUESTIONS[levelId] || EXAM_FALLBACK_QUESTIONS["A1"];
+    }
+    
+    // Hide loading, show quiz
+    loadingBox.style.display = 'none';
+    quizBox.style.display = 'block';
+    
+    showExamQuestion();
+}
+
+function showExamQuestion() {
+    const qBox = document.getElementById('exam-question-text');
+    const optsContainer = document.getElementById('exam-options-container');
+    const progressText = document.getElementById('exam-progress-text');
+    const scoreText = document.getElementById('exam-score-text');
+    
+    optsContainer.innerHTML = '';
+    
+    const qData = activeExamQuestions[activeExamCurrentIdx];
+    qBox.textContent = qData.question;
+    progressText.textContent = `Questão ${activeExamCurrentIdx + 1} de 10`;
+    scoreText.textContent = `Acertos: ${activeExamScore}/10`;
+    
+    qData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.classList.add('quiz-option');
+        btn.style.width = '100%';
+        btn.style.textAlign = 'left';
+        btn.textContent = `${idx + 1}. ${opt}`;
+        btn.addEventListener('click', () => handleExamAnswer(idx, btn));
+        optsContainer.appendChild(btn);
+    });
+}
+
+function handleExamAnswer(selectedIdx, clickedBtn) {
+    const options = document.querySelectorAll('#exam-options-container .quiz-option');
+    options.forEach(opt => opt.disabled = true);
+    
+    const qData = activeExamQuestions[activeExamCurrentIdx];
+    const isCorrect = selectedIdx === qData.correctIndex;
+    
+    if (isCorrect) {
+        activeExamScore++;
+        clickedBtn.classList.add('correct');
+        audioPlayer.playDopamineTone();
+        window.confetti.start();
+        setTimeout(() => window.confetti.stop(), 800);
+    } else {
+        clickedBtn.classList.add('incorrect');
+        options[qData.correctIndex].classList.add('correct');
+        
+        activeExamExplanations.push({
+            question: qData.question,
+            yourAnswer: qData.options[selectedIdx],
+            correctAnswer: qData.options[qData.correctIndex],
+            explanation: qData.explanation
+        });
+    }
+    
+    setTimeout(() => {
+        activeExamCurrentIdx++;
+        if (activeExamCurrentIdx < activeExamQuestions.length) {
+            showExamQuestion();
+        } else {
+            showExamResults();
+        }
+    }, 1500);
+}
+
+function showExamResults() {
+    document.getElementById('exam-quiz-box').style.display = 'none';
+    const resultsBox = document.getElementById('exam-results-box');
+    resultsBox.classList.remove('hidden');
+    
+    const passed = activeExamScore >= 7;
+    const title = document.getElementById('exam-results-title');
+    const desc = document.getElementById('exam-results-desc');
+    const explanationsList = document.getElementById('exam-explanations-list');
+    
+    explanationsList.innerHTML = '';
+    
+    if (passed) {
+        title.textContent = `Aprovado! 🏆 Nota: ${activeExamScore}/10`;
+        title.style.color = 'var(--success)';
+        desc.innerHTML = `Excelente performance! Você obteve um aproveitamento de <strong>${activeExamScore * 10}%</strong> e desbloqueou o próximo nível da escala CEFR.`;
+        
+        state.addXP(200); // 200 XP reward
+        
+        const allLevels = ["A1", "A2", "B1", "B2", "C1/C2"];
+        const currentIdx = allLevels.indexOf(activeExamLevel);
+        
+        if (!state.passedExams.includes(activeExamLevel)) {
+            state.passedExams.push(activeExamLevel);
+        }
+        
+        if (currentIdx < allLevels.length - 1) {
+            state.cefrLevel = allLevels[currentIdx + 1];
+        } else {
+            state.cefrLevel = "C1/C2";
+        }
+        state.saveState();
+        
+        audioPlayer.playLevelUpTone();
+        window.confetti.start();
+        setTimeout(() => window.confetti.stop(), 3000);
+    } else {
+        title.textContent = `Reprovado! ❌ Nota: ${activeExamScore}/10`;
+        title.style.color = 'var(--danger)';
+        desc.innerHTML = `Você obteve <strong>${activeExamScore * 10}%</strong> de aproveitamento. Para passar, você precisa acertar pelo menos <strong>7 de 10 questões</strong>. Revise os pontos abaixo e tente novamente!`;
+    }
+    
+    if (activeExamExplanations.length > 0) {
+        explanationsList.innerHTML = '<h4>Revisão Pedagógica dos Erros:</h4>';
+        activeExamExplanations.forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.style.padding = '8px';
+            div.style.background = 'rgba(255, 255, 255, 0.02)';
+            div.style.border = '1px solid var(--border-glass)';
+            div.style.borderRadius = '6px';
+            div.style.lineHeight = '1.4';
+            div.innerHTML = `
+                <strong style="color: #fff;">${idx + 1}. ${item.question}</strong><br>
+                <span style="color: #ff3b30;">Sua resposta: ${item.yourAnswer}</span><br>
+                <span style="color: var(--secondary);">Correto: ${item.correctAnswer}</span><br>
+                <p style="margin-top: 4px; color: var(--text-muted); font-style: italic;">Explicação: ${item.explanation}</p>
+            `;
+            explanationsList.appendChild(div);
+        });
+    } else {
+        explanationsList.innerHTML = '<div style="color: var(--success); text-align: center; font-weight: bold; width: 100%;">Gabarito Perfeito! Zero erros cometidos.</div>';
+    }
+}
+
+// Binds cancel exam button and finish exam button
+document.getElementById('btn-cancel-exam').addEventListener('click', () => {
+    if (confirm("Deseja realmente cancelar o exame? Seu progresso nesta tentativa será perdido.")) {
+        document.getElementById('active-exam-container').classList.add('hidden');
+        document.getElementById('course-roadmap').classList.remove('hidden');
+        renderCourseRoadmap();
+    }
+});
+
+document.getElementById('btn-finish-exam').addEventListener('click', () => {
+    document.getElementById('active-exam-container').classList.add('hidden');
+    document.getElementById('course-roadmap').classList.remove('hidden');
+    renderCourseRoadmap();
+    
+    const dailyTabBtn = document.querySelector('[data-tab="daily"]');
+    if (dailyTabBtn) dailyTabBtn.click();
+});
+
 

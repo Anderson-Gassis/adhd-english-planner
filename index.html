@@ -15,6 +15,83 @@
     <!-- Canvas for Confetti -->
     <canvas id="confetti-canvas"></canvas>
 
+    <!-- Portal de Acesso e Multi-Usuários -->
+    <div id="login-portal" class="login-portal-backdrop active">
+        <div class="login-container glass">
+            <div class="login-logo">🔥</div>
+            <h2>ADHD English Elite</h2>
+            <p>Desenvolvimento acelerado de inglês para mentes ativas.</p>
+            
+            <!-- Form de Login -->
+            <form id="login-form" class="auth-form">
+                <div class="input-group">
+                    <label for="login-username">Nome de Usuário</label>
+                    <input type="text" id="login-username" class="glass-input" required placeholder="Digite seu usuário">
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Senha</label>
+                    <input type="password" id="login-password" class="glass-input" required placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Entrar no Painel</button>
+                <p class="auth-toggle-text">Não tem uma conta? <a href="#" id="go-to-register">Cadastre-se</a></p>
+            </form>
+            
+            <!-- Form de Cadastro -->
+            <form id="register-form" class="auth-form hidden">
+                <div class="input-group">
+                    <label for="reg-username">Nome de Usuário</label>
+                    <input type="text" id="reg-username" class="glass-input" required placeholder="Ex: anderson">
+                </div>
+                <div class="input-group">
+                    <label for="reg-password">Senha</label>
+                    <input type="password" id="reg-password" class="glass-input" required placeholder="Crie uma senha">
+                </div>
+                <div class="input-group">
+                    <label for="reg-niche">Nicho Profissional de Interesse</label>
+                    <select id="reg-niche" class="glass-select" required>
+                        <option value="Tecnologia">Tecnologia & Programação</option>
+                        <option value="Negócios/Gestão">Negócios & Gestão (Business)</option>
+                        <option value="Saúde/Medicina">Saúde & Medicina</option>
+                        <option value="Geral">Geral / Casos Variados</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Ponto de Partida</label>
+                    <div class="auth-options" style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+                        <label class="check-item-radio" style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                            <input type="radio" name="start-mode" value="a1" checked>
+                            <span>Iniciar do Nível A1 (Iniciante)</span>
+                        </label>
+                        <label class="check-item-radio" style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                            <input type="radio" name="start-mode" value="placement">
+                            <span>Fazer Teste de Nivelamento (10 questões)</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-full" id="btn-submit-register">Criar Perfil</button>
+                <p class="auth-toggle-text">Já possui conta? <a href="#" id="go-to-login">Fazer Login</a></p>
+            </form>
+
+            <!-- Container do Teste de Nivelamento -->
+            <div id="placement-test-container" class="hidden" style="width: 100%; text-align: left;">
+                <h3 style="font-family: var(--font-heading); font-size: 18px; margin-bottom: 8px; color: var(--secondary); text-align: center;">📝 Teste de Nivelamento</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px; text-align: center;">
+                    Responda às 10 questões abaixo para definirmos seu nível inicial.
+                </p>
+                <div id="placement-question-box" class="glass" style="padding: 16px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.4; color: #fff; border: 1px solid var(--border-glass);">
+                    <!-- Questão ativa -->
+                </div>
+                <div id="placement-options" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                    <!-- Opções de resposta -->
+                </div>
+                <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 12px;">
+                    <span id="placement-progress-text" style="font-size: 11px; color: var(--text-muted);">Questão 1 de 10</span>
+                    <span id="placement-score-text" style="font-size: 11px; color: var(--secondary); font-weight: bold;">Acertos: 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="app-container">
         <!-- Sidebar: Grid de 56 Dias (Visual Progress Tracker) & Badges -->
         <aside class="sidebar glass">
@@ -22,7 +99,10 @@
                 <span class="logo-icon">🔥</span>
                 <div>
                     <h2>ADHD English</h2>
-                    <span class="badge-premium">ELITE PLAN</span>
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <span class="badge-premium">ELITE PLAN</span>
+                        <span id="active-user-display" style="font-size: 10px; color: var(--secondary); font-weight: 700; text-transform: uppercase;">Usuário: Geral</span>
+                    </div>
                 </div>
             </div>
 
@@ -80,6 +160,7 @@
             <nav class="nav-modes">
                 <button class="btn btn-tab active" data-tab="daily">📋 Rotina Diária</button>
                 <button class="btn btn-tab" data-tab="tutor">🧠 Tutor IA & Jogos</button>
+                <button class="btn btn-tab" data-tab="course">🎓 Curso & Provas</button>
                 <button class="btn btn-tab" data-tab="adhd">⚡ Ferramentas TDAH</button>
             </nav>
         </aside>
@@ -93,6 +174,18 @@
                     <h1 id="current-day-title">Dia 1</h1>
                 </div>
                 <div class="header-right">
+                    <!-- Audio Speed Control -->
+                    <div class="audio-speed-control glass" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--radius-md);">
+                        <span style="font-size: 16px;">🗣️</span>
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 500;">Velocidade:</span>
+                            <select id="audio-speed-select" class="glass-select" style="padding: 2px 6px; font-size: 11px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: 4px; color: #fff; outline: none; cursor: pointer;">
+                                <option value="1.0">Normal (1.0x)</option>
+                                <option value="0.75">Lento (0.75x)</option>
+                                <option value="1.2">Rápido (1.2x)</option>
+                            </select>
+                        </div>
+                    </div>
                     <!-- Sound / ADHD Focus player in Header -->
                     <div class="focus-player glass">
                         <span class="player-icon">🎧</span>
@@ -105,6 +198,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Logout Button -->
+                    <button class="btn btn-secondary btn-icon-only" id="btn-logout" title="Sair da Conta">🚪</button>
                     <!-- Settings Button -->
                     <button class="btn btn-secondary btn-icon-only" id="btn-settings" title="Configurar Gemini API">⚙️</button>
                 </div>
@@ -166,6 +261,8 @@
                                     <option value="900" data-label="Anki Flashcards Review">Anki SRS - 15 min</option>
                                     <option value="3600" data-label="YAY Talks Conversation">YAY Talks - 60 min</option>
                                     <option value="3600" data-label="Active Movie Immersion">Série & Shadowing - 60 min</option>
+                                    <option value="900" data-label="Flashcards Inteligentes IA">Flashcards Inteligentes - 15 min</option>
+                                    <option value="1800" data-label="Tutor de Jogos IA">Tutor de Jogos - 30 min</option>
                                 </select>
                                 <div class="timer-buttons" style="margin-top: 10px;">
                                     <button id="btn-timer-start" class="btn btn-primary">Iniciar</button>
@@ -610,6 +707,70 @@
                         </div>
 
                     </div>
+                </div>
+            </div>
+            
+            <!-- TAB 4: COURSE & CEFR PROGRESSION -->
+            <div id="tab-content-course" class="tab-pane">
+                <div class="course-container">
+                    <section class="card course-header-card glass">
+                        <div class="card-header">
+                            <span class="icon">🎓</span>
+                            <h2>Jornada de Fluência CEFR</h2>
+                            <div class="cefr-badge" id="active-cefr-badge">Nível Ativo: A1</div>
+                        </div>
+                        <p class="help-text" style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                            Sua trilha de proficiência é baseada no Quadro Europeu Comum de Referência para Línguas (CEFR). Para avançar de nível, você deve passar na Prova de Nível (Exame CEFR) correspondente com um score de pelo menos <strong>7/10 (70%)</strong>.
+                        </p>
+                    </section>
+
+                    <!-- Roadmap de Níveis -->
+                    <div class="roadmap-grid" id="course-roadmap">
+                        <!-- Gerado dinamicamente via JS -->
+                    </div>
+
+                    <!-- Container da Prova de Nível (Carregado dinamicamente) -->
+                    <section class="card exam-card glass hidden" id="active-exam-container" style="width: 100%;">
+                        <div class="card-header">
+                            <span class="icon">📝</span>
+                            <h2 id="exam-title" style="margin: 0;">Exame de Nível A1</h2>
+                            <button class="btn btn-sm btn-outline ml-auto" id="btn-cancel-exam">Cancelar Prova</button>
+                        </div>
+                        
+                        <!-- Exam Loader / State -->
+                        <div id="exam-loading-box" class="exam-loading text-center" style="padding: 32px; display: none; width: 100%;">
+                            <span class="icon" style="font-size: 36px; display: block; margin-bottom: 12px; animation: pulse 1.5s infinite ease-in-out;">🧠</span>
+                            <h4 style="color: #fff; font-family: var(--font-heading);">Gemini IA formulando questões customizadas para seu nicho...</h4>
+                            <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+                                A prova terá 10 questões profissionais adaptadas para o seu nicho de <span id="exam-niche-loading" style="color: var(--secondary); font-weight: bold;">Tecnologia</span>.
+                            </p>
+                        </div>
+
+                        <div id="exam-quiz-box" style="width: 100%;">
+                            <div id="exam-question-text" style="font-size: 15px; font-weight: 500; line-height: 1.6; margin-bottom: 20px; padding: 18px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid var(--border-glass); color: #fff;">
+                                <!-- Pergunta do exame -->
+                            </div>
+                            <div id="exam-options-container" style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                                <!-- Opções -->
+                            </div>
+                            <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 15px; width: 100%;">
+                                <span id="exam-progress-text" style="font-size: 11px; color: var(--text-muted);">Questão 1 de 10</span>
+                                <span id="exam-score-text" style="font-size: 11px; color: var(--secondary); font-weight: bold;">Acertos: 0/10</span>
+                            </div>
+                        </div>
+
+                        <!-- Exam Results -->
+                        <div id="exam-results-box" class="hidden" style="padding: 10px 0; width: 100%; text-align: center;">
+                            <h3 id="exam-results-title" style="font-family: var(--font-heading); font-size: 24px; margin-bottom: 8px;">Resultado do Exame</h3>
+                            <p id="exam-results-desc" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">
+                                Você acertou X de 10 questões.
+                            </p>
+                            <div id="exam-explanations-list" style="text-align: left; background: rgba(0,0,0,0.25); border-radius: 8px; padding: 12px; max-height: 220px; overflow-y: auto; font-size: 12px; margin-bottom: 20px; border: 1px solid var(--border-glass); display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                                <!-- Explicações detalhadas da IA de cada questão errada -->
+                            </div>
+                            <button class="btn btn-primary" id="btn-finish-exam" style="min-width: 180px;">Concluir Exame</button>
+                        </div>
+                    </section>
                 </div>
             </div>
             

@@ -335,6 +335,20 @@ class FocusAudioPlayer {
                 this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 logAudio(`Contexto criado. Estado inicial: ${this.audioCtx.state}`);
                 
+                // Safari Audio Unlock Trick: Play a silent sound on context creation
+                const osc = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
+                gain.gain.value = 0.001; // Quase mudo
+                osc.connect(gain);
+                gain.connect(this.audioCtx.destination);
+                osc.start(this.audioCtx.currentTime);
+                osc.stop(this.audioCtx.currentTime + 0.01);
+                
+                // Força o resume imediatamente (útil no Safari)
+                if (this.audioCtx.state === 'suspended') {
+                    this.audioCtx.resume();
+                }
+                
                 // Track state changes
                 this.audioCtx.onstatechange = () => {
                     logAudio(`Mudança de estado detectada: ${this.audioCtx.state}`);
@@ -344,6 +358,9 @@ class FocusAudioPlayer {
             } catch (e) {
                 logAudio(`Erro ao instanciar AudioContext: ${e.message}`);
             }
+        } else if (this.audioCtx.state === 'suspended') {
+            // Em chamadas subsequentes, sempre tenta forçar o resume
+            this.audioCtx.resume();
         }
     }
 

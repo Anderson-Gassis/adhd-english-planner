@@ -1651,6 +1651,10 @@ async function callGemini(prompt, systemInstruction = "") {
    INTEGRATED IA TUTOR ENGINE
    ========================================== */
 let activeChallengeText = "";
+let activeQuizWord = "";
+let activeQuizTranslation = "";
+let activeQuizAnswerIndex = -1;
+let quizRequestId = 0;
 
 function initTutorAI() {
     // Tutor subtabs navigation

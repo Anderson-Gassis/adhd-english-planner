@@ -175,9 +175,24 @@ class StateManager {
             this.writingNotes = JSON.parse(localStorage.getItem(prefix + 'writing_notes')) || {};
             this.fiscalConfig = JSON.parse(localStorage.getItem(prefix + 'fiscal_config')) || { name: "", phone: "" };
             this.activeUser = localStorage.getItem(prefix + 'active_user') || "";
-            this.geminiKey = localStorage.getItem(prefix + 'gemini_key') || localStorage.getItem('adhd_gemini_key') || ("AQ.Ab8R" + "N6IZvdo" + "gWU4L3hUj1y3XS" + "RqM6SaUGeqgB1RPs" + "uhaSbEevw");
-            this.supabaseUrl = localStorage.getItem(prefix + 'supabase_url') || "https://urhihhmdaapwotalcfga.supabase.co";
-            this.supabaseKey = localStorage.getItem(prefix + 'supabase_key') || "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
+            const storedKey = localStorage.getItem(prefix + 'gemini_key') || localStorage.getItem('adhd_gemini_key');
+            if (storedKey && storedKey.trim() !== "" && storedKey !== "undefined" && storedKey !== "null" && (storedKey.trim().startsWith("AIzaSy") || storedKey.trim().startsWith("AQ.Ab")) && storedKey.trim().length >= 20) {
+                this.geminiKey = storedKey.trim();
+            } else {
+                this.geminiKey = "AQ.Ab8R" + "N6IZvdo" + "gWU4L3hUj1y3XS" + "RqM6SaUGeqgB1RPs" + "uhaSbEevw";
+            }
+            const storedUrl = localStorage.getItem(prefix + 'supabase_url');
+            if (storedUrl && storedUrl.trim() !== "" && storedUrl !== "undefined" && storedUrl !== "null" && storedUrl.startsWith("http")) {
+                this.supabaseUrl = storedUrl.trim();
+            } else {
+                this.supabaseUrl = "https://urhihhmdaapwotalcfga.supabase.co";
+            }
+            const storedSupaKey = localStorage.getItem(prefix + 'supabase_key');
+            if (storedSupaKey && storedSupaKey.trim() !== "" && storedSupaKey !== "undefined" && storedSupaKey !== "null" && storedSupaKey.length >= 20) {
+                this.supabaseKey = storedSupaKey.trim();
+            } else {
+                this.supabaseKey = "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
+            }
             
             // Load Gamification
             this.level = parseInt(localStorage.getItem(prefix + 'level')) || 1;
@@ -224,9 +239,24 @@ class StateManager {
         localStorage.setItem(prefix + 'vocab_bank', JSON.stringify(this.vocabBank));
         localStorage.setItem(prefix + 'writing_notes', JSON.stringify(this.writingNotes));
         localStorage.setItem(prefix + 'fiscal_config', JSON.stringify(this.fiscalConfig));
-        localStorage.setItem(prefix + 'gemini_key', this.geminiKey);
-        localStorage.setItem(prefix + 'supabase_url', this.supabaseUrl);
-        localStorage.setItem(prefix + 'supabase_key', this.supabaseKey);
+        const nativeKey = "AQ.Ab8R" + "N6IZvdo" + "gWU4L3hUj1y3XS" + "RqM6SaUGeqgB1RPs" + "uhaSbEevw";
+        if (this.geminiKey && this.geminiKey !== nativeKey) {
+            localStorage.setItem(prefix + 'gemini_key', this.geminiKey);
+        } else {
+            localStorage.removeItem(prefix + 'gemini_key');
+        }
+        const nativeUrl = "https://urhihhmdaapwotalcfga.supabase.co";
+        if (this.supabaseUrl && this.supabaseUrl !== nativeUrl) {
+            localStorage.setItem(prefix + 'supabase_url', this.supabaseUrl);
+        } else {
+            localStorage.removeItem(prefix + 'supabase_url');
+        }
+        const nativeSupaKey = "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
+        if (this.supabaseKey && this.supabaseKey !== nativeSupaKey) {
+            localStorage.setItem(prefix + 'supabase_key', this.supabaseKey);
+        } else {
+            localStorage.removeItem(prefix + 'supabase_key');
+        }
         
         // Save Gamification
         localStorage.setItem(prefix + 'level', this.level);
@@ -1401,9 +1431,31 @@ function initSettingsModal() {
     
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        state.geminiKey = keyInput.value.trim();
-        if (supabaseUrlInput) state.supabaseUrl = supabaseUrlInput.value.trim();
-        if (supabaseKeyInput) state.supabaseKey = supabaseKeyInput.value.trim();
+        const inputKey = keyInput.value.trim();
+        const nativeKey = "AQ.Ab8R" + "N6IZvdo" + "gWU4L3hUj1y3XS" + "RqM6SaUGeqgB1RPs" + "uhaSbEevw";
+        if (inputKey === "" || inputKey === "undefined" || inputKey === "null") {
+            state.geminiKey = nativeKey;
+        } else {
+            state.geminiKey = inputKey;
+        }
+        if (supabaseUrlInput) {
+            const inputUrl = supabaseUrlInput.value.trim();
+            const nativeUrl = "https://urhihhmdaapwotalcfga.supabase.co";
+            if (inputUrl === "" || inputUrl === "undefined" || inputUrl === "null") {
+                state.supabaseUrl = nativeUrl;
+            } else {
+                state.supabaseUrl = inputUrl;
+            }
+        }
+        if (supabaseKeyInput) {
+            const inputSupaKey = supabaseKeyInput.value.trim();
+            const nativeSupaKey = "sb_publishable_mFA4JtBAnmRNwc-olDWVVQ_pvpAEc0M";
+            if (inputSupaKey === "" || inputSupaKey === "undefined" || inputSupaKey === "null") {
+                state.supabaseKey = nativeSupaKey;
+            } else {
+                state.supabaseKey = inputSupaKey;
+            }
+        }
         state.saveState();
         
         // Initialize Supabase Client
@@ -1958,7 +2010,7 @@ O aluno responderá a um desafio linguístico corporativo/profissional. Avalie a
     }
 }
 
-function loadQuizQuestion() {
+function loadQuizQuestion(forceOffline = false) {
     const qBox = document.getElementById('quiz-question');
     const optsContainer = document.getElementById('quiz-options');
     const feedbackBox = document.getElementById('quiz-feedback');
@@ -1982,7 +2034,7 @@ function loadQuizQuestion() {
     
     const vocabList = state.vocabBank.length > 0 ? state.vocabBank : DEFAULT_VOCAB_FALLBACK;
     
-    if (!state.geminiKey) {
+    if (forceOffline || !state.geminiKey) {
         // Offline Local Quiz Generator (runs synchronously, no race)
         if (btnNext) btnNext.disabled = false;
         
@@ -2107,9 +2159,7 @@ Realize uma dupla-checagem rigorosa dos dados antes de retornar.`;
             if (btnNext) btnNext.disabled = false;
             
             console.error("Gemini quiz generation failed, offline fallback loaded", err);
-            state.geminiKey = ""; // force temporal offline fallback to solve blockages
-            loadQuizQuestion();
-            state.geminiKey = localStorage.getItem('adhd_gemini_key') || ""; // restore key state
+            loadQuizQuestion(true); // force offline fallback
         });
 }
 

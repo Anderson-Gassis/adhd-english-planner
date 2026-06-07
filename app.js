@@ -552,9 +552,9 @@ class StateManager {
         localStorage.setItem('adhd_users', JSON.stringify(this.users));
         localStorage.setItem(prefix + 'course_progress', JSON.stringify(this.courseProgress));
         
-        // Sync profile to Supabase if client is active
-        if (typeof syncProfileToSupabase === 'function') {
-            syncProfileToSupabase();
+        // Sync entire state to Supabase in the background
+        if (typeof pushStateToSupabase === 'function') {
+            pushStateToSupabase();
         }
     }
 
@@ -2880,11 +2880,11 @@ function initBionicReader() {
         genBtn.textContent = "Gerando Artigo IA...";
         
         const weekNum = Math.ceil(state.currentDay / 7);
-        
+        const fallbackText = "ADHD brains crave stimulation. In English acquisition, using multiple sensory pathways—such as listening to Focus Sounds (Brown Noise) while reading text—keeps the prefrontal cortex engaged. Bionic reading acts as a visual anchor, preventing your focus from drifting. Regular intervals of learning, combined with rapid gamified rewards, maximize dopamine. Actually, consistency is much more critical than long hours. Try to avoid social media distractions during study breaks.";
+
         if (!state.geminiKey) {
             // Local fallback text
             setTimeout(() => {
-                const fallbackText = "ADHD brains crave stimulation. In English acquisition, using multiple sensory pathways—such as listening to Focus Sounds (Brown Noise) while reading text—keeps the prefrontal cortex engaged. Bionic reading acts as a visual anchor, preventing your focus from drifting. Regular intervals of learning, combined with rapid gamified rewards, maximize dopamine. Actually, consistency is much more critical than long hours. Try to avoid social media distractions during study breaks.";
                 input.value = fallbackText;
                 output.innerHTML = convertTextToBionic(fallbackText);
                 editorArea.classList.add('hidden');
@@ -2902,15 +2902,25 @@ function initBionicReader() {
             const prompt = `Gere um artigo motivador e curioso sobre a aprendizagem de línguas para o cérebro com TDAH na Semana ${weekNum}.`;
             
             const res = await callGemini(prompt, sysInstruction);
-            input.value = res.text;
-            output.innerHTML = convertTextToBionic(res.text);
+            if (res && res.text) {
+                input.value = res.text;
+                output.innerHTML = convertTextToBionic(res.text);
+            } else {
+                throw new Error("Formato de resposta inválido de Gemini.");
+            }
             editorArea.classList.add('hidden');
             readerArea.classList.remove('hidden');
             
             audioPlayer.playDopamineTone();
         } catch (e) {
-            console.error("Gemini failed", e);
-            alert("Erro ao conectar com Gemini API. Verifique a chave nas Configurações.");
+            console.error("Gemini failed, using offline fallback", e);
+            alert("Houve um erro de conexão com o Gemini API. Carregando texto do acervo offline!");
+            
+            input.value = fallbackText;
+            output.innerHTML = convertTextToBionic(fallbackText);
+            editorArea.classList.add('hidden');
+            readerArea.classList.remove('hidden');
+            audioPlayer.playDopamineTone();
         } finally {
             genBtn.disabled = false;
             genBtn.textContent = "⚡ Gerar Texto IA (Gemini)";
@@ -3518,9 +3528,12 @@ function initAuthPortal() {
                     supabaseClient.auth.signInWithPassword({
                         email: emailInput,
                         password: passwordInput
-                    }).then(({ error }) => {
+                    }).then(async ({ error }) => {
                         if (error) console.error("Supabase SignIn failed:", error.message);
-                        else console.log("Supabase User signed in successfully.");
+                        else {
+                            console.log("Supabase User signed in successfully.");
+                            await pullStateFromSupabase(); // Pull latest progress
+                        }
                     });
                 }
                 
@@ -3538,6 +3551,58 @@ function initAuthPortal() {
                 audioPlayer.playDopamineTone();
                 window.confetti.start();
                 setTimeout(() => window.confetti.stop(), 2000);
+            } else if (supabaseClient) {
+                // Try logging in via Supabase directly
+                const loginBtn = document.querySelector('#login-form button[type="submit"]');
+                if (loginBtn) {
+                    loginBtn.disabled = true;
+                    loginBtn.textContent = "Conectando...";
+                }
+                
+                supabaseClient.auth.signInWithPassword({
+                    email: emailInput,
+                    password: passwordInput
+                }).then(async ({ data, error }) => {
+                    if (loginBtn) {
+                        loginBtn.disabled = false;
+                        loginBtn.textContent = "Entrar no Portal";
+                    }
+                    
+                    if (error) {
+                        alert("Usuário ou senha incorretos!");
+                    } else {
+                        // Successful Supabase Login!
+                        // Add user to local users dictionary so they can log in locally next time
+                        state.users[emailInput] = {
+                            password: passwordInput,
+                            niche: "Geral",
+                            cefrLevel: "A1",
+                            passedExams: []
+                        };
+                        localStorage.setItem('adhd_users', JSON.stringify(state.users));
+                        
+                        state.activeUser = emailInput;
+                        localStorage.setItem('adhd_active_user', emailInput);
+                        
+                        // Load from Supabase first
+                        await pullStateFromSupabase();
+                        
+                        portal.classList.remove('active');
+                        document.getElementById('active-user-display').textContent = `Usuário: ${state.activeUser}`;
+                        
+                        // Reload dashboard data
+                        loadDay(state.currentDay);
+                        initGrid();
+                        updateLevelHUD();
+                        renderBadges();
+                        calculateOverallProgress();
+                        renderCourseRoadmap();
+                        
+                        audioPlayer.playDopamineTone();
+                        window.confetti.start();
+                        setTimeout(() => window.confetti.stop(), 2000);
+                    }
+                });
             } else {
                 alert("Usuário ou senha incorretos!");
             }
@@ -3933,12 +3998,146 @@ function initSupabase() {
         try {
             supabaseClient = window.supabase.createClient(state.supabaseUrl, state.supabaseKey);
             console.log("Supabase Client initialized successfully.");
+            
+            // Automatically pull progress in background if user is logged in
+            if (state.activeUser) {
+                pullStateFromSupabase();
+            }
         } catch(e) {
             console.error("Failed to initialize Supabase:", e);
             supabaseClient = null;
         }
     } else {
         supabaseClient = null;
+    }
+}
+
+async function pushStateToSupabase() {
+    if (!supabaseClient) return;
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) return;
+        
+        const stateData = {
+            currentDay: state.currentDay,
+            daysData: state.daysData,
+            vocabBank: state.vocabBank,
+            writingNotes: state.writingNotes,
+            fiscalConfig: state.fiscalConfig,
+            unlockedBadges: state.unlockedBadges,
+            timersCompleted: state.timersCompleted,
+            wordsWrittenAccumulated: state.wordsWrittenAccumulated,
+            shieldedDays: state.shieldedDays,
+            knownWords: state.knownWords,
+            learnedWordsCount: state.learnedWordsCount,
+            passedExams: state.passedExams,
+            courseProgress: state.courseProgress
+        };
+        
+        const { error } = await supabaseClient
+            .from('profiles')
+            .update({
+                cefr_level: state.cefrLevel,
+                niche: state.niche,
+                xp: state.xp,
+                coins: state.coins,
+                streak_shields: state.streakShields,
+                progress_data: stateData
+            })
+            .eq('id', user.id);
+            
+        if (error) {
+            console.error("Error updating profile state in Supabase:", error.message);
+        } else {
+            console.log("Entire state synced to Supabase successfully.");
+        }
+    } catch(e) {
+        console.error("Failed to push state to Supabase:", e);
+    }
+}
+
+async function pullStateFromSupabase() {
+    if (!supabaseClient) return;
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) return;
+        
+        const { data: profile, error } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .maybeSingle();
+            
+        if (error) {
+            console.error("Error pulling profile from Supabase:", error.message);
+            return;
+        }
+        
+        if (profile) {
+            // Update state fields
+            state.cefrLevel = profile.cefr_level || "A1";
+            state.niche = profile.niche || "Geral";
+            state.xp = profile.xp || 0;
+            state.coins = profile.coins || 0;
+            state.streakShields = profile.streak_shields || 0;
+            
+            if (profile.progress_data && typeof profile.progress_data === 'object' && Object.keys(profile.progress_data).length > 0) {
+                const pd = profile.progress_data;
+                if (pd.currentDay) state.currentDay = pd.currentDay;
+                if (pd.daysData) state.daysData = pd.daysData;
+                if (pd.vocabBank) state.vocabBank = pd.vocabBank;
+                if (pd.writingNotes) state.writingNotes = pd.writingNotes;
+                if (pd.fiscalConfig) state.fiscalConfig = pd.fiscalConfig;
+                if (pd.unlockedBadges) state.unlockedBadges = pd.unlockedBadges;
+                if (pd.timersCompleted) state.timersCompleted = pd.timersCompleted;
+                if (pd.wordsWrittenAccumulated) state.wordsWrittenAccumulated = pd.wordsWrittenAccumulated;
+                if (pd.shieldedDays) state.shieldedDays = pd.shieldedDays;
+                if (pd.knownWords) state.knownWords = pd.knownWords;
+                if (pd.learnedWordsCount) state.learnedWordsCount = pd.learnedWordsCount;
+                if (pd.passedExams) state.passedExams = pd.passedExams;
+                if (pd.courseProgress) state.courseProgress = pd.courseProgress;
+            }
+            
+            // Save locally to commit loaded state
+            const prefix = `adhd_user_${state.activeUser}_`;
+            localStorage.setItem(prefix + 'current_day', state.currentDay);
+            localStorage.setItem(prefix + 'days_data', JSON.stringify(state.daysData));
+            localStorage.setItem(prefix + 'vocab_bank', JSON.stringify(state.vocabBank));
+            localStorage.setItem(prefix + 'writing_notes', JSON.stringify(state.writingNotes));
+            localStorage.setItem(prefix + 'fiscal_config', JSON.stringify(state.fiscalConfig));
+            localStorage.setItem(prefix + 'level', state.level);
+            localStorage.setItem(prefix + 'xp', state.xp);
+            localStorage.setItem(prefix + 'unlocked_badges', JSON.stringify(state.unlockedBadges));
+            localStorage.setItem(prefix + 'timers_completed', state.timersCompleted);
+            localStorage.setItem(prefix + 'words_written', state.wordsWrittenAccumulated);
+            localStorage.setItem(prefix + 'coins', state.coins);
+            localStorage.setItem(prefix + 'streak_shields', state.streakShields);
+            localStorage.setItem(prefix + 'shielded_days', JSON.stringify(state.shieldedDays));
+            localStorage.setItem(prefix + 'known_words', JSON.stringify(state.knownWords));
+            localStorage.setItem(prefix + 'learned_words_count', state.learnedWordsCount);
+            localStorage.setItem(prefix + 'course_progress', JSON.stringify(state.courseProgress));
+            
+            // Re-sync local users meta-dictionary
+            if (!state.users[state.activeUser]) {
+                state.users[state.activeUser] = {};
+            }
+            state.users[state.activeUser].cefrLevel = state.cefrLevel;
+            state.users[state.activeUser].niche = state.niche;
+            state.users[state.activeUser].passedExams = state.passedExams;
+            localStorage.setItem('adhd_users', JSON.stringify(state.users));
+            
+            // Reload UI
+            loadDay(state.currentDay);
+            initGrid();
+            updateLevelHUD();
+            renderBadges();
+            calculateOverallProgress();
+            renderCourseRoadmap();
+            
+            console.log("Entire state pulled and restored from Supabase successfully.");
+        }
+    } catch(e) {
+        console.error("Failed to pull state from Supabase:", e);
     }
 }
 

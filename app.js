@@ -82,10 +82,278 @@ const OFFLINE_CHALLENGES = {
 
 /* Offline default vocabulary options for quizzes if list is empty */
 const DEFAULT_VOCAB_FALLBACK = [
-    { word: "schedule", translation: "agenda, cronograma", s1: "I need to check my schedule.", s2: "My schedule is full.", s3: "Let's reschedule the meeting." },
-    { word: "actually", translation: "na verdade", s1: "He actually did it.", s2: "Actually, I disagree.", s3: "Actually, it's very easy." },
-    { word: "avoid", translation: "evitar", s1: "Avoid eating sugar.", s2: "Try to avoid distraction.", s3: "I want to avoid conflict." },
-    { word: "succeed", translation: "ter sucesso, suceder", s1: "I want to succeed in life.", s2: "They succeeded in their plans.", s3: "Consistency helps you succeed." }
+    {
+        question: "We need to reschedule the conference call because the manager's _______ is completely booked.",
+        options: ["schedule", "agenda", "diary", "timetable"],
+        correctIndex: 0,
+        word: "schedule",
+        translation: "agenda, cronograma",
+        explanation: "Schedule (agenda, cronograma) é o termo padrão para a lista de compromissos diários no meio empresarial. 'Agenda' costuma referir-se à pauta de uma reunião."
+    },
+    {
+        question: "I thought the project was due tomorrow, but it is _______ due next week.",
+        options: ["currently", "actually", "eventually", "presently"],
+        correctIndex: 1,
+        word: "actually",
+        translation: "na verdade, realmente",
+        explanation: "Actually (na verdade, realmente) expressa contraste entre expectativa e realidade. 'Currently' significa 'no momento atual'."
+    },
+    {
+        question: "To meet the tight deadline, we must _______ any unnecessary meetings.",
+        options: ["avoid", "prevent", "escape", "refuse"],
+        correctIndex: 0,
+        word: "avoid",
+        translation: "evitar",
+        explanation: "Avoid (evitar) significa manter-se longe de algo ou impedir que aconteça. É seguido por gerúndio ou substantivo."
+    },
+    {
+        question: "If we work together and follow the plan, we will surely _______ in launching the product.",
+        options: ["succeed", "achieve", "obtain", "manage"],
+        correctIndex: 0,
+        word: "succeed",
+        translation: "ter sucesso",
+        explanation: "Succeed (ter sucesso) exige a preposição 'in' (succeed in doing something). 'Achieve' precisaria de um objeto direto."
+    },
+    {
+        question: "The afternoon flight was _______ due to heavy rain and strong winds.",
+        options: ["delayed", "postponed", "cancelled", "late"],
+        correctIndex: 0,
+        word: "delayed",
+        translation: "atrasado",
+        explanation: "Delayed (atrasado) refere-se a algo que aconteceu depois do previsto. 'Postponed' é usado para eventos remarcados para outra data."
+    },
+    {
+        question: "Adapting to the new software was a major _______, but the team handled it well.",
+        options: ["challenge", "problem", "defeat", "disaster"],
+        correctIndex: 0,
+        word: "challenge",
+        translation: "desafio",
+        explanation: "Challenge (desafio) representa um teste estimulante para as habilidades de alguém, sendo o termo profissional mais adequado."
+    },
+    {
+        question: "All employees must _______ with the company's data security policies.",
+        options: ["comply", "agree", "follow", "obey"],
+        correctIndex: 0,
+        word: "comply",
+        translation: "cumprir, estar em conformidade",
+        explanation: "Comply (cumprir, estar em conformidade) é o único verbo aqui que exige a preposição 'with' (comply with rules/laws)."
+    },
+    {
+        question: "She gave us some _______ advice on how to improve our presentation.",
+        options: ["valuable", "costly", "expensive", "dear"],
+        correctIndex: 0,
+        word: "valuable",
+        translation: "valioso",
+        explanation: "Valuable (valioso) significa extremamente útil ou importante. 'Expensive' é usado apenas para custo financeiro."
+    },
+    {
+        question: "It is hard for people with ADHD to _______ on tedious tasks for a long time.",
+        options: ["focus", "concentrate", "attend", "stare"],
+        correctIndex: 0,
+        word: "focus",
+        translation: "focar, concentrar",
+        explanation: "Focus (focar) rege a preposição 'on'. Embora 'concentrate' seja sinônimo, ele não formaria a regência ideal neste caso."
+    },
+    {
+        question: "Taking short breaks can help _______ your productivity and overall focus.",
+        options: ["improve", "increase", "grow", "develop"],
+        correctIndex: 0,
+        word: "improve",
+        translation: "melhorar",
+        explanation: "Improve (melhorar) é o verbo correto para aprimorar a qualidade de um estado ou habilidade (como a produtividade)."
+    },
+    {
+        question: "Before making a final decision, we need to _______ more data about customer habits.",
+        options: ["gather", "pick", "catch", "gain"],
+        correctIndex: 0,
+        word: "gather",
+        translation: "reunir, coletar",
+        explanation: "Gather (reunir, coletar) significa obter ou agrupar informações, dados ou pessoas dispersas."
+    },
+    {
+        question: "Our _______ software version does not support integration with Supabase.",
+        options: ["current", "actual", "presently", "real"],
+        correctIndex: 0,
+        word: "current",
+        translation: "atual",
+        explanation: "Current (atual) refere-se a algo existente no momento. 'Actual' é um falso cognato que significa 'real' ou 'verdadeiro'."
+    },
+    {
+        question: "The client provided constructive _______ on the new design mockups.",
+        options: ["feedback", "response", "reply", "complaint"],
+        correctIndex: 0,
+        word: "feedback",
+        translation: "retorno, feedback",
+        explanation: "Feedback (retorno) é o termo corporativo universal para opiniões construtivas sobre um trabalho executado."
+    },
+    {
+        question: "With consistent effort and focus, you can _______ your career goals.",
+        options: ["achieve", "succeed", "win", "earn"],
+        correctIndex: 0,
+        word: "achieve",
+        translation: "alcançar, atingir",
+        explanation: "Achieve (alcançar/atingir) significa obter sucesso em um objetivo através de esforço e competência."
+    },
+    {
+        question: "Although there were small bugs, the _______ performance of the system is excellent.",
+        options: ["overall", "global", "total", "absolute"],
+        correctIndex: 0,
+        word: "overall",
+        translation: "geral, no geral",
+        explanation: "Overall (geral, no geral) é usado para resumir uma situação inteira, considerando todos os seus aspectos e partes."
+    },
+    {
+        question: "We had to _______ the review because the senior developer was sick.",
+        options: ["postpone", "cancel", "delay", "suspend"],
+        correctIndex: 0,
+        word: "postpone",
+        translation: "adiar",
+        explanation: "Postpone (adiar) significa organizar um evento para uma data posterior à originalmente planejada."
+    },
+    {
+        question: "We encountered a critical database _______ that needs immediate resolution.",
+        options: ["issue", "event", "subject", "matter"],
+        correctIndex: 0,
+        word: "issue",
+        translation: "problema, falha",
+        explanation: "In English for IT and business, 'issue' é o termo profissional preferido para descrever falhas técnicas ou problemas."
+    },
+    {
+        question: "Having a _______ backup server is essential for cloud data safety.",
+        options: ["reliable", "secure", "faithful", "honest"],
+        correctIndex: 0,
+        word: "reliable",
+        translation: "confiável, consistente",
+        explanation: "Reliable (confiável, que responde com consistência) descreve equipamentos ou pessoas em quem se pode confiar de forma constante."
+    },
+    {
+        question: "The development team worked overtime to _______ the project on time.",
+        options: ["deliver", "give", "submit", "present"],
+        correctIndex: 0,
+        word: "deliver",
+        translation: "entregar",
+        explanation: "Deliver (entregar) é o verbo padrão usado em agilidade e desenvolvimento para a conclusão e entrega de soluções."
+    },
+    {
+        question: "The customer submitted a formal _______ for a refund.",
+        options: ["request", "demand", "question", "ask"],
+        correctIndex: 0,
+        word: "request",
+        translation: "solicitação, pedido",
+        explanation: "Request (solicitação/pedido) é a forma polida e profissional de se pedir algo por canais oficiais."
+    },
+    {
+        question: "We are waiting to see the final _______ of the business negotiations.",
+        options: ["outcome", "income", "output", "effect"],
+        correctIndex: 0,
+        word: "outcome",
+        translation: "resultado, desfecho",
+        explanation: "Outcome (desfecho/resultado) refere-se à consequência final de um processo ou negociação."
+    },
+    {
+        question: "The manual provides a _______ guide to configuring the server environment.",
+        options: ["comprehensive", "understanding", "global", "wide"],
+        correctIndex: 0,
+        word: "comprehensive",
+        translation: "abrangente, completo",
+        explanation: "Comprehensive (abrangente, completo) é um falso cognato. Não significa 'compreensivo' (que seria 'understanding')."
+    },
+    {
+        question: "Did you _______ any changes in the UI after the last pull request?",
+        options: ["notice", "watch", "look", "remark"],
+        correctIndex: 0,
+        word: "notice",
+        translation: "notar, perceber",
+        explanation: "Notice (notar/perceber) significa tornar-se ciente de um fato físico ou visual sem esforço prolongado."
+    },
+    {
+        question: "To _______ this growth rate, the startup needs to secure more funding.",
+        options: ["sustain", "keep", "hold", "support"],
+        correctIndex: 0,
+        word: "sustain",
+        translation: "sustentar, manter",
+        explanation: "Sustain (sustentar, manter no tempo) significa prover a energia ou os recursos necessários para a continuidade de um estado."
+    },
+    {
+        question: "Automating the QA pipeline is a very _______ way to reduce human error.",
+        options: ["efficient", "effective", "capable", "practical"],
+        correctIndex: 0,
+        word: "efficient",
+        translation: "eficiente",
+        explanation: "Efficient (eficiente) descreve um processo que alcança resultados usando o mínimo de tempo, esforço e recursos possíveis."
+    },
+    {
+        question: "The team plans to _______ operations into the European market.",
+        options: ["expand", "increase", "grow", "enlarge"],
+        correctIndex: 0,
+        word: "expand",
+        translation: "expandir",
+        explanation: "Expand (expandir) é o verbo adequado para o aumento de alcance territorial, comercial ou estrutural de uma empresa."
+    },
+    {
+        question: "Make sure all details in the invoice are _______ before sending it to billing.",
+        options: ["accurate", "correctly", "right", "perfect"],
+        correctIndex: 0,
+        word: "accurate",
+        translation: "preciso, correto",
+        explanation: "Accurate (preciso, livre de erros) é usado para dados, traduções, relatórios e números exatos."
+    },
+    {
+        question: "Could you please _______ us with more details about the server downtime?",
+        options: ["provide", "give", "offer", "donate"],
+        correctIndex: 0,
+        word: "provide",
+        translation: "fornecer, prover",
+        explanation: "Provide (fornecer, prover) coliga-se com a preposição 'with' no formato 'provide someone with something'."
+    },
+    {
+        question: "We need to _______ the security risks before launching the authentication flow.",
+        options: ["assess", "inspect", "test", "measure"],
+        correctIndex: 0,
+        word: "assess",
+        translation: "avaliar",
+        explanation: "Assess (avaliar) é amplamente usado para estimar o valor, a importância ou a segurança de um cenário ou risco."
+    },
+    {
+        question: "He is a highly _______ developer due to his expertise in Supabase schemas.",
+        options: ["sought-after", "searched", "hunted", "wanted"],
+        correctIndex: 0,
+        word: "sought-after",
+        translation: "requisitado, procurado",
+        explanation: "Sought-after é um adjetivo composto que descreve algo ou alguém altamente desejado e procurado no mercado."
+    },
+    {
+        question: "Before committing the changes, let's have a _______ sync meeting.",
+        options: ["brief", "shortly", "quick", "fast"],
+        correctIndex: 0,
+        word: "brief",
+        translation: "breve",
+        explanation: "Brief (breve/curto) descreve a duração temporal de uma conversa ou evento em ambientes corporativos."
+    },
+    {
+        question: "The code deployment will proceed _______ of the outstanding minor style issues.",
+        options: ["regardless", "despite", "without", "although"],
+        correctIndex: 0,
+        word: "regardless",
+        translation: "independentemente",
+        explanation: "Regardless (independentemente) conecta-se com a preposição 'of' para indicar indiferença a um fator limitador."
+    },
+    {
+        question: "Active user feedback is _______ for designing an ADHD-friendly dashboard.",
+        options: ["essential", "main", "major", "primary"],
+        correctIndex: 0,
+        word: "essential",
+        translation: "essencial",
+        explanation: "Essential (essencial) expressa que algo é fundamental ou absolutamente necessário para o sucesso do projeto."
+    },
+    {
+        question: "You must _______ that the API connection is fully native in all environments.",
+        options: ["ensure", "insure", "assure", "secure"],
+        correctIndex: 0,
+        word: "ensure",
+        translation: "garantir",
+        explanation: "Ensure (garantir/assegurar) significa certificar-se de que um evento ou condição seja atendido."
+    }
 ];
 
 // Preload voices for SpeechSynthesis
@@ -2010,6 +2278,75 @@ O aluno responderá a um desafio linguístico corporativo/profissional. Avalie a
     }
 }
 
+function createOfflineQuizQuestionFromMinedWord(item, vocabList) {
+    const word = item.word.trim();
+    const translation = item.translation.trim();
+    
+    // Choose a non-empty example sentence
+    const sentences = [item.s1, item.s2, item.s3].filter(s => s && s.trim() !== "");
+    let sentence = sentences.length > 0 ? sentences[Math.floor(Math.random() * sentences.length)] : "";
+    
+    let questionText = "";
+    let isCloze = false;
+    
+    if (sentence) {
+        // Replace the word case-insensitively with _____
+        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+        if (regex.test(sentence)) {
+            questionText = sentence.replace(regex, "_____");
+            isCloze = true;
+        } else {
+            // Try replacement without word boundaries in case of suffixes (schedules, scheduled, etc)
+            const regexSimple = new RegExp(word, 'gi');
+            if (regexSimple.test(sentence)) {
+                questionText = sentence.replace(regexSimple, "_____");
+                isCloze = true;
+            }
+        }
+    }
+    
+    if (!isCloze) {
+        // Fallback to translation question if no suitable sentence is found
+        questionText = `Qual é o termo em inglês correto para a tradução: "${translation}"?`;
+    } else {
+        // Append a contextual clue in Portuguese to guide the student, showing the original translation
+        questionText = `${questionText}\n(Dica: "${translation}")`;
+    }
+    
+    // Select incorrect distractors from other words in the vocabulary list
+    const incorrectOptions = [];
+    const possibleDistractors = vocabList.filter(v => v.word.toLowerCase() !== word.toLowerCase());
+    
+    while (incorrectOptions.length < 3 && possibleDistractors.length > 0) {
+        const idx = Math.floor(Math.random() * possibleDistractors.length);
+        const distractor = possibleDistractors.splice(idx, 1)[0].word;
+        if (!incorrectOptions.includes(distractor) && distractor.toLowerCase() !== word.toLowerCase()) {
+            incorrectOptions.push(distractor);
+        }
+    }
+    
+    // Fillers if needed
+    const fillers = ['schedule', 'actually', 'avoid', 'succeed', 'challenge', 'focus', 'improve', 'reliable', 'provide', 'ensure'];
+    while (incorrectOptions.length < 3) {
+        const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
+        if (randomFiller.toLowerCase() !== word.toLowerCase() && !incorrectOptions.includes(randomFiller)) {
+            incorrectOptions.push(randomFiller);
+        }
+    }
+    
+    const allOptions = [word, ...incorrectOptions];
+    allOptions.sort(() => Math.random() - 0.5);
+    
+    return {
+        question: questionText,
+        options: allOptions,
+        correctIndex: allOptions.indexOf(word),
+        word: word,
+        translation: translation,
+        explanation: `A palavra correta é "${word}" (${translation}). ` + (sentence ? `Frase de exemplo: "${sentence}"` : "")
+    };
+}
+
 function loadQuizQuestion(forceOffline = false) {
     const qBox = document.getElementById('quiz-question');
     const optsContainer = document.getElementById('quiz-options');
@@ -2034,45 +2371,48 @@ function loadQuizQuestion(forceOffline = false) {
     
     const vocabList = state.vocabBank.length > 0 ? state.vocabBank : DEFAULT_VOCAB_FALLBACK;
     
-    if (forceOffline || !state.geminiKey) {
+    if (forceOffline === true || !state.geminiKey) {
         // Offline Local Quiz Generator (runs synchronously, no race)
         if (btnNext) btnNext.disabled = false;
         
-        const targetItem = vocabList[Math.floor(Math.random() * vocabList.length)];
-        activeQuizWord = targetItem.word;
-        activeQuizTranslation = targetItem.translation;
+        let targetQuestion = null;
         
-        const incorrectOptions = [];
-        const possibleDistractors = vocabList.filter(item => item.word !== targetItem.word);
+        // 50/50 chance of using a mined word if available
+        const useMined = Math.random() < 0.5 && state.vocabBank.length > 0;
         
-        while (incorrectOptions.length < 3 && possibleDistractors.length > 0) {
-            const idx = Math.floor(Math.random() * possibleDistractors.length);
-            const distractor = possibleDistractors.splice(idx, 1)[0].word;
-            if (!incorrectOptions.includes(distractor)) {
-                incorrectOptions.push(distractor);
-            }
+        if (useMined) {
+            const minedItem = state.vocabBank[Math.floor(Math.random() * state.vocabBank.length)];
+            targetQuestion = createOfflineQuizQuestionFromMinedWord(minedItem, state.vocabBank);
+        } else {
+            // Select from our rich Cambridge-style DEFAULT_VOCAB_FALLBACK
+            const globalItem = DEFAULT_VOCAB_FALLBACK[Math.floor(Math.random() * DEFAULT_VOCAB_FALLBACK.length)];
+            targetQuestion = {
+                question: globalItem.question,
+                options: globalItem.options,
+                correctIndex: globalItem.correctIndex,
+                word: globalItem.word,
+                translation: globalItem.translation,
+                explanation: globalItem.explanation
+            };
         }
         
-        const fillers = ['schedule', 'actually', 'avoid', 'succeed', 'challenge', 'focus'];
-        while (incorrectOptions.length < 3) {
-            const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
-            if (randomFiller !== targetItem.word && !incorrectOptions.includes(randomFiller)) {
-                incorrectOptions.push(randomFiller);
-            }
+        activeQuizWord = targetQuestion.word;
+        activeQuizTranslation = targetQuestion.translation;
+        activeQuizAnswerIndex = targetQuestion.correctIndex;
+        
+        qBox.textContent = targetQuestion.question;
+        
+        if (btnQuizSpeak) {
+            btnQuizSpeak.classList.remove('hidden');
+            btnQuizSpeak.dataset.phrase = targetQuestion.question.replace(/_____/g, targetQuestion.word);
         }
-        
-        const allOptions = [targetItem.word, ...incorrectOptions];
-        allOptions.sort(() => Math.random() - 0.5);
-        activeQuizAnswerIndex = allOptions.indexOf(targetItem.word);
-        
-        qBox.textContent = `Qual é o termo em inglês correto para a tradução: "${targetItem.translation}"?`;
         
         optsContainer.innerHTML = '';
-        allOptions.forEach((opt, idx) => {
+        targetQuestion.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.classList.add('quiz-option');
             btn.textContent = `${idx + 1}. ${opt}`;
-            btn.addEventListener('click', () => handleQuizAnswer(idx, targetItem.translation, btn));
+            btn.addEventListener('click', () => handleQuizAnswer(idx, targetQuestion.explanation, btn));
             optsContainer.appendChild(btn);
         });
         return;
@@ -2103,26 +2443,30 @@ function loadQuizQuestion(forceOffline = false) {
         }
         const formattedList = sampleWords.map(item => `${item.word} (${item.translation})`).join(", ");
         
-        sysInstruction = `Você é um professor de inglês meticuloso. Com base na lista de vocabulário do aluno fornecida, você deve criar uma pergunta de múltipla escolha testando o uso ativo de uma das palavras da lista em uma frase sobre o tema '${targetTheme}'.
+        sysInstruction = `Você é um professor de inglês meticuloso seguindo os rigorosos padrões de avaliação da Universidade de Cambridge (exames FCE, CAE e CPE). 
+Com base na lista de vocabulário do aluno fornecida, crie uma pergunta de múltipla escolha (Cloze test/Fill in the blanks) testando o uso ativo de uma das palavras da lista em uma frase rica e contextualizada sobre o tema '${targetTheme}'.
+Crie distratores desafiadores e pedagogicamente úteis (ex: collocations concorrentes, falsos cognatos comuns para brasileiros ou preposições confusas).
 Você deve responder ESTREITAMENTE no formato JSON com as chaves:
 - 'question': a frase em inglês com um espaço em branco representado por _____
-- 'options': um array de exatamente 4 strings em inglês com as opções de preenchimento. A opção correta deve ser a palavra correspondente da lista fornecida do aluno. As outras 3 opções devem ser distratores que NÃO façam sentido gramatical ou semântico na frase.
+- 'options': um array de exatamente 4 strings em inglês com as opções de preenchimento. A opção correta deve ser a palavra correspondente da lista fornecida do aluno. As outras 3 opções devem ser distratores adequados.
 - 'correctIndex': um número inteiro de 0 a 3 que represente o índice correto no array 'options'.
 - 'word': a palavra-alvo correta em inglês exatamente como está na lista do aluno.
 - 'translation': a tradução/significado curto em português da palavra correta.
-- 'explanation': uma explicação curta e clara em português descrevendo o significado da palavra correta e por que as outras opções estão incorretas no contexto.
+- 'explanation': uma explicação curta e clara em português descrevendo o significado da palavra correta, por que as outras opções estão incorretas no contexto e uma dica prática/conversacional para o estudante praticar a palavra em voz alta.
 Realize uma dupla-checagem rigorosa dos dados antes de retornar.`;
         prompt = `Lista de vocábulos do aluno: [${formattedList}]. Crie a questão sob o tema '${targetTheme}'.`;
     } else {
-        sysInstruction = `Você é um professor de inglês meticuloso. Selecione uma palavra ou expressão nova, interessante e útil da língua inglesa adequada para o nível do aluno (Semana ${weekNum} de estudos, Nível ${level}).
-Crie uma pergunta de múltipla escolha testando o uso ativo dessa palavra selecionada em uma frase com o tema '${targetTheme}'.
+        sysInstruction = `Você é um professor de inglês meticuloso seguindo os rigorosos padrões de avaliação da Universidade de Cambridge (exames FCE, CAE e CPE). 
+Selecione uma palavra ou expressão nova (como phrasal verbs ou collocations comuns) útil da língua inglesa adequada para o nível de estudos do aluno (Semana ${weekNum} de estudos, Nível ${level}).
+Crie uma pergunta de múltipla escolha (Cloze test/Fill in the blanks) testando o uso ativo dessa palavra selecionada em uma frase rica e contextualizada com o tema '${targetTheme}'.
+Crie distratores desafiadores e pedagogicamente úteis (ex: falsos cognatos comuns para falantes de português, collocations concorrentes ou termos de sonoridade similar).
 Você deve responder ESTREITAMENTE no formato JSON com as chaves:
 - 'question': a frase em inglês com um espaço em branco representado por _____
-- 'options': um array de exatamente 4 strings em inglês com as opções de preenchimento. A opção correta deve ser a palavra nova selecionada. As outras 3 opções devem ser distratores adequados que NÃO façam sentido gramatical ou semântico na frase.
+- 'options': um array de exatamente 4 strings em inglês com as opções de preenchimento. A opção correta deve ser a palavra nova selecionada. As outras 3 opções devem ser distratores adequados.
 - 'correctIndex': um número inteiro de 0 a 3 que represente o índice correto no array 'options'.
 - 'word': a palavra/expressão nova selecionada em inglês.
 - 'translation': a tradução/significado curto em português da palavra correta.
-- 'explanation': uma explicação curta e clara em português descrevendo o significado da palavra correta e por que os distratores estão incorretos no contexto.
+- 'explanation': uma explicação curta e clara em português descrevendo o significado da palavra correta, por que os distratores estão incorretos no contexto e uma dica prática/conversacional para o estudante praticar a palavra em voz alta.
 Realize uma dupla-checagem rigorosa dos dados antes de retornar.`;
         prompt = `Selecione uma palavra útil de nível correspondente a Semana ${weekNum}, Nível ${level} e crie a questão sob o tema '${targetTheme}'.`;
     }
@@ -2141,7 +2485,7 @@ Realize uma dupla-checagem rigorosa dos dados antes de retornar.`;
             
             if (btnQuizSpeak) {
                 btnQuizSpeak.classList.remove('hidden');
-                btnQuizSpeak.dataset.phrase = res.question.replace(/_____|_____/g, "... ");
+                btnQuizSpeak.dataset.phrase = res.question.replace(/_____/g, activeQuizWord);
             }
             
             optsContainer.innerHTML = ''; // Clear container before rendering
@@ -2217,7 +2561,7 @@ function handleQuizAnswer(selectedIndex, explanation, clickedBtn) {
 }
 
 // Next quiz button binder
-document.getElementById('btn-next-quiz').addEventListener('click', loadQuizQuestion);
+document.getElementById('btn-next-quiz').addEventListener('click', () => loadQuizQuestion(false));
 
 /* ==========================================
    MINI-GAME: SPEED WORD BATTLE (60 SECONDS)

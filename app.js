@@ -379,10 +379,60 @@ function speakEnglish(text) {
         utterance.rate = speed;
         
         const voices = synthVoices.length > 0 ? synthVoices : window.speechSynthesis.getVoices();
-        const enVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Google')) || 
-                        voices.find(v => v.lang.startsWith('en')) || 
-                        voices[0];
-        if (enVoice) utterance.voice = enVoice;
+        const enVoices = voices.filter(v => v.lang.startsWith('en') || v.lang.startsWith('en-'));
+        
+        // Prioritized list of keywords to identify high-quality English female voices
+        const preferredFemaleKeywords = [
+            'samantha',               // Apple macOS/iOS standard female
+            'victoria',                // Apple macOS/iOS high-quality female
+            'google us english',       // Google Chrome US Female
+            'google uk english female',// Google Chrome UK Female
+            'zira',                    // Microsoft Windows standard female
+            'hazel',                   // Microsoft Windows UK female
+            'susan',                   // Apple UK female
+            'moira',                   // Apple Ireland female
+            'tessa',                   // Apple South Africa female
+            'karen',                   // Apple Australia female
+            'kathy',                   // Apple macOS classic female
+            'female'
+        ];
+        
+        let enVoice = null;
+        for (const key of preferredFemaleKeywords) {
+            enVoice = enVoices.find(v => v.name.toLowerCase().includes(key));
+            if (enVoice) break;
+        }
+        
+        if (!enVoice) {
+            enVoice = enVoices.find(v => v.name.toLowerCase().includes('woman')) || 
+                      enVoices[0] || 
+                      voices.find(v => v.lang.startsWith('en')) || 
+                      voices[0];
+        }
+        
+        if (enVoice) {
+            utterance.voice = enVoice;
+            console.log(`[TTS] Voice selected: ${enVoice.name} (${enVoice.lang})`);
+        }
+
+        // Keep ADHD focus sounds playing after synthesis ends or fails
+        const resumeFocusAudio = () => {
+            if (audioPlayer && audioPlayer.activeSound !== 'none') {
+                setTimeout(() => {
+                    if (audioPlayer.audioCtx && audioPlayer.audioCtx.state === 'suspended') {
+                        audioPlayer.audioCtx.resume().then(() => {
+                            logAudio("Foco retomado com sucesso após reprodução de áudio.");
+                        }).catch(e => {
+                            logAudio(`Falha ao retomar som de foco: ${e.message}`);
+                        });
+                    }
+                }, 100);
+            }
+        };
+
+        utterance.onend = resumeFocusAudio;
+        utterance.onerror = resumeFocusAudio;
+        
         window.speechSynthesis.speak(utterance);
     } else {
         console.warn("Speech Synthesis não suportado neste navegador.");
@@ -2108,6 +2158,13 @@ function initTutorAI() {
             // Auto load content for specific pane
             if (targetSub === 'quiz') {
                 loadQuizQuestion();
+            } else if (targetSub === 'speaking') {
+                const setupArea = document.getElementById('speaking-setup-area');
+                const gameArea = document.getElementById('speaking-game-area');
+                const feedbackArea = document.getElementById('speaking-feedback-area');
+                if (setupArea) setupArea.classList.remove('hidden');
+                if (gameArea) gameArea.classList.add('hidden');
+                if (feedbackArea) feedbackArea.classList.add('hidden');
             }
         });
     });
@@ -2156,6 +2213,280 @@ function initTutorAI() {
             }
         });
     }
+    
+    // Initialize the Speaking activity
+    initSpeakingActivity();
+    
+    // Prefetch the first quiz question in the background
+    prefetchNextQuizQuestion();
+}
+
+/* ==========================================
+   METODOLOGIA "STOP TRANSLATING" - SPEAKING ENGINE
+   ========================================== */
+let speakingSessionQuestions = [];
+let currentSpeakingIndex = 0;
+let speakingSessionXP = 0;
+let isRecordingSpeaking = false;
+let speakingRecognition = null;
+
+function initSpeakingActivity() {
+    const btnStart = document.getElementById('btn-start-speaking');
+    const btnMic = document.getElementById('btn-speaking-mic');
+    const btnCheck = document.getElementById('btn-speaking-check');
+    const btnNext = document.getElementById('btn-speaking-next');
+    const btnListenCorrect = document.getElementById('btn-speak-listen-correct');
+    
+    const textInput = document.getElementById('speaking-text-input');
+    const micStatus = document.getElementById('speaking-mic-status');
+    const feedbackArea = document.getElementById('speaking-feedback-area');
+    
+    if (!btnStart) return;
+    
+    // Initialize Web Speech Recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+        speakingRecognition = new SpeechRecognition();
+        speakingRecognition.continuous = false;
+        speakingRecognition.interimResults = false;
+        speakingRecognition.lang = 'en-US';
+        
+        speakingRecognition.onstart = () => {
+            isRecordingSpeaking = true;
+            if (btnMic) {
+                btnMic.textContent = "🛑";
+                btnMic.style.background = "var(--primary)";
+            }
+            if (micStatus) {
+                micStatus.classList.remove('hidden');
+                micStatus.textContent = "🔴 Ouvindo... Fale a resposta em inglês!";
+            }
+        };
+        
+        speakingRecognition.onresult = (event) => {
+            const resultText = event.results[0][0].transcript;
+            if (textInput) textInput.value = resultText;
+            console.log(`[Speaking] Recognized speech: ${resultText}`);
+            checkSpeakingAnswer(resultText);
+        };
+        
+        speakingRecognition.onerror = (event) => {
+            console.error('[Speaking] Speech recognition error:', event.error);
+            isRecordingSpeaking = false;
+            if (btnMic) {
+                btnMic.textContent = "🎤";
+                btnMic.style.background = "";
+            }
+            if (micStatus) micStatus.classList.add('hidden');
+            
+            if (event.error === 'not-allowed') {
+                alert("Microfone bloqueado! Ative a permissão do microfone nas configurações do seu navegador para usar a fala.");
+            }
+        };
+        
+        speakingRecognition.onend = () => {
+            isRecordingSpeaking = false;
+            if (btnMic) {
+                btnMic.textContent = "🎤";
+                btnMic.style.background = "";
+            }
+            if (micStatus) micStatus.classList.add('hidden');
+        };
+    } else {
+        console.warn("Speech Recognition não suportada neste navegador.");
+        if (btnMic) {
+            btnMic.title = "Reconhecimento de fala indisponível";
+            btnMic.style.opacity = "0.5";
+        }
+    }
+    
+    btnStart.addEventListener('click', () => {
+        const pool = window.THINK_IN_ENGLISH_POOL || [];
+        if (pool.length === 0) {
+            alert("Nenhuma situação carregada no pool.");
+            return;
+        }
+        
+        // Shuffle and choose 10 situations
+        const shuffled = [...pool];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = shuffled[i];
+            shuffled[i] = shuffled[j];
+            shuffled[j] = temp;
+        }
+        
+        speakingSessionQuestions = shuffled.slice(0, 10);
+        currentSpeakingIndex = 0;
+        speakingSessionXP = 0;
+        
+        const setupArea = document.getElementById('speaking-setup-area');
+        const gameArea = document.getElementById('speaking-game-area');
+        if (setupArea) setupArea.classList.add('hidden');
+        if (gameArea) gameArea.classList.remove('hidden');
+        if (feedbackArea) feedbackArea.classList.add('hidden');
+        
+        showSpeakingQuestion();
+    });
+    
+    if (btnMic) {
+        btnMic.addEventListener('click', () => {
+            if (!speakingRecognition) {
+                alert("Seu navegador não oferece suporte ao reconhecimento de fala. Por favor, digite a resposta!");
+                return;
+            }
+            if (isRecordingSpeaking) {
+                speakingRecognition.stop();
+            } else {
+                if (textInput) textInput.value = "";
+                try {
+                    speakingRecognition.start();
+                } catch (e) {
+                    console.error("Erro ao iniciar Speech Recognition:", e);
+                }
+            }
+        });
+    }
+    
+    if (btnCheck) {
+        btnCheck.addEventListener('click', () => {
+            const text = textInput ? textInput.value.trim() : "";
+            if (!text) {
+                alert("Escreva sua resposta ou grave com o microfone!");
+                return;
+            }
+            checkSpeakingAnswer(text);
+        });
+    }
+    
+    if (btnNext) {
+        btnNext.addEventListener('click', () => {
+            currentSpeakingIndex++;
+            if (currentSpeakingIndex < speakingSessionQuestions.length) {
+                showSpeakingQuestion();
+            } else {
+                // End of speaking session
+                const total = speakingSessionQuestions.length;
+                const bonus = 40; // Completion XP bonus
+                state.addXP(bonus);
+                
+                window.confetti.start();
+                setTimeout(() => window.confetti.stop(), 3000);
+                audioPlayer.playLevelUpTone();
+                
+                alert(`Parabéns! Você completou a sessão de 10 situações "Pense em Inglês"!\nXP acumulado: +${speakingSessionXP + bonus} XP!`);
+                
+                const gameArea = document.getElementById('speaking-game-area');
+                const setupArea = document.getElementById('speaking-setup-area');
+                if (gameArea) gameArea.classList.add('hidden');
+                if (setupArea) setupArea.classList.remove('hidden');
+                updateLevelHUD();
+            }
+        });
+    }
+    
+    if (btnListenCorrect) {
+        btnListenCorrect.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const activeItem = speakingSessionQuestions[currentSpeakingIndex];
+            if (activeItem && activeItem.english) {
+                speakEnglish(activeItem.english);
+            }
+        });
+    }
+}
+
+function showSpeakingQuestion() {
+    const textInput = document.getElementById('speaking-text-input');
+    const feedbackArea = document.getElementById('speaking-feedback-area');
+    const situationPrompt = document.getElementById('speaking-situation-prompt');
+    const progressText = document.getElementById('speaking-progress-text');
+    const xpReward = document.getElementById('speaking-xp-reward');
+    const progressFill = document.getElementById('speaking-progress-fill');
+    
+    if (textInput) {
+        textInput.value = "";
+        textInput.disabled = false;
+    }
+    if (feedbackArea) feedbackArea.classList.add('hidden');
+    
+    const item = speakingSessionQuestions[currentSpeakingIndex];
+    if (situationPrompt) situationPrompt.textContent = item.situation;
+    
+    const total = speakingSessionQuestions.length;
+    if (progressText) progressText.textContent = `Situação ${currentSpeakingIndex + 1} de ${total}`;
+    if (xpReward) xpReward.textContent = `+${speakingSessionXP} XP acumulado`;
+    if (progressFill) progressFill.style.width = `${(currentSpeakingIndex / total) * 100}%`;
+}
+
+function cleanSpeakingString(str) {
+    return str.toLowerCase()
+              .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "") // remove punctuation
+              .replace(/\s{2,}/g, " ")                     // normalize spaces
+              .trim();
+}
+
+function checkSpeakingAnswer(userAnswer) {
+    const textInput = document.getElementById('speaking-text-input');
+    const feedbackArea = document.getElementById('speaking-feedback-area');
+    const feedbackIcon = document.getElementById('speaking-feedback-icon');
+    const feedbackTitle = document.getElementById('speaking-feedback-title');
+    const feedbackText = document.getElementById('speaking-feedback-text');
+    const feedbackExplanation = document.getElementById('speaking-feedback-explanation');
+    
+    if (textInput) textInput.disabled = true;
+    if (feedbackArea) feedbackArea.classList.remove('hidden');
+    
+    const activeItem = speakingSessionQuestions[currentSpeakingIndex];
+    const cleanedCorrect = cleanSpeakingString(activeItem.english);
+    const cleanedUser = cleanSpeakingString(userAnswer);
+    
+    const isCorrect = cleanedUser === cleanedCorrect || 
+                      cleanedCorrect.includes(cleanedUser) || 
+                      (cleanedUser.length > 5 && cleanedCorrect.indexOf(cleanedUser) >= 0) ||
+                      (cleanedUser.length > 5 && cleanedUser.indexOf(cleanedCorrect) >= 0);
+    
+    if (isCorrect) {
+        speakingSessionXP += 10;
+        state.xp += 10;
+        state.saveState();
+        
+        if (feedbackArea) {
+            feedbackArea.style.borderColor = "rgba(0, 245, 212, 0.3)";
+            feedbackArea.style.background = "rgba(0, 245, 212, 0.05)";
+        }
+        if (feedbackIcon) feedbackIcon.textContent = "🎉";
+        if (feedbackTitle) {
+            feedbackTitle.textContent = "Excelente! Resposta correta.";
+            feedbackTitle.style.color = "var(--secondary)";
+        }
+        audioPlayer.playDopamineTone();
+    } else {
+        speakingSessionXP += 2; // consolation XP
+        state.xp += 2;
+        state.saveState();
+        
+        if (feedbackArea) {
+            feedbackArea.style.borderColor = "rgba(255, 0, 110, 0.3)";
+            feedbackArea.style.background = "rgba(255, 0, 110, 0.05)";
+        }
+        if (feedbackIcon) feedbackIcon.textContent = "💡";
+        if (feedbackTitle) {
+            feedbackTitle.textContent = "Quase lá! Resposta sugerida:";
+            feedbackTitle.style.color = "var(--primary)";
+        }
+    }
+    
+    if (feedbackText) {
+        feedbackText.innerHTML = `Sua resposta: <span style="color: var(--text-muted); font-style: italic;">"${userAnswer}"</span><br>Resposta recomendada: <strong style="color: #fff;">${activeItem.english}</strong>`;
+    }
+    if (feedbackExplanation) {
+        feedbackExplanation.textContent = activeItem.explanation;
+    }
+    
+    const xpReward = document.getElementById('speaking-xp-reward');
+    if (xpReward) xpReward.textContent = `+${speakingSessionXP} XP acumulado`;
+    updateLevelHUD();
 }
 
 function resetTutorChallengeView() {
@@ -2347,6 +2678,116 @@ function createOfflineQuizQuestionFromMinedWord(item, vocabList) {
     };
 }
 
+let prefetchedQuizQuestion = null;
+let prefetchActive = false;
+
+async function prefetchNextQuizQuestion() {
+    if (prefetchActive) return;
+    prefetchActive = true;
+    
+    const vocabList = state.vocabBank.length > 0 ? state.vocabBank : DEFAULT_VOCAB_FALLBACK;
+    const forceOffline = !state.geminiKey;
+    
+    if (forceOffline) {
+        let targetQuestion = null;
+        const useMined = Math.random() < 0.5 && state.vocabBank.length > 0;
+        if (useMined) {
+            const minedItem = state.vocabBank[Math.floor(Math.random() * state.vocabBank.length)];
+            targetQuestion = createOfflineQuizQuestionFromMinedWord(minedItem, state.vocabBank);
+        } else {
+            const globalItem = DEFAULT_VOCAB_FALLBACK[Math.floor(Math.random() * DEFAULT_VOCAB_FALLBACK.length)];
+            targetQuestion = {
+                question: globalItem.question,
+                options: globalItem.options,
+                correctIndex: globalItem.correctIndex,
+                word: globalItem.word,
+                translation: globalItem.translation,
+                explanation: globalItem.explanation
+            };
+        }
+        prefetchedQuizQuestion = targetQuestion;
+        prefetchActive = false;
+        return;
+    }
+    
+    const day = state.currentDay;
+    const weekNum = Math.ceil(day / 7);
+    const level = state.level;
+    const useMinedWord = Math.random() < 0.5 && state.vocabBank.length > 0;
+    
+    const themes = ["trabalho/escritório", "tecnologia/software", "viagens/turismo", "saúde/medicina", "atividades diárias/rotinas", "esportes/fitness", "arte/entretenimento", "natureza/ciência", "finanças/economia", "relações sociais/comunicação", "compras/serviços", "educação/aprendizado"];
+    const targetTheme = themes[Math.floor(Math.random() * themes.length)];
+    
+    let sysInstruction = "";
+    let prompt = "";
+    
+    if (useMinedWord) {
+        const sampleWords = [];
+        const pool = [...vocabList];
+        for (let i = 0; i < Math.min(5, pool.length); i++) {
+            const randIdx = Math.floor(Math.random() * pool.length);
+            sampleWords.push(pool.splice(randIdx, 1)[0]);
+        }
+        const formattedList = sampleWords.map(item => `${item.word} (${item.translation})`).join(", ");
+        
+        sysInstruction = `Você é um professor de inglês meticuloso seguindo os rigorosos padrões de avaliação da Universidade de Cambridge (exames FCE, CAE e CPE). 
+Com base na lista de vocabulário do aluno fornecida, crie uma pergunta de múltipla escolha (Cloze test/Fill in the blanks) testando o uso ativo de uma das palavras da lista em uma frase rica e contextualizada sobre o tema '${targetTheme}'.
+Crie distratores desafiadores e pedagogicamente úteis (ex: collocations concorrentes, falsos cognatos comuns para brasileiros ou preposições confusas).
+Você deve responder ESTREITAMENTE no formato JSON com as chaves:
+- 'question': a frase em inglês com um espaço em branco representado por _____
+- 'options': um array de exatamente 4 strings em inglês com as opções de preenchimento. A opção correta deve ser a palavra correspondente da lista fornecida do aluno. As outras 3 opções devem ser distratores adequados.
+- 'correctIndex': um número inteiro de 0 a 3 que represente o índice correto no array 'options'.
+- 'word': a palavra-alvo correta em inglês exatamente como está na lista do aluno.
+- 'translation': a tradução/significado curto em português da palavra correta.
+- 'explanation': uma explicação curta e clara em português descrevendo o significado da palavra correta, por que as outras opções estão incorretas no contexto e uma dica prática/conversacional para o estudante praticar a palavra em voz alta.
+Realize uma dupla-checagem rigorosa dos dados antes de retornar.`;
+        prompt = `Lista de vocábulos do aluno: [${formattedList}]. Crie a questão sob o tema '${targetTheme}'.`;
+    } else {
+        sysInstruction = `Você é um professor de inglês meticuloso seguindo os rigorosos padrões de avaliação da Universidade de Cambridge (exames FCE, CAE e CPE). 
+Selecione uma palavra ou expressão nova (como phrasal verbs ou collocations comuns) útil da língua inglesa adequada para o nível de estudos do aluno (Semana ${weekNum} de estudos, Nível ${level}).
+Crie uma pergunta de múltipla escolha (Cloze test/Fill in the blanks) testando o uso ativo dessa palavra selecionada em uma frase rica e contextualizada com o tema '${targetTheme}'.
+Crie distratores desafiadores e pedagogicamente úteis (ex: falsos cognatos comuns para falantes de português, collocations concorrentes ou termos de sonoridade similar).
+Você deve responder ESTREITAMENTE no formato JSON com as chaves:
+- 'question': a frase em inglês com um espaço em branco representado por _____
+- 'options': um array de exatamente 4 strings em inglês com as opções de preenchimento. A opção correta deve ser a palavra nova selecionada. As outras 3 opções devem ser distratores adequados.
+- 'correctIndex': um número inteiro de 0 a 3 que represente o índice correto no array 'options'.
+- 'word': a palavra/expressão nova selecionada em inglês.
+- 'translation': a tradução/significado curto em português da palavra correta.
+- 'explanation': uma explicação curta e clara em português descrevendo o significado da palavra correta, por que os distratores estão incorretos no contexto e uma dica prática/conversacional para o estudante praticar a palavra em voz alta.
+Realize uma dupla-checagem rigorosa dos dados antes de retornar.`;
+        prompt = `Selecione uma palavra útil de nível correspondente a Semana ${weekNum}, Nível ${level} e crie a questão sob o tema '${targetTheme}'.`;
+    }
+    
+    try {
+        const res = await callGemini(prompt, sysInstruction);
+        if (res && res.question && Array.isArray(res.options)) {
+            prefetchedQuizQuestion = res;
+        } else {
+            throw new Error("Invalid Gemini format in prefetch");
+        }
+    } catch (err) {
+        console.warn("[Prefetch] Gemini prefetch failed, falling back to local quiz generator", err);
+        let targetQuestion = null;
+        if (useMinedWord) {
+            const minedItem = state.vocabBank[Math.floor(Math.random() * state.vocabBank.length)];
+            targetQuestion = createOfflineQuizQuestionFromMinedWord(minedItem, state.vocabBank);
+        } else {
+            const globalItem = DEFAULT_VOCAB_FALLBACK[Math.floor(Math.random() * DEFAULT_VOCAB_FALLBACK.length)];
+            targetQuestion = {
+                question: globalItem.question,
+                options: globalItem.options,
+                correctIndex: globalItem.correctIndex,
+                word: globalItem.word,
+                translation: globalItem.translation,
+                explanation: globalItem.explanation
+            };
+        }
+        prefetchedQuizQuestion = targetQuestion;
+    } finally {
+        prefetchActive = false;
+    }
+}
+
 function loadQuizQuestion(forceOffline = false) {
     const qBox = document.getElementById('quiz-question');
     const optsContainer = document.getElementById('quiz-options');
@@ -2363,11 +2804,42 @@ function loadQuizQuestion(forceOffline = false) {
     activeQuizWord = "";
     activeQuizTranslation = "";
     
+    if (btnNext) btnNext.disabled = true;
+    
+    // Check if we have a prefetched question ready!
+    if (prefetchedQuizQuestion && !forceOffline) {
+        const res = prefetchedQuizQuestion;
+        prefetchedQuizQuestion = null; // consume
+        
+        if (btnNext) btnNext.disabled = false;
+        
+        qBox.textContent = res.question;
+        activeQuizAnswerIndex = res.correctIndex;
+        activeQuizWord = res.word || res.options[res.correctIndex];
+        activeQuizTranslation = res.translation || "";
+        
+        if (btnQuizSpeak) {
+            btnQuizSpeak.classList.remove('hidden');
+            btnQuizSpeak.dataset.phrase = res.question.replace(/_____/g, activeQuizWord);
+        }
+        
+        optsContainer.innerHTML = '';
+        res.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.classList.add('quiz-option');
+            btn.textContent = `${idx + 1}. ${opt}`;
+            btn.addEventListener('click', () => handleQuizAnswer(idx, res.explanation, btn));
+            optsContainer.appendChild(btn);
+        });
+        
+        // Trigger background prefetch for the next round
+        prefetchNextQuizQuestion();
+        return;
+    }
+    
     // Increment request ID to prevent race condition overlaps
     quizRequestId++;
     const currentRequestId = quizRequestId;
-    
-    if (btnNext) btnNext.disabled = true;
     
     const vocabList = state.vocabBank.length > 0 ? state.vocabBank : DEFAULT_VOCAB_FALLBACK;
     
@@ -2415,6 +2887,8 @@ function loadQuizQuestion(forceOffline = false) {
             btn.addEventListener('click', () => handleQuizAnswer(idx, targetQuestion.explanation, btn));
             optsContainer.appendChild(btn);
         });
+        
+        prefetchNextQuizQuestion();
         return;
     }
     
@@ -2497,6 +2971,9 @@ Realize uma dupla-checagem rigorosa dos dados antes de retornar.`;
                 btn.addEventListener('click', () => handleQuizAnswer(idx, res.explanation, btn));
                 optsContainer.appendChild(btn);
             });
+            
+            // Prefetch next question
+            prefetchNextQuizQuestion();
         })
         .catch(err => {
             if (currentRequestId !== quizRequestId) return;
@@ -3318,51 +3795,26 @@ IMPORTANTE:
 }
 
 function generateFlashcardsOffline(count) {
-    const pool = [
-        { word: "Schedule", pos: "noun", translation: "Agenda, cronograma", example: "Let's check the weekly study schedule." },
-        { word: "Actually", pos: "adverb", translation: "Na verdade, realmente", example: "I actually completed all my daily tasks." },
-        { word: "Avoid", pos: "verb", translation: "Evitar", example: "Try to avoid distractions while using the timer." },
-        { word: "Succeed", pos: "verb", translation: "Ter sucesso", example: "With consistency, you will succeed in your goals." },
-        { word: "Improvement", pos: "noun", translation: "Melhoria, progresso", example: "I can see a huge improvement in my speaking." },
-        { word: "Overcome", pos: "verb", translation: "Superar, vencer", example: "We will overcome the learning difficulties." },
-        { word: "Challenging", pos: "adjective", translation: "Desafiador", example: "The writing exercise was quite challenging today." },
-        { word: "Achievement", pos: "noun", translation: "Conquista, feito", example: "Reaching Level 10 is a major achievement." },
-        { word: "Consistent", pos: "adjective", translation: "Consistente", example: "A consistent routine is vital for ADHD learners." },
-        { word: "Enhance", pos: "verb", translation: "Aprimorar, melhorar", example: "Listen to podcasts to enhance your listening skills." },
-        { word: "Gather", pos: "verb", translation: "Reunir, juntar", example: "Gather your notes before starting the review." },
-        { word: "Struggle", pos: "noun / verb", translation: "Dificuldade / Lutar", example: "Many students struggle with English prepositions." },
-        { word: "Procrastinate", pos: "verb", translation: "Adiar, procrastinar", example: "Break tasks down into small chunks to avoid procrastination." },
-        { word: "Breakthrough", pos: "noun", translation: "Avanço importante", example: "He had a vocabulary breakthrough after active reading." },
-        { word: "Resilient", pos: "adjective", translation: "Resiliente, persistente", example: "Be resilient when you make spelling mistakes." },
-        { word: "Dread", pos: "verb", translation: "Temer, ter pavor", example: "Don't dread the speaking practice, it is fun!" },
-        { word: "Inquire", pos: "verb", translation: "Perguntar, indagar", example: "I need to inquire about the course schedule." },
-        { word: "Acknowledge", pos: "verb", translation: "Reconhecer, admitir", example: "Acknowledge your progress, even the small wins." },
-        { word: "Outstanding", pos: "adjective", translation: "Excepcional, excelente", example: "Your execution score today was outstanding!" },
-        { word: "Thrive", pos: "verb", translation: "Prosperar, dar-se bem", example: "ADHD learners thrive in gamified environments." },
-        { word: "Wander", pos: "verb", translation: "Vagar, divagar", example: "My mind tends to wander during long audio lessons." },
-        { word: "Vague", pos: "adjective", translation: "Vago, impreciso", example: "The instructions were too vague for me." },
-        { word: "Wealth", pos: "noun", translation: "Riqueza, fartura", example: "Reading provides a wealth of new vocabulary." },
-        { word: "Fulfill", pos: "verb", translation: "Cumprir, satisfazer", example: "We must fulfill our promises to the study fiscal." },
-        { word: "Reluctance", pos: "noun", translation: "Relutância, hesitação", example: "She showed some reluctance to speak English on camera." },
-        { word: "Puzzled", pos: "adjective", translation: "Intrigado, confuso", example: "I was puzzled by the spelling of that word." },
-        { word: "Grasp", pos: "verb / noun", translation: "Compreender, entender / Aderência", example: "It took me a while to grasp this grammar rule." },
-        { word: "Accurate", pos: "adjective", translation: "Preciso, exato", example: "His translation of the phrase was very accurate." }
-    ];
+    const pool = window.FLASHCARDS_POOL || [];
     
     // Filter out words that are already in state.knownWords
-    let filteredPool = pool.filter(item => !state.knownWords.includes(item.word.toLowerCase()));
+    let filteredPool = pool.filter(item => !state.knownWords.includes(item.word.toLowerCase().trim()));
     
-    if (filteredPool.length < 5) {
-        filteredPool = pool;
+    if (filteredPool.length < count) {
+        // Fallback: if we do not have enough unseen words, use the entire pool to fulfill the session duration
+        filteredPool = [...pool];
     }
     
-    // Select cards
-    const result = [];
-    for (let i = 0; i < count; i++) {
-        const randIdx = Math.floor(Math.random() * filteredPool.length);
-        result.push({ ...filteredPool[randIdx] });
+    // Fisher-Yates Shuffle to guarantee random order and zero repetition
+    const shuffled = [...filteredPool];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
     }
-    return result;
+    
+    return shuffled.slice(0, count).map(item => ({ ...item }));
 }
 
 function showFlashcard(index) {
@@ -3695,20 +4147,25 @@ function initAuthPortal() {
     
     // Logout Button
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
+        logoutBtn.addEventListener('click', async () => {
             if (confirm("Deseja realmente sair da conta atual?")) {
                 state.activeUser = null;
                 localStorage.removeItem('adhd_active_user');
                 
-                // Reset visual states
-                portal.classList.add('active');
-                loginForm.classList.remove('hidden');
-                registerForm.classList.add('hidden');
-                document.getElementById('placement-test-container').classList.add('hidden');
+                if (supabaseClient) {
+                    try {
+                        await supabaseClient.auth.signOut();
+                        console.log("[Supabase] Signed out successfully.");
+                    } catch (err) {
+                        console.error("[Supabase] Error signing out:", err);
+                    }
+                }
                 
-                // Reset form fields
-                loginForm.reset();
-                registerForm.reset();
+                // Clear prefetch cache
+                prefetchedQuizQuestion = null;
+                
+                // Force reload page to cleanly reset all states and return to login
+                location.reload();
             }
         });
     }
@@ -3999,10 +4456,29 @@ function initSupabase() {
             supabaseClient = window.supabase.createClient(state.supabaseUrl, state.supabaseKey);
             console.log("Supabase Client initialized successfully.");
             
-            // Automatically pull progress in background if user is logged in
-            if (state.activeUser) {
-                pullStateFromSupabase();
-            }
+            // Automatically pull progress and check user session in background
+            supabaseClient.auth.getSession().then(({ data: { session } }) => {
+                if (session && session.user) {
+                    const email = session.user.email;
+                    state.activeUser = email;
+                    localStorage.setItem('adhd_active_user', email);
+                    
+                    const portal = document.getElementById('login-portal');
+                    if (portal) portal.classList.remove('active');
+                    
+                    const userDisp = document.getElementById('active-user-display');
+                    if (userDisp) userDisp.textContent = `Usuário: ${email}`;
+                    
+                    pullStateFromSupabase();
+                } else if (state.activeUser) {
+                    pullStateFromSupabase();
+                }
+            }).catch(err => {
+                console.error("Error retrieving Supabase session:", err);
+                if (state.activeUser) {
+                    pullStateFromSupabase();
+                }
+            });
         } catch(e) {
             console.error("Failed to initialize Supabase:", e);
             supabaseClient = null;

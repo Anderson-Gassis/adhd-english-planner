@@ -520,6 +520,7 @@
                         <button class="btn btn-tutor-sub" data-subtab="quiz">❓ Quiz de Vocabulário</button>
                         <button class="btn btn-tutor-sub" data-subtab="speed">⚡ Speed Word Battle (60s)</button>
                         <button class="btn btn-tutor-sub" data-subtab="flashcards">🧠 Flashcards Inteligentes</button>
+                        <button class="btn btn-tutor-sub" data-subtab="speaking">🗣️ Pense em Inglês</button>
                     </div>
 
                     <!-- Tutor Sub-tab contents -->
@@ -717,6 +718,66 @@
                                     <div class="flashcard-actions hidden" id="flashcard-buttons" style="display: flex; gap: 12px; margin-top: 20px; justify-content: center; width: 100%;">
                                         <button class="btn btn-secondary" id="btn-card-known" style="flex: 1; font-size: 12px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 6px;">✔️ Já Conheço (Não Repetir)</button>
                                         <button class="btn btn-primary" id="btn-card-new" style="flex: 1; font-size: 12px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 6px;">➕ Estudar (Palavra Nova)</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Subtab: Pense em Inglês (Speaking Activity) -->
+                        <div id="subtab-content-speaking" class="tutor-pane">
+                            <section class="card glass">
+                                <div class="card-header">
+                                    <span class="icon">🗣️</span>
+                                    <h2>Pense em Inglês (Stop Translating)</h2>
+                                    <span class="badge badge-speaking-level ml-auto" style="font-size: 11px; background: var(--secondary-glow); border: 1px solid var(--secondary); color: var(--secondary); padding: 2px 8px; border-radius: 12px;">Active Thinking</span>
+                                </div>
+
+                                <div class="speaking-setup" id="speaking-setup-area" style="width: 100%;">
+                                    <p class="help-text" style="font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
+                                        Treine seu cérebro para <strong>pensar diretamente em inglês</strong>! Apresentamos uma situação real do cotidiano em português. Em vez de traduzir palavra por palavra, você deve reagir com a frase em inglês mais natural e idiomática. Você pode digitar ou falar diretamente no microfone!
+                                    </p>
+                                    <button class="btn btn-success" id="btn-start-speaking" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">🚀 Iniciar Sessão de Treinamento</button>
+                                </div>
+
+                                <div class="speaking-game-area hidden" id="speaking-game-area" style="width: 100%;">
+                                    <div class="speaking-progress-container" style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 6px;">
+                                        <span id="speaking-progress-text" style="color: var(--text-muted);">Situação 1 de 10</span>
+                                        <span id="speaking-xp-reward" style="color: var(--secondary); font-weight: bold;">+0 XP</span>
+                                    </div>
+                                    <div class="speaking-progress-bar" style="background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 16px;">
+                                        <div id="speaking-progress-fill" style="background: var(--secondary); height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+                                    </div>
+
+                                    <div class="speaking-prompt-card glass" style="padding: 20px; border-radius: 12px; background: rgba(15, 12, 25, 0.7); border: 1px solid var(--border-glass); text-align: center; margin-bottom: 16px;">
+                                        <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">CONCEITO / SITUAÇÃO</span>
+                                        <h3 id="speaking-situation-prompt" style="font-family: var(--font-heading); font-size: 20px; color: #fff; margin: 0; line-height: 1.4;">Como pedir a conta em um restaurante de forma natural?</h3>
+                                    </div>
+
+                                    <div class="speaking-interaction-box" style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                                        <div style="position: relative; width: 100%;">
+                                            <input type="text" id="speaking-text-input" class="glass-input" placeholder="Escreva a reação em inglês..." style="width: 100%; padding-right: 50px; font-size: 15px;">
+                                            <button class="btn-tts" id="btn-speak-listen-correct" title="Ouvir resposta correta" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.2s;">🔊</button>
+                                        </div>
+
+                                        <div style="display: flex; gap: 10px; width: 100%;">
+                                            <button class="btn btn-outline" id="btn-speaking-mic" style="flex: 0 0 50px; display: flex; align-items: center; justify-content: center; padding: 0; font-size: 20px;" title="Falar no microfone">🎤</button>
+                                            <button class="btn btn-primary" id="btn-speaking-check" style="flex: 1;">✔️ Verificar Resposta</button>
+                                        </div>
+                                        
+                                        <div id="speaking-mic-status" class="hidden text-center" style="font-size: 11px; color: var(--secondary); font-weight: bold; animation: pulse 1.5s infinite; margin-top: 4px;">
+                                            🔴 Ouvindo você... Fale agora!
+                                        </div>
+                                    </div>
+
+                                    <div id="speaking-feedback-area" class="hidden text-left" style="margin-top: 20px; padding: 16px; border-radius: 8px; border: 1px solid transparent; background: rgba(255,255,255,0.02);">
+                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                            <span id="speaking-feedback-icon" style="font-size: 18px;">🎉</span>
+                                            <h4 id="speaking-feedback-title" style="margin: 0; font-size: 15px; font-weight: bold;">Excelente!</h4>
+                                        </div>
+                                        <p id="speaking-feedback-text" style="font-size: 12px; line-height: 1.5; color: #fff; margin: 0; margin-bottom: 8px;">A frase correta é: <strong>Can I have the bill, please?</strong></p>
+                                        <p id="speaking-feedback-explanation" style="font-size: 11px; line-height: 1.4; color: var(--text-muted); margin: 0; border-left: 2px solid var(--border-glass); padding-left: 8px; font-style: italic;">Explicação técnica...</p>
+                                        
+                                        <button class="btn btn-secondary mt-3" id="btn-speaking-next" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;">Próxima Situação ➡️</button>
                                     </div>
                                 </div>
                             </section>
@@ -1042,6 +1103,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="confetti.js?v=6"></script>
     <script src="curriculum_expanded.js?v=6"></script>
+    <script src="flashcards_pool.js?v=7"></script>
     <script src="app.js?v=6"></script>
 </body>
 </html>

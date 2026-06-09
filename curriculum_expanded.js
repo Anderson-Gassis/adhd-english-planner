@@ -377,7 +377,10 @@ function buildSyllabus() {
                 
                 const lessonId = `${lvl.toLowerCase().replace('/', '')}_m${m + 1}_l${l + 1}`;
                 
-                // Construct Duolingo-style interactive slides
+                const term1 = seed.terms[0]?.term || "Focus";
+                const termOptions = [term1, "Delete", "Design", "Cancel"].sort(() => 0.5 - Math.random());
+                
+                // Construct 7 Duolingo-style interactive slides for robust learning
                 const slides = [
                     {
                         type: "intro",
@@ -394,6 +397,14 @@ function buildSyllabus() {
                         correctOrder: seed.en.split(' ')
                     },
                     {
+                        type: "puzzle",
+                        title: "Fixação Gramatical 🧩",
+                        instruction: "Reordene as palavras usando o novo vocabulário profissional:",
+                        portuguese: `Nós precisamos verificar o(a) "${term1}" hoje.`,
+                        scrambledWords: ["We", "need", "to", "verify", "the", term1, "today"].sort(() => 0.5 - Math.random()),
+                        correctOrder: ["We", "need", "to", "verify", "the", term1, "today"]
+                    },
+                    {
                         type: "listening",
                         title: "Desafio de Escuta 🎧",
                         instruction: "Ouça o áudio e selecione a palavra correta para preencher a lacuna:",
@@ -402,6 +413,16 @@ function buildSyllabus() {
                         options: seed.options,
                         correctIndex: seed.options.indexOf(seed.missing),
                         explanation: `A lacuna é preenchida por '${seed.missing}'.`
+                    },
+                    {
+                        type: "listening",
+                        title: "Escuta Avançada 🎧",
+                        instruction: "Ouça o áudio e selecione o termo técnico correto correspondente:",
+                        audioText: `We need to check the ${term1} of the project.`,
+                        sentence: `We need to check the _____ of the project.`,
+                        options: termOptions,
+                        correctIndex: termOptions.indexOf(term1),
+                        explanation: `O termo técnico correto é '${term1}'.`
                     },
                     {
                         type: "vocab",

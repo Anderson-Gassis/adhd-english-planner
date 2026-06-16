@@ -1187,6 +1187,19 @@ class TimerController {
     }
 }
 
+function shuffleOptions(quiz, correctKey = 'correctIndex') {
+    if (!quiz || !quiz.options || typeof quiz[correctKey] !== 'number') return quiz;
+    const correctValue = quiz.options[quiz[correctKey]];
+    const shuffledOptions = [...quiz.options];
+    for (let i = shuffledOptions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+    }
+    quiz.options = shuffledOptions;
+    quiz[correctKey] = shuffledOptions.indexOf(correctValue);
+    return quiz;
+}
+
 let timerController;
 
 /* ==========================================
@@ -2836,6 +2849,7 @@ function loadQuizQuestion(forceOffline = false) {
     if (prefetchedQuizQuestion && !forceOffline) {
         const res = prefetchedQuizQuestion;
         prefetchedQuizQuestion = null; // consume
+        shuffleOptions(res, 'correctIndex');
         
         if (btnNext) btnNext.disabled = false;
         
@@ -2886,12 +2900,13 @@ function loadQuizQuestion(forceOffline = false) {
             const globalItem = DEFAULT_VOCAB_FALLBACK[Math.floor(Math.random() * DEFAULT_VOCAB_FALLBACK.length)];
             targetQuestion = {
                 question: globalItem.question,
-                options: globalItem.options,
+                options: [...globalItem.options],
                 correctIndex: globalItem.correctIndex,
                 word: globalItem.word,
                 translation: globalItem.translation,
                 explanation: globalItem.explanation
             };
+            shuffleOptions(targetQuestion, 'correctIndex');
         }
         
         activeQuizWord = targetQuestion.word;
@@ -4284,6 +4299,7 @@ let placementScore = 0;
 function startPlacementTest() {
     placementCurrentIdx = 0;
     placementScore = 0;
+    PLACEMENT_QUESTIONS.forEach(q => shuffleOptions(q, 'correct'));
     showPlacementQuestion();
 }
 
@@ -5147,6 +5163,64 @@ function renderStudyStep(stepIdx) {
             renderLessonCheckpoint(slide.quiz);
         }
     }
+    else if (slide.type === 'dialogue_vocab') {
+        let dialogueHTML = '';
+        if (slide.dialogue) {
+            dialogueHTML = `
+                <div class="book-dialogue card glass" style="padding: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.15); border-radius: 8px; font-size: 13px; line-height: 1.6; max-height: 250px; overflow-y: auto;">
+                    <strong style="color: var(--primary-glow); display: block; margin-bottom: 10px;">💬 Diálogos da Lição:</strong>
+                    <div>${slide.dialogue}</div>
+                </div>
+            `;
+        }
+        
+        let termsHTML = '';
+        if (slide.vocab && slide.vocab.length > 0) {
+            termsHTML = `<strong style="color: var(--secondary); display: block; margin-bottom: 10px; font-size: 14px;">📚 Vocabulário Essencial:</strong>`;
+            slide.vocab.forEach(t => {
+                termsHTML += `
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <strong style="color: var(--secondary); font-size: 13px;">${t.term}</strong>
+                            <button class="btn btn-outline btn-xs speak-btn" data-text="${t.audioText || t.term}" style="padding: 0 6px; height: 20px; font-size: 10px;">🔊</button>
+                        </div>
+                        <p style="font-size: 11px; margin: 0; color: var(--text-muted); line-height: 1.4;">${t.definition}</p>
+                    </div>
+                `;
+            });
+        }
+        
+        const nextButtonText = totalSteps > stepIdx + 1 ? "Avançar para Exercícios ➡️" : "Concluir Lição ➡️";
+        const nextButtonId = totalSteps > stepIdx + 1 ? "btn-next-slide" : "btn-direct-complete";
+        
+        slideWrapper.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                ${dialogueHTML}
+                ${termsHTML}
+            </div>
+            <button class="btn btn-primary btn-sm w-full" id="${nextButtonId}" style="text-transform: none;">${nextButtonText}</button>
+        `;
+    }
+    else if (slide.type === 'book_exercises') {
+        slideWrapper.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <div class="book-exercises card glass" style="padding: 16px; margin-bottom: 16px; background: rgba(0,0,0,0.15); border-radius: 8px; font-size: 13px; line-height: 1.6; max-height: 250px; overflow-y: auto;">
+                    <strong style="color: var(--secondary); display: block; margin-bottom: 10px;">✍️ Exercícios Originais do Livro:</strong>
+                    <div>${slide.exercises}</div>
+                </div>
+                
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Escreva suas respostas abaixo para praticar (opcional):</p>
+                <textarea id="exercises-user-input" class="input glass" style="width: 100%; min-height: 80px; font-size: 13px; padding: 10px; border-radius: 8px; resize: vertical; margin-bottom: 12px; background: rgba(0,0,0,0.2);" placeholder="Digite suas respostas aqui..."></textarea>
+                
+                <div id="exercises-feedback" style="font-size: 12px; padding: 10px; border-radius: 6px; margin-bottom: 12px;" class="hidden"></div>
+            </div>
+            
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" id="btn-show-gabarito" style="flex: 1; text-transform: none;">Revelar Gabarito 🔑</button>
+                <button class="btn btn-primary btn-sm" id="btn-complete-lesson-exercise" style="flex: 1; text-transform: none;" disabled>Concluir Lição ➡️</button>
+            </div>
+        `;
+    }
     
     contentContainer.innerHTML = progressBarHTML;
     contentContainer.appendChild(slideWrapper);
@@ -5166,6 +5240,40 @@ function renderStudyStep(stepIdx) {
         nextBtn.addEventListener('click', () => {
             currentStudyStep++;
             renderStudyStep(currentStudyStep);
+        });
+    }
+    
+    // Bind dialogue_vocab & book_exercises actions
+    const directCompleteBtn = contentContainer.querySelector('#btn-direct-complete');
+    if (directCompleteBtn) {
+        directCompleteBtn.addEventListener('click', () => {
+            document.getElementById('btn-complete-lesson').click();
+        });
+    }
+    
+    const showGabaritoBtn = contentContainer.querySelector('#btn-show-gabarito');
+    if (showGabaritoBtn) {
+        showGabaritoBtn.addEventListener('click', () => {
+            const feedback = contentContainer.querySelector('#exercises-feedback');
+            if (feedback) {
+                feedback.classList.remove('hidden');
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.border = '1px solid var(--success)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `<strong>Gabarito / Explicação:</strong><br>${slide.explanation || "Pratique completando e traduzindo os exercícios no seu caderno."}`;
+            }
+            
+            const completeExerciseBtn = contentContainer.querySelector('#btn-complete-lesson-exercise');
+            if (completeExerciseBtn) {
+                completeExerciseBtn.disabled = false;
+            }
+        });
+    }
+    
+    const completeExerciseBtn = contentContainer.querySelector('#btn-complete-lesson-exercise');
+    if (completeExerciseBtn) {
+        completeExerciseBtn.addEventListener('click', () => {
+            document.getElementById('btn-complete-lesson').click();
         });
     }
     
@@ -5710,6 +5818,7 @@ async function startLevelExam(levelId) {
         ...pronunciationQuestions
     ];
     activeExamQuestions.sort(() => 0.5 - Math.random());
+    activeExamQuestions.forEach(q => shuffleOptions(q, 'correctIndex'));
     
     // Hide loading, show quiz
     loadingBox.style.display = 'none';

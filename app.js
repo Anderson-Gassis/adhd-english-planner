@@ -4713,22 +4713,13 @@ function renderCourseRoadmap() {
             statusTagText = "Em Progresso ⚡";
             statusTagClass = "tag-active";
             
-            const isExamUnlocked = completedCount >= totalLessons;
-            if (isExamUnlocked) {
-                actionButtonHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%;">
-                        <button class="btn btn-secondary btn-sm btn-open-study" data-level="${lvl.id}">📚 Estudar Módulos (${totalLessons}/${totalLessons})</button>
-                        <button class="btn btn-success btn-sm btn-start-level-exam" data-level="${lvl.id}">🎓 Prestar Exame de Nível ${lvl.id}</button>
-                    </div>
-                `;
-            } else {
-                actionButtonHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%;">
-                        <button class="btn btn-primary btn-sm btn-open-study" data-level="${lvl.id}">📚 Estudar Módulos (${completedCount}/${totalLessons})</button>
-                        <button class="btn btn-primary btn-sm btn-start-level-exam" data-level="${lvl.id}" style="opacity: 0.5; cursor: not-allowed;" disabled>🔒 Prova Bloqueada (${completedCount}/${totalLessons})</button>
-                    </div>
-                `;
-            }
+            // Exam is always unlocked to allow skipping/testing out of level!
+            actionButtonHTML = `
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%;">
+                    <button class="btn btn-primary btn-sm btn-open-study" data-level="${lvl.id}">📚 Estudar Módulos (${completedCount}/${totalLessons})</button>
+                    <button class="btn btn-success btn-sm btn-start-level-exam" data-level="${lvl.id}">🎓 Prestar Exame de Nível ${lvl.id}</button>
+                </div>
+            `;
         }
         
         const card = document.createElement('div');
@@ -4807,19 +4798,17 @@ function renderModulesAndLessons(levelId) {
     document.getElementById('level-study-progress-pct').textContent = `${progressPct}% Concluído`;
     document.getElementById('level-study-progress-bar').style.width = `${progressPct}%`;
     
-    // Victory message check
+    // Victory message check (always allow taking exam to skip/test out of level)
     const victoryBox = document.getElementById('level-victory-box');
     const examBtn = document.getElementById('btn-course-start-exam');
     if (progressPct === 100) {
         victoryBox.classList.remove('hidden');
         document.getElementById('level-victory-message-text').textContent = getVictoryMessage(levelId);
-        examBtn.disabled = false;
-        examBtn.textContent = `Prestar Exame de Nível ${levelId}`;
     } else {
         victoryBox.classList.add('hidden');
-        examBtn.disabled = true;
-        examBtn.textContent = `🔒 Exame Bloqueado (${completedCount}/${totalLessons} Lições)`;
     }
+    examBtn.disabled = false;
+    examBtn.textContent = `🎓 Prestar Exame de Nível ${levelId} (${completedCount}/${totalLessons} Concluídas)`;
     
     // Bind Start Exam button in Modules View
     examBtn.onclick = () => {
@@ -4848,21 +4837,8 @@ function renderModulesAndLessons(levelId) {
         
         modLessons.forEach((lesson, lesIdx) => {
             const isFinished = completedLessons.includes(lesson.id);
-            // Check lock logic: first lesson is unlocked, subsequent ones unlocked if previous is finished
-            let isUnlocked = false;
-            if (lesIdx === 0) {
-                isUnlocked = true;
-            } else {
-                const prevLessonId = modLessons[lesIdx - 1].id;
-                isUnlocked = completedLessons.includes(prevLessonId);
-            }
-            
-            // Or if previous module is complete
-            if (modIdx > 0 && lesIdx === 0) {
-                const prevMod = modules[modIdx - 1];
-                const prevModLastLessonId = prevMod.lessons[prevMod.lessons.length - 1].id;
-                isUnlocked = completedLessons.includes(prevModLastLessonId);
-            }
+            // Lock logic disabled: all lessons are unlocked by default to allow skipping/arbitrary order!
+            let isUnlocked = true;
             
             let statusIcon = "🔒";
             let rowStyle = "opacity: 0.5; cursor: not-allowed;";
@@ -5042,6 +5018,7 @@ function renderStudyStep(stepIdx) {
             <div style="display: flex; gap: 8px;">
                 <button class="btn btn-outline btn-sm" id="btn-reset-puzzle" style="flex: 1; text-transform: none;">Limpar</button>
                 <button class="btn btn-primary btn-sm" id="btn-check-puzzle" style="flex: 2; text-transform: none;">Verificar 🧩</button>
+                <button class="btn btn-outline btn-sm" id="btn-skip-puzzle" style="flex: 1; text-transform: none; color: var(--text-muted);">Pular ➡️</button>
             </div>
         `;
     } 
@@ -5224,6 +5201,43 @@ function renderStudyStep(stepIdx) {
             }
         });
         
+        const skipBtn = contentContainer.querySelector('#btn-skip-puzzle');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                puzzleSlots.innerHTML = '';
+                slide.correctOrder.forEach(word => {
+                    const badge = document.createElement('span');
+                    badge.style.padding = '4px 8px';
+                    badge.style.borderRadius = '4px';
+                    badge.style.background = 'rgba(16, 185, 129, 0.1)';
+                    badge.style.border = '1px solid var(--success)';
+                    badge.style.color = 'var(--success)';
+                    badge.style.fontSize = '12px';
+                    badge.style.display = 'inline-block';
+                    badge.style.margin = '2px';
+                    badge.textContent = word;
+                    puzzleSlots.appendChild(badge);
+                });
+                
+                feedback.classList.remove('hidden');
+                feedback.style.background = 'rgba(255, 255, 255, 0.05)';
+                feedback.style.border = '1px solid var(--border-glass)';
+                feedback.style.color = 'var(--text-muted)';
+                feedback.innerHTML = `<strong>Exercício Pulado.</strong> A ordem correta está exibida acima.`;
+                
+                checkBtn.textContent = "Avançar ➡️";
+                checkBtn.className = "btn btn-success btn-sm";
+                checkBtn.style.flex = "1";
+                resetBtn.classList.add('hidden');
+                skipBtn.classList.add('hidden');
+                
+                checkBtn.onclick = () => {
+                    currentStudyStep++;
+                    renderStudyStep(currentStudyStep);
+                };
+            });
+        }
+        
         renderPuzzle();
     }
     
@@ -5345,6 +5359,41 @@ function renderLessonCheckpoint(quizData) {
         
         optionsContainer.appendChild(btn);
     });
+    
+    // Add Skip Checkpoint button
+    const skipBtn = document.createElement('button');
+    skipBtn.className = 'btn btn-sm btn-outline';
+    skipBtn.style.width = '100%';
+    skipBtn.style.marginTop = '12px';
+    skipBtn.style.textTransform = 'none';
+    skipBtn.style.fontSize = '11px';
+    skipBtn.style.color = 'var(--text-muted)';
+    skipBtn.textContent = 'Pular Checkpoint e Concluir ➡️';
+    skipBtn.addEventListener('click', () => {
+        const allOpts = optionsContainer.querySelectorAll('.quiz-option');
+        allOpts.forEach(o => o.disabled = true);
+        skipBtn.disabled = true;
+        
+        feedbackBox.className = 'lesson-quiz-feedback';
+        feedbackBox.style.background = 'rgba(255, 255, 255, 0.05)';
+        feedbackBox.style.border = '1px solid var(--border-glass)';
+        feedbackBox.style.color = 'var(--text-muted)';
+        feedbackBox.style.marginTop = '12px';
+        feedbackBox.style.padding = '8px 12px';
+        feedbackBox.style.borderRadius = '6px';
+        feedbackBox.innerHTML = `<strong>Checkpoint Pulado.</strong> A resposta correta seria: <em>${quizData.options[quizData.correctIndex]}</em>.<br>Explicação: ${quizData.explanation}`;
+        feedbackBox.classList.remove('hidden');
+        
+        // Highlight correct option
+        if (allOpts[quizData.correctIndex]) {
+            allOpts[quizData.correctIndex].classList.add('correct');
+        }
+        
+        // Enable Complete Button
+        const completeBtn = document.getElementById('btn-complete-lesson');
+        completeBtn.disabled = false;
+    });
+    optionsContainer.appendChild(skipBtn);
 }
 
 // Bind other buttons in study view

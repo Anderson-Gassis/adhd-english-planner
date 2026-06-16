@@ -71,12 +71,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se pronuncia a letra 'W' em inglês?",
             "options": [
-                "zi",
-                "uai",
+                "dbâiu",
                 "double-u",
-                "dbâiu"
+                "uai",
+                "zi"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "A letra W se pronuncia 'dbâiu' (ou 'double-u' em transcrição rápida)."
         },
         "businessContext": {
@@ -102,8 +102,8 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como se diz o e-mail 'sales@company.com' em inglês corporativo?",
                 "options": [
-                    "sales dot company at com",
                     "sales at company point com",
+                    "sales dot company at com",
                     "sales slash company dot com",
                     "sales at company dot com"
                 ],
@@ -158,12 +158,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual das opções é um cumprimento formal ao se apresentar a alguém no mundo profissional?",
             "options": [
-                "How do you do?",
                 "See you later",
+                "Bye-bye",
                 "Hey, what's up?",
-                "Bye-bye"
+                "How do you do?"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "'How do you do?' é a saudação formal clássica de apresentação em negócios."
         },
         "businessContext": {
@@ -189,12 +189,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como você apresenta um cliente (Sr. Davis) ao seu diretor?",
                 "options": [
-                    "Davis, look at this guy.",
+                    "Mr. Davis, this is our director.",
                     "This is Davis.",
                     "Hey, meet our director.",
-                    "Mr. Davis, this is our director."
+                    "Davis, look at this guy."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 0,
                 "explanation": "A forma polida e correta de apresentar é: '[Nome], this is [Nome]'."
             }
         },
@@ -247,10 +247,10 @@ const BASSANI_TOPICS = {
             "options": [
                 "Those",
                 "This",
-                "That",
-                "These"
+                "These",
+                "That"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Usamos 'that' para coisas distantes no singular ('aquele/aquela')."
         },
         "businessContext": {
@@ -278,10 +278,10 @@ const BASSANI_TOPICS = {
                 "options": [
                     "This samples",
                     "That samples",
-                    "Those samples",
-                    "These samples"
+                    "These samples",
+                    "Those samples"
                 ],
-                "correctIndex": 3,
+                "correctIndex": 2,
                 "explanation": "Para objetos próximos no plural usamos 'These'."
             }
         },
@@ -332,12 +332,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se diz 'Eu moro em São Paulo' em inglês?",
             "options": [
-                "I live in São Paulo",
                 "I live at São Paulo",
+                "I live in São Paulo",
                 "I living São Paulo",
                 "I lives in São Paulo"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "Usamos a preposição 'in' para cidades: I live in São Paulo."
         },
         "businessContext": {
@@ -363,9 +363,9 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Qual a melhor frase para se apresentar profissionalmente em uma feira de negócios?",
                 "options": [
+                    "I live in Brazil.",
                     "Nice to see you company.",
                     "I am a person.",
-                    "I live in Brazil.",
                     "I represent company X."
                 ],
                 "correctIndex": 3,
@@ -452,10 +452,10 @@ const BASSANI_TOPICS = {
                 "options": [
                     "Our team is Germany.",
                     "Our team is from German.",
-                    "Our team is Germanyan.",
-                    "Our team is German."
+                    "Our team is German.",
+                    "Our team is Germanyan."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 2,
                 "explanation": "'German' é o adjetivo de nacionalidade. 'Germany' é o país."
             }
         },
@@ -506,12 +506,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual o verbo 'To Be' correto para a frase: 'She _____ very professional'?",
             "options": [
+                "is",
                 "are",
                 "am",
-                "is",
                 "be"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Para He, She, It, a conjugação do verbo To Be no presente é 'is'."
         },
         "businessContext": {
@@ -537,12 +537,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Qual a melhor maneira de descrever um cliente que quer tudo perfeito mas é educado?",
                 "options": [
-                    "Unprofessional and short",
-                    "Demanding but polite",
                     "Aggressive but polite",
-                    "Lazy and short"
+                    "Lazy and short",
+                    "Demanding but polite",
+                    "Unprofessional and short"
                 ],
-                "correctIndex": 1,
+                "correctIndex": 2,
                 "explanation": "'Demanding but polite' descreve perfeitamente um perfil de negócios exigente e profissional."
             }
         },
@@ -624,12 +624,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como você pergunta formalmente se a pessoa é responsável pela decisão final?",
                 "options": [
-                    "Are you the buyer worker?",
                     "Is you the boss?",
+                    "Are you the decision maker?",
                     "Do you buy?",
-                    "Are you the decision maker?"
+                    "Are you the buyer worker?"
                 ],
-                "correctIndex": 3,
+                "correctIndex": 1,
                 "explanation": "'Are you the decision maker?' é a forma padrão de qualificar o lead na área comercial."
             }
         },
@@ -680,12 +680,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como traduzimos 'o carro de Mary' usando o caso genitivo?",
             "options": [
-                "Mary's car",
-                "The car of Mary",
                 "Marys car",
-                "Mary car"
+                "The car of Mary",
+                "Mary car",
+                "Mary's car"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "O possuidor recebe o 's antes da coisa possuída: Mary's car."
         },
         "businessContext": {
@@ -711,12 +711,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como você diz 'o escritório do diretor comercial' em inglês?",
                 "options": [
-                    "The sales director's office",
                     "The sales director office",
                     "The office of the director of sales",
-                    "The sales directors office'"
+                    "The sales directors office'",
+                    "The sales director's office"
                 ],
-                "correctIndex": 0,
+                "correctIndex": 3,
                 "explanation": "Usamos o 's após sales director: 'The sales director's office'."
             }
         },
@@ -767,12 +767,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual pronome interrogativo usamos para perguntar sobre localizações?",
             "options": [
-                "Where",
                 "What",
-                "Who",
-                "Why"
+                "Why",
+                "Where",
+                "Who"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "'Where' significa 'onde' e é usado para locais."
         },
         "businessContext": {
@@ -799,11 +799,11 @@ const BASSANI_TOPICS = {
                 "question": "Como você pergunta qual meio de transporte o cliente prefere para ir ao aeroporto?",
                 "options": [
                     "What is airport transportation?",
-                    "How do you want to go to the airport?",
                     "Where is airport taxi?",
-                    "Why airport?"
+                    "Why airport?",
+                    "How do you want to go to the airport?"
                 ],
-                "correctIndex": 1,
+                "correctIndex": 3,
                 "explanation": "'How do you want to go...' pergunta o meio de transporte ('como')."
             }
         },
@@ -854,10 +854,10 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual preposição de tempo é usada antes de dias da semana?",
             "options": [
+                "at",
                 "in",
-                "by",
                 "on",
-                "at"
+                "by"
             ],
             "correctIndex": 2,
             "explanation": "Usamos a preposição 'on' para dias da semana (ex: on Monday)."
@@ -886,11 +886,11 @@ const BASSANI_TOPICS = {
                 "question": "Como agendar uma apresentação de vendas para sexta-feira usando a preposição correta?",
                 "options": [
                     "The presentation is under Friday.",
-                    "The presentation is in Friday.",
+                    "The presentation is on Friday.",
                     "The presentation is at Friday.",
-                    "The presentation is on Friday."
+                    "The presentation is in Friday."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 1,
                 "explanation": "Usamos 'on' para dias específicos: 'on Friday'."
             }
         },
@@ -942,11 +942,11 @@ const BASSANI_TOPICS = {
             "question": "Como se escreve 'quinto' em inglês ordinal?",
             "options": [
                 "five",
-                "fift",
                 "fifth",
+                "fift",
                 "fiveth"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "A forma ordinal correta de 5 é fifth (5th)."
         },
         "businessContext": {
@@ -972,12 +972,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como agendar um call de fechamento para às 3 da tarde em ponto?",
                 "options": [
-                    "The call is 3 hours p.m.",
+                    "The call is at 3 o'clock p.m.",
                     "The call is at 3 hour.",
-                    "The call is on 3 p.m.",
-                    "The call is at 3 o'clock p.m."
+                    "The call is 3 hours p.m.",
+                    "The call is on 3 p.m."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 0,
                 "explanation": "Usamos 'at' antes de horas e 'o'clock' para horas cheias: 'at 3 o'clock'."
             }
         },
@@ -1028,12 +1028,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual adjetivo possessivo completa a frase: 'This is _____ boss, Mr. Green.'?",
             "options": [
-                "my",
+                "me",
                 "I",
-                "mine",
-                "me"
+                "my",
+                "mine"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "Adjetivos possessivos precedem substantivos: 'my boss'."
         },
         "businessContext": {
@@ -1059,12 +1059,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como se diz 'a meta comercial deles'?",
                 "options": [
-                    "Them commercial target",
-                    "Theirs commercial target",
                     "Their commercial target",
-                    "They commercial target"
+                    "They commercial target",
+                    "Theirs commercial target",
+                    "Them commercial target"
                 ],
-                "correctIndex": 2,
+                "correctIndex": 0,
                 "explanation": "Usamos o possessivo 'Their' antes do substantivo."
             }
         },
@@ -1116,11 +1116,11 @@ const BASSANI_TOPICS = {
             "question": "Qual a diferença de 'my' e 'mine'?",
             "options": [
                 "'my' é usado por homens e 'mine' por mulheres.",
-                "Não há diferença.",
+                "'my' acompanha o substantivo e 'mine' o substitui.",
                 "'my' é formal e 'mine' é informal.",
-                "'my' acompanha o substantivo e 'mine' o substitui."
+                "Não há diferença."
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "'my' exige substantivo (my car), 'mine' substitui o substantivo (this is mine)."
         },
         "businessContext": {
@@ -1146,12 +1146,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como você afirma em um contrato que o projeto não é de sua empresa?",
                 "options": [
-                    "The project is not ours.",
-                    "The project is not our.",
+                    "The project is not we.",
                     "The project is not us.",
-                    "The project is not we."
+                    "The project is not our.",
+                    "The project is not ours."
                 ],
-                "correctIndex": 0,
+                "correctIndex": 3,
                 "explanation": "Usamos o pronome possessivo final 'ours' após o verbo."
             }
         },
@@ -1202,12 +1202,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual pronome reflexivo concorda com 'They'?",
             "options": [
-                "yourselves",
                 "himself",
-                "themselves",
-                "ourselves"
+                "yourselves",
+                "ourselves",
+                "themselves"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "O reflexivo de 'They' é 'themselves'."
         },
         "businessContext": {
@@ -1235,8 +1235,8 @@ const BASSANI_TOPICS = {
                 "options": [
                     "The client manages purchases ourselves.",
                     "The client manages purchases himself.",
-                    "The client manages purchases myself.",
-                    "The client manages purchases itself."
+                    "The client manages purchases itself.",
+                    "The client manages purchases myself."
                 ],
                 "correctIndex": 1,
                 "explanation": "'himself' (ou 'herself'/'itself' se corporativo) concorda com o sujeito 'the client'."
@@ -1289,12 +1289,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual artigo indefinido usamos antes da palavra 'honest manager'?",
             "options": [
-                "a",
-                "an",
                 "nulo",
-                "the"
+                "the",
+                "a",
+                "an"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "'Honest' começa com som vocálico (o 'h' é mudo), por isso exige 'an honest manager'."
         },
         "businessContext": {
@@ -1322,8 +1322,8 @@ const BASSANI_TOPICS = {
                 "options": [
                     "An executive office",
                     "The executive office's",
-                    "A executive office",
-                    "An executive offices"
+                    "An executive offices",
+                    "A executive office"
                 ],
                 "correctIndex": 0,
                 "explanation": "Usamos 'an' antes de palavras iniciadas com som de vogal: 'An executive'."
@@ -1376,12 +1376,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual a frase correta para indicar que há cinco pessoas na sala?",
             "options": [
-                "There are five people in the room.",
                 "Have five people in the room.",
+                "There is five people in the room.",
                 "They are five people in the room.",
-                "There is five people in the room."
+                "There are five people in the room."
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "Para plural, o verbo existir é 'There are'."
         },
         "businessContext": {
@@ -1408,11 +1408,11 @@ const BASSANI_TOPICS = {
                 "question": "Como você avisa o cliente que há um showroom comercial no prédio?",
                 "options": [
                     "Have a showroom in the building.",
-                    "There are a showroom in the building.",
+                    "There is a commercial showroom in the building.",
                     "They have showroom in building.",
-                    "There is a commercial showroom in the building."
+                    "There are a showroom in the building."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 1,
                 "explanation": "Para singular usamos 'There is a'."
             }
         },
@@ -1463,9 +1463,9 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual é a forma base do Simple Present para 'We' do verbo 'work'?",
             "options": [
-                "works",
-                "work",
                 "worker",
+                "work",
+                "works",
                 "working"
             ],
             "correctIndex": 1,
@@ -1495,11 +1495,11 @@ const BASSANI_TOPICS = {
                 "question": "Como dizer 'Nós fazemos reuniões todos os dias'?",
                 "options": [
                     "We does meetings every day.",
-                    "We holding meetings every day.",
+                    "We hold meetings every day.",
                     "We holds meetings every day.",
-                    "We hold meetings every day."
+                    "We holding meetings every day."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 1,
                 "explanation": "'We hold' (nós conduzimos/fazemos) é a conjugação no presente correto."
             }
         },
@@ -1550,12 +1550,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual preposição de tempo usamos antes de horas (ex: 9:00 AM)?",
             "options": [
-                "on",
                 "at",
-                "in",
-                "by"
+                "by",
+                "on",
+                "in"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "Usamos a preposição 'at' para horários definidos: 'at 9:00 AM'."
         },
         "businessContext": {
@@ -1581,12 +1581,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como agendar um call comercial na segunda às 10 horas?",
                 "options": [
-                    "On Monday at 10 AM",
                     "In Monday in 10 AM",
                     "By Monday at 10 AM",
+                    "On Monday at 10 AM",
                     "At Monday on 10 AM"
                 ],
-                "correctIndex": 0,
+                "correctIndex": 2,
                 "explanation": "Usamos 'on' para dias de semana e 'at' para horas: 'on Monday at 10 AM'."
             }
         },
@@ -1638,11 +1638,11 @@ const BASSANI_TOPICS = {
             "question": "Qual conectivo indica consequência ou conclusão?",
             "options": [
                 "because",
-                "so",
                 "still",
+                "so",
                 "but"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'so' (então/portanto) introduz o resultado de uma causa."
         },
         "businessContext": {
@@ -1668,12 +1668,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como conectar 'Queremos expandir' e 'Precisamos contratar mais vendedores'?",
                 "options": [
-                    "We want to expand, so we need to hire more sales reps.",
-                    "We want to expand but we need to hire more sales reps.",
                     "We want to expand because we need to hire more sales reps.",
+                    "We want to expand but we need to hire more sales reps.",
+                    "We want to expand, so we need to hire more sales reps.",
                     "We want to expand or we need to hire more sales reps."
                 ],
-                "correctIndex": 0,
+                "correctIndex": 2,
                 "explanation": "A necessidade de contratação é a consequência do desejo de expansão, logo 'so' é o conectivo correto."
             }
         },
@@ -1725,11 +1725,11 @@ const BASSANI_TOPICS = {
             "question": "Qual a terminação correta para 'go' na 3ª pessoa do singular (He/She/It)?",
             "options": [
                 "go",
+                "going",
                 "goes",
-                "gos",
-                "going"
+                "gos"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "Verbos terminados em -O recebem -es na 3ª pessoa do singular: goes."
         },
         "businessContext": {
@@ -1755,12 +1755,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como dizer 'O gerente gerencia as vendas'?",
                 "options": [
-                    "The manager manage the sales.",
-                    "The manager to manage the sales.",
+                    "The manager manages the sales.",
                     "The manager managing the sales.",
-                    "The manager manages the sales."
+                    "The manager to manage the sales.",
+                    "The manager manage the sales."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 0,
                 "explanation": "Para 'The manager' (ele/ela), o verbo recebe flexão do S/ES: 'manages'."
             }
         },
@@ -1813,8 +1813,8 @@ const BASSANI_TOPICS = {
             "options": [
                 "talks",
                 "manages",
-                "works",
-                "runs"
+                "runs",
+                "works"
             ],
             "correctIndex": 1,
             "explanation": "Palavras terminadas em sons de 'ch', 'sh', 's', 'z', 'g' suave (como manage) recebem som de sílaba extra /iz/: manages."
@@ -1842,12 +1842,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Qual destas palavras comerciais tem a pronúncia do S final como /iz/?",
                 "options": [
-                    "services",
                     "sales",
-                    "deals",
-                    "contracts"
+                    "contracts",
+                    "services",
+                    "deals"
                 ],
-                "correctIndex": 0,
+                "correctIndex": 2,
                 "explanation": "Service termina com som de sibilante /s/, exigindo som /iz/ no plural: services."
             }
         },
@@ -1898,12 +1898,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se diz 'Eu gostaria de fazer uma reserva' em inglês?",
             "options": [
-                "I want table.",
                 "I like reservation.",
-                "I prefer booking table.",
-                "I would like to make a reservation."
+                "I would like to make a reservation.",
+                "I want table.",
+                "I prefer booking table."
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "'I would like to make a reservation' é a expressão mais polida em inglês."
         },
         "businessContext": {
@@ -1931,10 +1931,10 @@ const BASSANI_TOPICS = {
                 "options": [
                     "Hey, eat lunch with me?",
                     "We lunch together?",
-                    "Lunch is good?",
-                    "Would you like to join me for a business lunch?"
+                    "Would you like to join me for a business lunch?",
+                    "Lunch is good?"
                 ],
-                "correctIndex": 3,
+                "correctIndex": 2,
                 "explanation": "'Would you like to join me for...' é o convite formal corporativo padrão."
             }
         },
@@ -1985,12 +1985,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual das opções abaixo é um substantivo incontável (uncountable)?",
             "options": [
+                "dollar",
                 "client",
                 "report",
-                "information",
-                "dollar"
+                "information"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'information' é incontável e não aceita a forma plural 'informations'."
         },
         "businessContext": {
@@ -2016,12 +2016,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como pedir informações de preços adicionais a um fornecedor?",
                 "options": [
-                    "We need few informations about prices.",
+                    "We need some more information about your prices.",
                     "We need many information about your prices.",
-                    "We need more informations about your prices.",
-                    "We need some more information about your prices."
+                    "We need few informations about prices.",
+                    "We need more informations about your prices."
                 ],
-                "correctIndex": 3,
+                "correctIndex": 0,
                 "explanation": "'information' deve ser mantido no singular, pois é incontável."
             }
         },
@@ -2072,12 +2072,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se traduz a frase 'Ela gosta de anúncios'?",
             "options": [
-                "She likes to watches advertisement.",
+                "She liking advertisement.",
                 "She like advertisements.",
-                "She likes advertisements.",
-                "She liking advertisement."
+                "She likes to watches advertisement.",
+                "She likes advertisements."
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Para 'She', o verbo recebe o S: She likes."
         },
         "businessContext": {
@@ -2103,12 +2103,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como denominar o vídeo publicitário que vai ao ar na TV?",
                 "options": [
-                    "TV Cinema",
                     "TV Commercial",
-                    "TV Movie",
-                    "TV Documentary"
+                    "TV Documentary",
+                    "TV Cinema",
+                    "TV Movie"
                 ],
-                "correctIndex": 1,
+                "correctIndex": 0,
                 "explanation": "Vídeos promocionais de empresas na TV são chamados de 'TV commercials'."
             }
         },
@@ -2160,11 +2160,11 @@ const BASSANI_TOPICS = {
             "question": "Qual é o comparativo correto para o adjetivo 'good'?",
             "options": [
                 "more good",
-                "gooder",
                 "better",
-                "best"
+                "best",
+                "gooder"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "'good' é um adjetivo irregular e seu comparativo é 'better'."
         },
         "businessContext": {
@@ -2190,12 +2190,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como dizer que sua solução é melhor que a do concorrente?",
                 "options": [
-                    "Our solution is more good than competitor.",
                     "Our solution is gooder than competitor.",
                     "Our solution is better than the competitor's.",
+                    "Our solution is more good than competitor.",
                     "Our solution is best than competitor."
                 ],
-                "correctIndex": 2,
+                "correctIndex": 1,
                 "explanation": "'better than' é o comparativo de superioridade correto para good."
             }
         },
@@ -2247,8 +2247,8 @@ const BASSANI_TOPICS = {
             "question": "Qual o superlativo correto para o adjetivo 'bad'?",
             "options": [
                 "most bad",
-                "baddest",
                 "worse",
+                "baddest",
                 "worst"
             ],
             "correctIndex": 3,
@@ -2278,9 +2278,9 @@ const BASSANI_TOPICS = {
                 "question": "Como afirmar que seu serviço é o melhor do setor?",
                 "options": [
                     "Our service is the best in the industry.",
+                    "Our service is the worst in industry.",
                     "Our service is the better in industry.",
-                    "Our service is the most good in industry.",
-                    "Our service is the worst in industry."
+                    "Our service is the most good in industry."
                 ],
                 "correctIndex": 0,
                 "explanation": "'the best' é o superlativo de superioridade do adjetivo good."
@@ -2333,12 +2333,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual a forma correta do verbo To Be no passado para 'We'?",
             "options": [
-                "was",
+                "were",
                 "are",
-                "been",
-                "were"
+                "was",
+                "been"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Para We, You, They no passado simples, o verbo To Be é 'were'."
         },
         "businessContext": {
@@ -2365,9 +2365,9 @@ const BASSANI_TOPICS = {
                 "question": "Como você diria 'O diretor financeiro estava ausente ontem'?",
                 "options": [
                     "The CFO was absent yesterday.",
+                    "The CFO were absent yesterday.",
                     "The CFO is absent yesterday.",
-                    "The CFO been absent yesterday.",
-                    "The CFO were absent yesterday."
+                    "The CFO been absent yesterday."
                 ],
                 "correctIndex": 0,
                 "explanation": "Para 'The CFO' (ele/ela), usamos a forma 'was' no passado."
@@ -2420,12 +2420,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como formamos o passado simples da maioria dos verbos regulares em inglês?",
             "options": [
+                "Adicionando o sufixo -ed ao final do verbo",
                 "Alterando a vogal central",
-                "Dobrando a primeira letra",
                 "Usando o auxiliar did na afirmativa",
-                "Adicionando o sufixo -ed ao final do verbo"
+                "Dobrando a primeira letra"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Verbos regulares no passado simples afirmativo recebem a terminação '-ed'."
         },
         "businessContext": {
@@ -2451,12 +2451,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como relatar 'Ela atualizou o sistema de CRM ontem'?",
                 "options": [
-                    "She did updated the CRM yesterday.",
-                    "She updated the CRM yesterday.",
                     "She updating CRM yesterday.",
-                    "She update the CRM yesterday."
+                    "She update the CRM yesterday.",
+                    "She updated the CRM yesterday.",
+                    "She did updated the CRM yesterday."
                 ],
-                "correctIndex": 1,
+                "correctIndex": 2,
                 "explanation": "'updated' é o passado simples regular correto de update."
             }
         },
@@ -2507,12 +2507,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual destes verbos no passado tem a terminação -ed pronunciada como uma sílaba extra /id/?",
             "options": [
-                "called",
-                "helped",
                 "presented",
-                "worked"
+                "helped",
+                "worked",
+                "called"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Verbos cuja consoante final antes do -ed é 't' ou 'd' (como present) recebem a pronúncia /id/: presented."
         },
         "businessContext": {
@@ -2538,12 +2538,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Qual palavra tem a pronúncia do -ed com som de /t/?",
                 "options": [
-                    "signed",
-                    "started",
                     "needed",
-                    "talked"
+                    "started",
+                    "talked",
+                    "signed"
                 ],
-                "correctIndex": 3,
+                "correctIndex": 2,
                 "explanation": "O som de k em talk é surdo, logo a pronúncia é /t/: talked."
             }
         },
@@ -2594,12 +2594,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual é o passado simples correto do verbo 'buy' (comprar)?",
             "options": [
+                "boughts",
                 "bought",
                 "buyed",
-                "boughten",
-                "boughts"
+                "boughten"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'buy' é irregular e seu passado simples é 'bought'."
         },
         "businessContext": {
@@ -2625,10 +2625,10 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como expressar 'Nós fechamos (fizemos) um ótimo negócio ontem'?",
                 "options": [
-                    "We maked a great deal yesterday.",
-                    "We made a great deal yesterday.",
                     "We buyed a great deal yesterday.",
-                    "We did made a great deal yesterday."
+                    "We made a great deal yesterday.",
+                    "We did made a great deal yesterday.",
+                    "We maked a great deal yesterday."
                 ],
                 "correctIndex": 1,
                 "explanation": "O passado do verbo irregular 'make' é 'made': 'We made a great deal'."
@@ -2681,8 +2681,8 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual auxiliar usamos no Present Perfect para a terceira pessoa (He/She/It)?",
             "options": [
-                "had",
                 "does",
+                "had",
                 "has",
                 "have"
             ],
@@ -2712,12 +2712,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como dizer 'Eu converso com o cliente desde janeiro' usando Present Perfect?",
                 "options": [
-                    "I have talked to the client since January.",
+                    "I talked to the client since January.",
                     "I talk to the client since January.",
-                    "I have talk to the client for January.",
-                    "I talked to the client since January."
+                    "I have talked to the client since January.",
+                    "I have talk to the client for January."
                 ],
-                "correctIndex": 0,
+                "correctIndex": 2,
                 "explanation": "Ações que começaram no passado e continuam exigem Present Perfect com 'since' para o marco: 'I have talked... since January'."
             }
         },
@@ -2768,12 +2768,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se faz a negação de 'will'?",
             "options": [
+                "won't",
                 "don't will",
-                "willn't",
                 "not will",
-                "won't"
+                "willn't"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "A contração de 'will not' é 'won't'."
         },
         "businessContext": {
@@ -2799,10 +2799,10 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como prometer formalmente ao cliente que você enviará a proposta comercial amanhã?",
                 "options": [
-                    "I send you proposal tomorrow.",
+                    "I'll sending you proposal tomorrow.",
                     "I will send you the proposal tomorrow.",
-                    "I going to send proposal tomorrow.",
-                    "I'll sending you proposal tomorrow."
+                    "I send you proposal tomorrow.",
+                    "I going to send proposal tomorrow."
                 ],
                 "correctIndex": 1,
                 "explanation": "Para promessas comerciais em conversações de negócios, usamos 'will': 'I will send'."
@@ -2857,8 +2857,8 @@ const BASSANI_TOPICS = {
             "options": [
                 "They are going to study.",
                 "They will going to study.",
-                "They is going to study.",
-                "They going to study."
+                "They going to study.",
+                "They is going to study."
             ],
             "correctIndex": 0,
             "explanation": "A estrutura exige: sujeito + be (are) + going to + verbo."
@@ -2887,8 +2887,8 @@ const BASSANI_TOPICS = {
                 "question": "Como expressar o plano agendado de fazer uma demonstração do produto às 14h?",
                 "options": [
                     "We will demonstrate the product at 2 PM.",
-                    "We are demonstrate the product.",
                     "We demonstrate the product at 2 PM.",
+                    "We are demonstrate the product.",
                     "We are going to demonstrate the product at 2 PM."
                 ],
                 "correctIndex": 3,
@@ -2942,12 +2942,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se pergunta 'Como está o tempo?' em inglês?",
             "options": [
+                "Is it hot?",
                 "What's the weather like?",
                 "How is the weather doing?",
-                "What is the climate?",
-                "Is it hot?"
+                "What is the climate?"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'What's the weather like?' é a expressão padrão para perguntar sobre as condições do tempo."
         },
         "businessContext": {
@@ -2973,12 +2973,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como justificar comercialmente um atraso devido a problemas climáticos extremos?",
                 "options": [
-                    "We don't deliver in winter.",
-                    "We have delays due to severe weather conditions.",
+                    "No delivery because of rain.",
                     "The weather is bad, sorry.",
-                    "No delivery because of rain."
+                    "We have delays due to severe weather conditions.",
+                    "We don't deliver in winter."
                 ],
-                "correctIndex": 1,
+                "correctIndex": 2,
                 "explanation": "We have delays due to severe weather conditions é o posicionamento de logística padrão corporativo."
             }
         },
@@ -3029,12 +3029,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se conjuga 'There to Be' no futuro simples?",
             "options": [
-                "There are going to be",
-                "There will be",
                 "There will have",
-                "There is going to be"
+                "There is going to be",
+                "There will be",
+                "There are going to be"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A conjugação padrão de existir no futuro é 'There will be' para singular e plural."
         },
         "businessContext": {
@@ -3061,11 +3061,11 @@ const BASSANI_TOPICS = {
                 "question": "Como garantir ao investidor que haverá recursos na sala de reuniões?",
                 "options": [
                     "There is a projector in the room.",
-                    "Have a projector in the room.",
                     "There will be a projector in the meeting room.",
+                    "Have a projector in the room.",
                     "We will have been a projector."
                 ],
-                "correctIndex": 2,
+                "correctIndex": 1,
                 "explanation": "There will be indica a existência futura ('haverá') de forma correta."
             }
         },
@@ -3116,10 +3116,10 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se diz 'restituição de bagagem' em inglês?",
             "options": [
-                "bag drop",
+                "luggage check",
                 "baggage claim",
                 "ticket counter",
-                "luggage check"
+                "bag drop"
             ],
             "correctIndex": 1,
             "explanation": "A área de pegar as malas no aeroporto é a 'baggage claim'."
@@ -3147,12 +3147,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como você confirma que reservou o hotel comercial para a equipe?",
                 "options": [
+                    "I did reservated hotel room.",
                     "I made hotel for team.",
                     "I bought the hotel room team.",
-                    "I booked the hotel rooms for our sales team.",
-                    "I did reservated hotel room."
+                    "I booked the hotel rooms for our sales team."
                 ],
-                "correctIndex": 2,
+                "correctIndex": 3,
                 "explanation": "'I booked' é o termo de negócios para dizer 'eu reservei'."
             }
         },
@@ -3205,8 +3205,8 @@ const BASSANI_TOPICS = {
             "options": [
                 "Sujeito + verbo To Be + verbo-ING",
                 "Sujeito + will + verbo",
-                "Sujeito + have + particípio",
-                "Sujeito + verbo base"
+                "Sujeito + verbo base",
+                "Sujeito + have + particípio"
             ],
             "correctIndex": 0,
             "explanation": "Forma-se com o verbo To Be correspondente + o verbo principal com terminação '-ing'."
@@ -3234,10 +3234,10 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como relatar ao gerente que você está finalizando o acordo agora?",
                 "options": [
-                    "I finalizing agreement.",
-                    "I am finalizing the agreement right now.",
                     "I has been finalizing agreement.",
-                    "I will finalizing agreement."
+                    "I am finalizing the agreement right now.",
+                    "I will finalizing agreement.",
+                    "I finalizing agreement."
                 ],
                 "correctIndex": 1,
                 "explanation": "Ação acontecendo no momento da fala exige Present Continuous: 'I am finalizing'."
@@ -3290,12 +3290,12 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Qual conjunção é comumente usada para introduzir uma ação que interrompe outra no passado contínuo?",
             "options": [
-                "when",
+                "so",
                 "while",
                 "because",
-                "so"
+                "when"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "Usamos 'when' (quando) para introduzir uma ação curta que interrompeu outra que estava acontecendo."
         },
         "businessContext": {
@@ -3321,12 +3321,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como dizer 'Nós estávamos apresentando a proposta comercial quando o cliente chegou'?",
                 "options": [
-                    "We were presenting the proposal when the client arrived.",
+                    "We presenting proposal when client arrived.",
                     "We was presenting proposal when client arrived.",
-                    "We did presenting proposal when client arrived.",
-                    "We presenting proposal when client arrived."
+                    "We were presenting the proposal when the client arrived.",
+                    "We did presenting proposal when client arrived."
                 ],
-                "correctIndex": 0,
+                "correctIndex": 2,
                 "explanation": "Para We usamos 'were' + verbo-ing: 'We were presenting'."
             }
         },
@@ -3378,11 +3378,11 @@ const BASSANI_TOPICS = {
             "question": "Qual a estrutura correta do Future Continuous?",
             "options": [
                 "will + verbo base",
-                "will have + particípio",
+                "will be + verbo-ING",
                 "going to be + verbo",
-                "will be + verbo-ING"
+                "will have + particípio"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "Forma-se com 'will be' + verbo principal no gerúndio (com terminação -ing)."
         },
         "businessContext": {
@@ -3408,12 +3408,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como descrever o que você estará fazendo amanhã de manhã em prol de um cliente?",
                 "options": [
-                    "I will be presenting our commercial solution tomorrow morning.",
+                    "I will presenting our commercial solution.",
                     "I will be present commercial solution.",
                     "I present commercial solution tomorrow morning.",
-                    "I will presenting our commercial solution."
+                    "I will be presenting our commercial solution tomorrow morning."
                 ],
-                "correctIndex": 0,
+                "correctIndex": 3,
                 "explanation": "'I will be presenting' (estarei apresentando) é a conjugação do futuro contínuo correto."
             }
         },
@@ -3464,9 +3464,9 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como formamos o imperativo negativo em inglês?",
             "options": [
-                "Usando 'Not' + verbo",
-                "Usando 'Do not' (ou 'Don't') + verbo na forma base",
                 "Usando 'No' + verbo",
+                "Usando 'Do not' (ou 'Don't') + verbo na forma base",
+                "Usando 'Not' + verbo",
                 "Adicionando -ing ao verbo"
             ],
             "correctIndex": 1,
@@ -3495,12 +3495,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Como dar uma instrução negativa de não alterar os preços padrão?",
                 "options": [
+                    "Change not standard prices.",
                     "Not change the standard prices.",
-                    "Don't change the standard prices.",
                     "No change standard prices.",
-                    "Change not standard prices."
+                    "Don't change the standard prices."
                 ],
-                "correctIndex": 1,
+                "correctIndex": 3,
                 "explanation": "A instrução proibitiva padrão de negócios usa 'Don't change'."
             }
         },
@@ -3551,9 +3551,9 @@ const BASSANI_TOPICS = {
         "quiz": {
             "question": "Como se diz 'dor de cabeça' em inglês?",
             "options": [
-                "flu",
                 "backache",
                 "heartache",
+                "flu",
                 "headache"
             ],
             "correctIndex": 3,
@@ -3582,12 +3582,12 @@ const BASSANI_TOPICS = {
             "quiz": {
                 "question": "Qual a melhor frase comercial para informar ao cliente que o gestor está de licença médica?",
                 "options": [
-                    "The manager has body pain.",
                     "The manager is ill now.",
-                    "The manager is on sick leave today.",
-                    "The manager is not at home."
+                    "The manager has body pain.",
+                    "The manager is not at home.",
+                    "The manager is on sick leave today."
                 ],
-                "correctIndex": 2,
+                "correctIndex": 3,
                 "explanation": "'is on sick leave' é a frase corporativa neutra e respeitosa recomendada."
             }
         },
@@ -4998,10 +4998,10 @@ window.QUESTION_POOL_INTRO = {
             "id": "intro_v_1",
             "question": "Qual termo corresponde a: \"O alfabeto inglês com 26 letras.\"?",
             "options": [
-                "Schwa /ə/",
+                "FauxOption3",
                 "Alphabet",
-                "Spell",
-                "FauxOption3"
+                "Schwa /ə/",
+                "Spell"
             ],
             "correctIndex": 1,
             "explanation": "'Alphabet' significa: O alfabeto inglês com 26 letras.."
@@ -5011,9 +5011,9 @@ window.QUESTION_POOL_INTRO = {
             "question": "Qual termo corresponde a: \"Soletrar uma palavra letra por letra.\"?",
             "options": [
                 "Spell",
-                "Schwa /ə/",
+                "Alphabet",
                 "FauxOption3",
-                "Alphabet"
+                "Schwa /ə/"
             ],
             "correctIndex": 0,
             "explanation": "'Spell' significa: Soletrar uma palavra letra por letra.."
@@ -5023,21 +5023,21 @@ window.QUESTION_POOL_INTRO = {
             "question": "Qual termo corresponde a: \"O som vocálico reduzido mais comum do inglês (ex: father).\"?",
             "options": [
                 "Alphabet",
-                "Spell",
                 "Schwa /ə/",
+                "Spell",
                 "FauxOption3"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "'Schwa /ə/' significa: O som vocálico reduzido mais comum do inglês (ex: father).."
         },
         {
             "id": "intro_v_fallback_4",
             "question": "Qual a tradução de 'business'?",
             "options": [
-                "aula",
+                "estudo",
                 "negócios",
-                "livro",
-                "estudo"
+                "aula",
+                "livro"
             ],
             "correctIndex": 1,
             "explanation": "'business' significa negócios."
@@ -5046,12 +5046,12 @@ window.QUESTION_POOL_INTRO = {
             "id": "intro_v_fallback_5",
             "question": "Qual a tradução de 'business'?",
             "options": [
-                "aula",
                 "livro",
-                "negócios",
-                "estudo"
+                "estudo",
+                "aula",
+                "negócios"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'business' significa negócios."
         },
         {
@@ -5070,24 +5070,24 @@ window.QUESTION_POOL_INTRO = {
             "id": "intro_v_fallback_7",
             "question": "Qual a tradução de 'business'?",
             "options": [
-                "aula",
-                "estudo",
+                "livro",
                 "negócios",
-                "livro"
+                "estudo",
+                "aula"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "'business' significa negócios."
         },
         {
             "id": "intro_v_fallback_8",
             "question": "Qual a tradução de 'business'?",
             "options": [
-                "livro",
                 "estudo",
-                "negócios",
-                "aula"
+                "aula",
+                "livro",
+                "negócios"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'business' significa negócios."
         }
     ],
@@ -5096,28 +5096,64 @@ window.QUESTION_POOL_INTRO = {
             "id": "intro_g_1",
             "question": "Como se pronuncia a letra 'W' em inglês?",
             "options": [
-                "double-u",
-                "uai",
                 "dbâiu",
-                "zi"
+                "zi",
+                "uai",
+                "double-u"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A letra W se pronuncia 'dbâiu' (ou 'double-u' em transcrição rápida)."
         },
         {
             "id": "intro_g_2",
             "question": "Como se diz o e-mail 'sales@company.com' em inglês corporativo?",
             "options": [
-                "sales slash company dot com",
                 "sales at company dot com",
+                "sales dot company at com",
                 "sales at company point com",
-                "sales dot company at com"
+                "sales slash company dot com"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "Usamos 'at' para '@' e 'dot' para o ponto '.' em e-mails."
         },
         {
             "id": "intro_g_fallback_3",
+            "question": "Complete: 'We _____ English daily.'",
+            "options": [
+                "studying",
+                "studied",
+                "study",
+                "studies"
+            ],
+            "correctIndex": 2,
+            "explanation": "Com o pronome 'We' no presente, usamos 'study'."
+        },
+        {
+            "id": "intro_g_fallback_4",
+            "question": "Complete: 'We _____ English daily.'",
+            "options": [
+                "studies",
+                "studied",
+                "studying",
+                "study"
+            ],
+            "correctIndex": 3,
+            "explanation": "Com o pronome 'We' no presente, usamos 'study'."
+        },
+        {
+            "id": "intro_g_fallback_5",
+            "question": "Complete: 'We _____ English daily.'",
+            "options": [
+                "studied",
+                "study",
+                "studies",
+                "studying"
+            ],
+            "correctIndex": 1,
+            "explanation": "Com o pronome 'We' no presente, usamos 'study'."
+        },
+        {
+            "id": "intro_g_fallback_6",
             "question": "Complete: 'We _____ English daily.'",
             "options": [
                 "studies",
@@ -5129,63 +5165,27 @@ window.QUESTION_POOL_INTRO = {
             "explanation": "Com o pronome 'We' no presente, usamos 'study'."
         },
         {
-            "id": "intro_g_fallback_4",
-            "question": "Complete: 'We _____ English daily.'",
-            "options": [
-                "study",
-                "studies",
-                "studied",
-                "studying"
-            ],
-            "correctIndex": 0,
-            "explanation": "Com o pronome 'We' no presente, usamos 'study'."
-        },
-        {
-            "id": "intro_g_fallback_5",
-            "question": "Complete: 'We _____ English daily.'",
-            "options": [
-                "study",
-                "studies",
-                "studying",
-                "studied"
-            ],
-            "correctIndex": 0,
-            "explanation": "Com o pronome 'We' no presente, usamos 'study'."
-        },
-        {
-            "id": "intro_g_fallback_6",
-            "question": "Complete: 'We _____ English daily.'",
-            "options": [
-                "studied",
-                "study",
-                "studying",
-                "studies"
-            ],
-            "correctIndex": 1,
-            "explanation": "Com o pronome 'We' no presente, usamos 'study'."
-        },
-        {
             "id": "intro_g_fallback_7",
             "question": "Complete: 'We _____ English daily.'",
             "options": [
-                "study",
                 "studying",
                 "studied",
+                "study",
                 "studies"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "Com o pronome 'We' no presente, usamos 'study'."
         },
         {
             "id": "intro_g_fallback_8",
             "question": "Complete: 'We _____ English daily.'",
             "options": [
-                "study",
-                "studies",
                 "studied",
-                "studying"
+                "studying",
+                "studies",
+                "study"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "Com o pronome 'We' no presente, usamos 'study'."
         }
     ],
@@ -5194,11 +5194,11 @@ window.QUESTION_POOL_INTRO = {
             "id": "intro_l_1",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: How do you _____ your name?",
             "options": [
-                "say",
+                "spell",
                 "write",
-                "spell"
+                "say"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"How do you spell your name?\" (Como se soletra seu nome?)."
         },
         {
@@ -5216,9 +5216,9 @@ window.QUESTION_POOL_INTRO = {
             "id": "intro_l_fallback_3",
             "question": "Selecione a palavra correta: 'I work in an ____.'",
             "options": [
-                "officer",
-                "office",
                 "offices",
+                "office",
+                "officer",
                 "official"
             ],
             "correctIndex": 1,
@@ -5228,58 +5228,58 @@ window.QUESTION_POOL_INTRO = {
             "id": "intro_l_fallback_4",
             "question": "Selecione a palavra correta: 'I work in an ____.'",
             "options": [
-                "officer",
                 "office",
-                "offices",
-                "official"
+                "official",
+                "officer",
+                "offices"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'I work in an office' é a frase correta."
         },
         {
             "id": "intro_l_fallback_5",
             "question": "Selecione a palavra correta: 'I work in an ____.'",
             "options": [
-                "office",
-                "officer",
                 "offices",
-                "official"
+                "office",
+                "official",
+                "officer"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'I work in an office' é a frase correta."
         },
         {
             "id": "intro_l_fallback_6",
             "question": "Selecione a palavra correta: 'I work in an ____.'",
             "options": [
-                "offices",
                 "official",
                 "officer",
-                "office"
+                "office",
+                "offices"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "'I work in an office' é a frase correta."
         },
         {
             "id": "intro_l_fallback_7",
             "question": "Selecione a palavra correta: 'I work in an ____.'",
             "options": [
-                "offices",
                 "office",
                 "officer",
-                "official"
+                "official",
+                "offices"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'I work in an office' é a frase correta."
         },
         {
             "id": "intro_l_fallback_8",
             "question": "Selecione a palavra correta: 'I work in an ____.'",
             "options": [
+                "officer",
                 "offices",
-                "official",
                 "office",
-                "officer"
+                "official"
             ],
             "correctIndex": 2,
             "explanation": "'I work in an office' é a frase correta."
@@ -5290,44 +5290,44 @@ window.QUESTION_POOL_INTRO = {
             "question": "Como se pronuncia a letra 'W' em inglês?",
             "options": [
                 "double-u",
+                "zi",
                 "dbâiu",
-                "uai",
-                "zi"
+                "uai"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A letra W se pronuncia 'dbâiu' (double-u)."
         },
         {
             "question": "Como se pronuncia a letra 'H' em inglês?",
             "options": [
-                "agá",
                 "ét",
                 "eitch",
+                "agá",
                 "ei"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "A letra H pronuncia-se 'eitch'."
         },
         {
             "question": "Como se pronuncia a letra 'G' em inglês?",
             "options": [
-                "guê",
                 "dji",
-                "gí",
-                "djí"
+                "guê",
+                "djí",
+                "gí"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "A letra G pronuncia-se 'djí'."
         },
         {
             "question": "Como se pronuncia a letra 'Y' em inglês?",
             "options": [
+                "ipsilon",
                 "iai",
                 "uêi",
-                "uai",
-                "ipsilon"
+                "uai"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "A letra Y pronuncia-se 'uai'."
         },
         {
@@ -5335,8 +5335,8 @@ window.QUESTION_POOL_INTRO = {
             "options": [
                 "zi",
                 "za",
-                "zed",
-                "zê"
+                "zê",
+                "zed"
             ],
             "correctIndex": 0,
             "explanation": "A letra Z se pronuncia 'zi' no inglês americano e 'zed' no britânico."
@@ -5344,23 +5344,23 @@ window.QUESTION_POOL_INTRO = {
         {
             "question": "Como se pronuncia a letra 'J' em inglês?",
             "options": [
-                "jota",
                 "djai",
+                "djei",
                 "ji",
-                "djei"
+                "jota"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "A letra J pronuncia-se 'djei'."
         },
         {
             "question": "Qual é a pronúncia do som CH na palavra 'cheap'?",
             "options": [
-                "som de s (sí-pi)",
-                "som de c (quí-pi)",
                 "som de tche (tchí-pi)",
-                "som de x (chí-pi)"
+                "som de x (chí-pi)",
+                "som de s (sí-pi)",
+                "som de c (quí-pi)"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "CH em inglês geralmente tem som de 'tche'."
         },
         {
@@ -5383,34 +5383,34 @@ window.QUESTION_POOL_U1 = {
             "id": "u1_v_1",
             "question": "Qual termo corresponde a: \"Bom dia (usado até meio-dia).\"?",
             "options": [
-                "Mr. (Mister)",
                 "Good morning",
                 "How do you do?",
-                "See you"
+                "See you",
+                "Mr. (Mister)"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Good morning' significa: Bom dia (usado até meio-dia).."
         },
         {
             "id": "u1_v_2",
             "question": "Qual termo corresponde a: \"Como vai você? (cumprimento muito formal, responde-se com a mesma frase).\"?",
             "options": [
-                "See you",
-                "Mr. (Mister)",
+                "How do you do?",
                 "Good morning",
-                "How do you do?"
+                "Mr. (Mister)",
+                "See you"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "'How do you do?' significa: Como vai você? (cumprimento muito formal, responde-se com a mesma frase).."
         },
         {
             "id": "u1_v_3",
             "question": "Qual termo corresponde a: \"Até logo / Vejo você depois.\"?",
             "options": [
-                "Good morning",
-                "See you",
                 "Mr. (Mister)",
-                "How do you do?"
+                "See you",
+                "How do you do?",
+                "Good morning"
             ],
             "correctIndex": 1,
             "explanation": "'See you' significa: Até logo / Vejo você depois.."
@@ -5419,24 +5419,24 @@ window.QUESTION_POOL_U1 = {
             "id": "u1_v_4",
             "question": "Qual termo corresponde a: \"Senhor (usado para homens casados ou solteiros).\"?",
             "options": [
+                "See you",
                 "How do you do?",
                 "Mr. (Mister)",
-                "See you",
                 "Good morning"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'Mr. (Mister)' significa: Senhor (usado para homens casados ou solteiros).."
         },
         {
             "id": "u1_v_5",
             "question": "Qual termo corresponde a: \"Senhora (usado para mulheres casadas).\"?",
             "options": [
-                "Good morning",
                 "Mrs. (Missis)",
-                "How do you do?",
-                "See you"
+                "Good morning",
+                "See you",
+                "How do you do?"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Mrs. (Missis)' significa: Senhora (usado para mulheres casadas).."
         },
         {
@@ -5444,8 +5444,8 @@ window.QUESTION_POOL_U1 = {
             "question": "Qual termo corresponde a: \"Senhorita (usado para mulheres solteiras).\"?",
             "options": [
                 "How do you do?",
-                "See you",
                 "Good morning",
+                "See you",
                 "Miss"
             ],
             "correctIndex": 3,
@@ -5456,23 +5456,23 @@ window.QUESTION_POOL_U1 = {
             "question": "Qual termo corresponde a: \"Morar ou habitar em um local.\"?",
             "options": [
                 "See you",
-                "Live",
                 "How do you do?",
+                "Live",
                 "Good morning"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'Live' significa: Morar ou habitar em um local.."
         },
         {
             "id": "u1_v_8",
             "question": "Qual termo corresponde a: \"Endereço residencial ou comercial.\"?",
             "options": [
+                "Address",
                 "See you",
                 "How do you do?",
-                "Address",
                 "Good morning"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'Address' significa: Endereço residencial ou comercial.."
         }
     ],
@@ -5481,82 +5481,82 @@ window.QUESTION_POOL_U1 = {
             "id": "u1_g_1",
             "question": "Qual das opções é um cumprimento formal ao se apresentar a alguém no mundo profissional?",
             "options": [
-                "See you later",
+                "Hey, what's up?",
                 "Bye-bye",
-                "How do you do?",
-                "Hey, what's up?"
+                "See you later",
+                "How do you do?"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'How do you do?' é a saudação formal clássica de apresentação em negócios."
         },
         {
             "id": "u1_g_2",
             "question": "Como você apresenta um cliente (Sr. Davis) ao seu diretor?",
             "options": [
+                "Davis, look at this guy.",
                 "This is Davis.",
                 "Mr. Davis, this is our director.",
-                "Hey, meet our director.",
-                "Davis, look at this guy."
+                "Hey, meet our director."
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A forma polida e correta de apresentar é: '[Nome], this is [Nome]'."
         },
         {
             "id": "u1_g_3",
             "question": "Qual pronome demonstrativo usamos para indicar um objeto que está distante (singular)?",
             "options": [
-                "These",
-                "This",
+                "Those",
                 "That",
-                "Those"
+                "This",
+                "These"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "Usamos 'that' para coisas distantes no singular ('aquele/aquela')."
         },
         {
             "id": "u1_g_4",
             "question": "Como se refere a amostras que estão perto de você no plural?",
             "options": [
+                "Those samples",
                 "This samples",
                 "These samples",
-                "Those samples",
                 "That samples"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "Para objetos próximos no plural usamos 'These'."
         },
         {
             "id": "u1_g_5",
             "question": "Como se diz 'Eu moro em São Paulo' em inglês?",
             "options": [
-                "I lives in São Paulo",
+                "I live in São Paulo",
                 "I live at São Paulo",
-                "I living São Paulo",
-                "I live in São Paulo"
+                "I lives in São Paulo",
+                "I living São Paulo"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Usamos a preposição 'in' para cidades: I live in São Paulo."
         },
         {
             "id": "u1_g_6",
             "question": "Qual a melhor frase para se apresentar profissionalmente em uma feira de negócios?",
             "options": [
-                "I represent company X.",
                 "Nice to see you company.",
                 "I am a person.",
-                "I live in Brazil."
+                "I live in Brazil.",
+                "I represent company X."
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "'I represent company X' estabelece autoridade e contexto de negócios de imediato."
         },
         {
             "id": "u1_g_7",
             "question": "Lembrando das regras de grafia, como são escritas as nacionalidades e países em inglês?",
             "options": [
-                "Apenas no início de frases",
+                "Sempre com letras minúsculas",
                 "Sempre com a inicial maiúscula (ex: Brazilian)",
                 "Depende do tamanho da palavra",
-                "Sempre com letras minúsculas"
+                "Apenas no início de frases"
             ],
             "correctIndex": 1,
             "explanation": "Nacionalidades e países sempre levam letra inicial maiúscula: Brazilian, German, Brazil."
@@ -5566,11 +5566,11 @@ window.QUESTION_POOL_U1 = {
             "question": "Como você diria 'Nossa equipe é alemã' em inglês?",
             "options": [
                 "Our team is Germany.",
-                "Our team is from German.",
                 "Our team is German.",
-                "Our team is Germanyan."
+                "Our team is Germanyan.",
+                "Our team is from German."
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "'German' é o adjetivo de nacionalidade. 'Germany' é o país."
         }
     ],
@@ -5579,33 +5579,33 @@ window.QUESTION_POOL_U1 = {
             "id": "u1_l_1",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: Nice to _____ you Susan.",
             "options": [
+                "meet",
                 "see",
-                "greeting",
-                "meet"
+                "greeting"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"Nice to meet you Susan.\" (Prazer em conhecê-la, Susan.)."
         },
         {
             "id": "u1_l_2",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: How do you _____ your last name?",
             "options": [
-                "spell",
+                "speak",
                 "write",
-                "speak"
+                "spell"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"How do you spell your last name?\" (Como você soletra seu sobrenome?)."
         },
         {
             "id": "u1_l_3",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: Good morning _____ Brown.",
             "options": [
-                "Mrs.",
+                "Mr.",
                 "Miss",
-                "Mr."
+                "Mrs."
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"Good morning Mr. Brown.\" (Bom dia, Sr. Brown.)."
         },
         {
@@ -5623,8 +5623,8 @@ window.QUESTION_POOL_U1 = {
             "id": "u1_l_5",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: I _____ in a big house.",
             "options": [
-                "lives",
                 "living",
+                "lives",
                 "live"
             ],
             "correctIndex": 2,
@@ -5634,8 +5634,8 @@ window.QUESTION_POOL_U1 = {
             "id": "u1_l_6",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: I _____ English every day.",
             "options": [
-                "studying",
                 "studies",
+                "studying",
                 "study"
             ],
             "correctIndex": 2,
@@ -5656,8 +5656,8 @@ window.QUESTION_POOL_U1 = {
             "id": "u1_l_8",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: My brother is an _____.",
             "options": [
-                "engineering",
                 "engineers",
+                "engineering",
                 "engineer"
             ],
             "correctIndex": 2,
@@ -5669,55 +5669,55 @@ window.QUESTION_POOL_U1 = {
             "question": "Como se pronuncia a abreviação 'Mr.'?",
             "options": [
                 "miss",
+                "míssis",
                 "mister",
-                "miz",
-                "míssis"
+                "miz"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "Mr. pronuncia-se 'mister'."
         },
         {
             "question": "Como se pronuncia a abreviação 'Mrs.'?",
             "options": [
-                "miz",
-                "mister",
+                "míssis",
                 "miss",
-                "míssis"
+                "miz",
+                "mister"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Mrs. pronuncia-se 'míssis'."
         },
         {
             "question": "Como se pronuncia a abreviação 'Ms.'?",
             "options": [
-                "miss (com som de S seco)",
-                "mister",
                 "míssis",
-                "miz (com som de Z vibrado)"
+                "miz (com som de Z vibrado)",
+                "miss (com som de S seco)",
+                "mister"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "Ms. pronuncia-se 'miz' com som de Z vibrado final."
         },
         {
             "question": "Como se pronuncia 'Sir'?",
             "options": [
-                "sê",
-                "sãr (com R retroflexo)",
                 "sér",
-                "sir (como se escreve)"
+                "sê",
+                "sir (como se escreve)",
+                "sãr (com R retroflexo)"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Sir pronuncia-se 'sãr' com R retroflexo."
         },
         {
             "question": "Como pronunciamos 'Madam' de forma nativa?",
             "options": [
-                "médam",
+                "medãm",
                 "madame",
                 "madãm",
-                "medãm"
+                "médam"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "Madam pronuncia-se 'médam'."
         },
         {
@@ -5725,32 +5725,32 @@ window.QUESTION_POOL_U1 = {
             "options": [
                 "bra-zi-lê-an",
                 "bra-zíl-i-an",
-                "brê-zí-li-an",
-                "brê-zi-li-ên"
+                "brê-zi-li-ên",
+                "brê-zí-li-an"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Brazilian pronuncia-se 'brê-zí-li-an'."
         },
         {
             "question": "Como pronunciamos a palavra 'Engineer'?",
             "options": [
-                "en-dji-ní-er",
-                "en-gui-ner",
                 "en-dji-ner",
-                "en-dji-na-ier"
+                "en-gui-ner",
+                "en-dji-na-ier",
+                "en-dji-ní-er"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "Engineer pronuncia-se 'en-dji-ní-er'."
         },
         {
             "question": "Qual é a pronúncia correta de 'Secretary'?",
             "options": [
-                "se-cre-tê-ri",
-                "sé-cre-tri",
                 "sé-cre-tê-ri",
+                "sé-cre-tri",
+                "se-cre-tê-ri",
                 "se-cre-tá-ri"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Secretary pronuncia-se 'sé-cre-tê-ri'."
         }
     ]
@@ -5762,12 +5762,12 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_v_1",
             "question": "Qual termo corresponde a: \"Você é...? / Você está...? (inversão da pergunta).\"?",
             "options": [
+                "Genitive Case",
                 "Are you...?",
                 "Director",
-                "Genitive Case",
                 "Office"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'Are you...?' significa: Você é...? / Você está...? (inversão da pergunta).."
         },
         {
@@ -5775,33 +5775,33 @@ window.QUESTION_POOL_U2 = {
             "question": "Qual termo corresponde a: \"Escritório físico de trabalho.\"?",
             "options": [
                 "Genitive Case",
+                "Office",
                 "Director",
-                "Are you...?",
-                "Office"
+                "Are you...?"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "'Office' significa: Escritório físico de trabalho.."
         },
         {
             "id": "u2_v_3",
             "question": "Qual termo corresponde a: \"Diretor corporativo.\"?",
             "options": [
-                "Office",
-                "Are you...?",
                 "Director",
+                "Are you...?",
+                "Office",
                 "Genitive Case"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'Director' significa: Diretor corporativo.."
         },
         {
             "id": "u2_v_4",
             "question": "Qual termo corresponde a: \"Uso do apostrofo + S ('s) para indicar posse ou relação.\"?",
             "options": [
-                "Office",
+                "Director",
                 "Genitive Case",
                 "Are you...?",
-                "Director"
+                "Office"
             ],
             "correctIndex": 1,
             "explanation": "'Genitive Case' significa: Uso do apostrofo + S ('s) para indicar posse ou relação.."
@@ -5810,10 +5810,10 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_v_5",
             "question": "Qual termo corresponde a: \"Mesa de trabalho de escritório.\"?",
             "options": [
-                "Office",
+                "Are you...?",
                 "Desk",
                 "Director",
-                "Are you...?"
+                "Office"
             ],
             "correctIndex": 1,
             "explanation": "'Desk' significa: Mesa de trabalho de escritório.."
@@ -5822,34 +5822,34 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_v_6",
             "question": "Qual termo corresponde a: \"Escritório ou sala de administração.\"?",
             "options": [
-                "Are you...?",
                 "Genitive Case",
-                "Office",
-                "Director"
+                "Are you...?",
+                "Director",
+                "Office"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'Office' significa: Escritório ou sala de administração.."
         },
         {
             "id": "u2_v_7",
             "question": "Qual termo corresponde a: \"O que / Qual.\"?",
             "options": [
-                "Office",
-                "Are you...?",
                 "Director",
-                "What"
+                "What",
+                "Are you...?",
+                "Office"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "'What' significa: O que / Qual.."
         },
         {
             "id": "u2_v_8",
             "question": "Qual termo corresponde a: \"Como / De que maneira.\"?",
             "options": [
-                "Office",
-                "How",
                 "Director",
-                "Are you...?"
+                "How",
+                "Are you...?",
+                "Office"
             ],
             "correctIndex": 1,
             "explanation": "'How' significa: Como / De que maneira.."
@@ -5860,12 +5860,12 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_g_1",
             "question": "Qual a inversão correta para transformar a frase 'You are French' em pergunta?",
             "options": [
-                "You are French?",
-                "Do you are French?",
                 "Are you French?",
-                "Is you French?"
+                "You are French?",
+                "Is you French?",
+                "Do you are French?"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Na forma interrogativa do verbo To Be, o verbo vem antes do sujeito: 'Are you French?'."
         },
         {
@@ -5873,9 +5873,9 @@ window.QUESTION_POOL_U2 = {
             "question": "Como você pergunta formalmente se a pessoa é responsável pela decisão final?",
             "options": [
                 "Are you the buyer worker?",
-                "Do you buy?",
+                "Is you the boss?",
                 "Are you the decision maker?",
-                "Is you the boss?"
+                "Do you buy?"
             ],
             "correctIndex": 2,
             "explanation": "'Are you the decision maker?' é a forma padrão de qualificar o lead na área comercial."
@@ -5884,60 +5884,60 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_g_3",
             "question": "Como traduzimos 'o carro de Mary' usando o caso genitivo?",
             "options": [
-                "The car of Mary",
                 "Mary's car",
-                "Marys car",
-                "Mary car"
+                "Mary car",
+                "The car of Mary",
+                "Marys car"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "O possuidor recebe o 's antes da coisa possuída: Mary's car."
         },
         {
             "id": "u2_g_4",
             "question": "Como você diz 'o escritório do diretor comercial' em inglês?",
             "options": [
-                "The sales directors office'",
-                "The office of the director of sales",
                 "The sales director's office",
-                "The sales director office"
+                "The sales director office",
+                "The sales directors office'",
+                "The office of the director of sales"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Usamos o 's após sales director: 'The sales director's office'."
         },
         {
             "id": "u2_g_5",
             "question": "Qual pronome interrogativo usamos para perguntar sobre localizações?",
             "options": [
-                "Where",
-                "Why",
+                "Who",
                 "What",
-                "Who"
+                "Why",
+                "Where"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "'Where' significa 'onde' e é usado para locais."
         },
         {
             "id": "u2_g_6",
             "question": "Como você pergunta qual meio de transporte o cliente prefere para ir ao aeroporto?",
             "options": [
-                "What is airport transportation?",
                 "How do you want to go to the airport?",
                 "Where is airport taxi?",
+                "What is airport transportation?",
                 "Why airport?"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'How do you want to go...' pergunta o meio de transporte ('como')."
         },
         {
             "id": "u2_g_7",
             "question": "Qual preposição de tempo é usada antes de dias da semana?",
             "options": [
+                "in",
                 "at",
                 "by",
-                "on",
-                "in"
+                "on"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Usamos a preposição 'on' para dias da semana (ex: on Monday)."
         },
         {
@@ -5946,10 +5946,10 @@ window.QUESTION_POOL_U2 = {
             "options": [
                 "The presentation is under Friday.",
                 "The presentation is in Friday.",
-                "The presentation is at Friday.",
-                "The presentation is on Friday."
+                "The presentation is on Friday.",
+                "The presentation is at Friday."
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "Usamos 'on' para dias específicos: 'on Friday'."
         }
     ],
@@ -5958,9 +5958,9 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_l_1",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: _____ you a sales director?",
             "options": [
-                "Am",
+                "Is",
                 "Are",
-                "Is"
+                "Am"
             ],
             "correctIndex": 1,
             "explanation": "A frase correta é: \"Are you a sales director?\" (Você é diretor de vendas?)."
@@ -5980,22 +5980,22 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_l_3",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: This is _____ desk.",
             "options": [
-                "John's",
                 "of John",
-                "Johns"
+                "Johns",
+                "John's"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"This is John's desk.\" (Esta é a mesa do John.)."
         },
         {
             "id": "u2_l_4",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: Where is the _____ office?",
             "options": [
-                "manager's",
+                "of manager",
                 "managers",
-                "of manager"
+                "manager's"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"Where is the manager's office?\" (Onde fica a sala do gerente?)."
         },
         {
@@ -6013,33 +6013,33 @@ window.QUESTION_POOL_U2 = {
             "id": "u2_l_6",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: _____ do you travel to meetings?",
             "options": [
+                "Who",
                 "Why",
-                "How",
-                "Who"
+                "How"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"How do you travel to meetings?\" (Como você viaja para as reuniões?)."
         },
         {
             "id": "u2_l_7",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: The commercial contract starts on _____.",
             "options": [
-                "First",
+                "Monday",
                 "January",
-                "Monday"
+                "First"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"The commercial contract starts on Monday.\" (O contrato comercial começa na segunda-feira.)."
         },
         {
             "id": "u2_l_8",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We have _____ sales agents.",
             "options": [
+                "fifty",
                 "five",
-                "fifteen",
-                "fifty"
+                "fifteen"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"We have fifty sales agents.\" (Nós temos cinquenta agentes de vendas.)."
         }
     ],
@@ -6047,43 +6047,43 @@ window.QUESTION_POOL_U2 = {
         {
             "question": "Como se pronuncia a palavra 'Orange'?",
             "options": [
-                "o-rândj",
-                "ó-rindj",
+                "o-renge",
                 "ó-raindj",
-                "o-renge"
+                "o-rândj",
+                "ó-rindj"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Orange pronuncia-se 'ó-rindj'."
         },
         {
             "question": "Como pronunciamos a palavra 'Subway'?",
             "options": [
                 "sub-uai",
-                "sãb-wêi",
+                "sãb-uai",
                 "sub-uêi",
-                "sãb-uai"
+                "sãb-wêi"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Subway pronuncia-se 'sãb-wêi'."
         },
         {
             "question": "Como pronunciamos 'Bicycle'?",
             "options": [
-                "bi-ci-col",
-                "bi-ci-cle",
                 "bái-ci-cle",
-                "bái-ci-col"
+                "bái-ci-col",
+                "bi-ci-cle",
+                "bi-ci-col"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "Bicycle pronuncia-se 'bái-ci-col'."
         },
         {
             "question": "Como se pronuncia 'Sneakers'?",
             "options": [
-                "sné-quêrs",
+                "sní-quêrs",
                 "sné-kers",
                 "sní-kers",
-                "sní-quêrs"
+                "sné-quêrs"
             ],
             "correctIndex": 2,
             "explanation": "Sneakers pronuncia-se 'sní-kers'."
@@ -6091,45 +6091,45 @@ window.QUESTION_POOL_U2 = {
         {
             "question": "Como pronunciamos 'Wednesday'?",
             "options": [
-                "uéd-nes-dai",
-                "wênz-dei (o D é mudo)",
                 "wênz-dai",
-                "uéd-nes-dei"
+                "uéd-nes-dei",
+                "uéd-nes-dai",
+                "wênz-dei (o D é mudo)"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Wednesday pronuncia-se 'wênz-dei' (o D é mudo)."
         },
         {
             "question": "Como se pronuncia 'Thursday'?",
             "options": [
-                "fãrz-dei",
-                "θãrz-dei (com TH soprado)",
                 "tãrz-dei",
-                "θãrz-dai"
+                "θãrz-dai",
+                "fãrz-dei",
+                "θãrz-dei (com TH soprado)"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Thursday pronuncia-se 'θãrz-dei' com som de TH interdental."
         },
         {
             "question": "Como pronunciamos 'August'?",
             "options": [
-                "ó-gust",
                 "au-gust",
-                "ó-gãst",
-                "au-gãst"
+                "ó-gust",
+                "au-gãst",
+                "ó-gãst"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "August pronuncia-se 'ó-gãst'."
         },
         {
             "question": "Como se pronuncia a palavra 'Hours' (horas)?",
             "options": [
-                "áu-ers (o H é mudo)",
-                "ó-urs",
                 "ór-es",
+                "ó-urs",
+                "áu-ers (o H é mudo)",
                 "ráu-ers (com H aspirado)"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "Hours tem o H mudo, fazendo o som iniciar na vogal 'áu-ers'."
         }
     ]
@@ -6141,8 +6141,8 @@ window.QUESTION_POOL_U3 = {
             "id": "u3_v_1",
             "question": "Qual termo corresponde a: \"Meu / Seu (adjetivos possessivos que acompanham substantivo).\"?",
             "options": [
-                "Our / Their",
                 "Sales targets",
+                "Our / Their",
                 "Ours / Theirs",
                 "My / Your"
             ],
@@ -6153,12 +6153,12 @@ window.QUESTION_POOL_U3 = {
             "id": "u3_v_2",
             "question": "Qual termo corresponde a: \"Nosso / Deles (adjetivos possessivos).\"?",
             "options": [
-                "My / Your",
-                "Our / Their",
+                "Ours / Theirs",
                 "Sales targets",
-                "Ours / Theirs"
+                "My / Your",
+                "Our / Their"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "'Our / Their' significa: Nosso / Deles (adjetivos possessivos).."
         },
         {
@@ -6166,9 +6166,9 @@ window.QUESTION_POOL_U3 = {
             "question": "Qual termo corresponde a: \"Metas de vendas estabelecidas.\"?",
             "options": [
                 "Sales targets",
-                "Ours / Theirs",
                 "My / Your",
-                "Our / Their"
+                "Our / Their",
+                "Ours / Theirs"
             ],
             "correctIndex": 0,
             "explanation": "'Sales targets' significa: Metas de vendas estabelecidas.."
@@ -6179,8 +6179,8 @@ window.QUESTION_POOL_U3 = {
             "options": [
                 "Sales targets",
                 "Ours / Theirs",
-                "My / Your",
-                "Our / Their"
+                "Our / Their",
+                "My / Your"
             ],
             "correctIndex": 1,
             "explanation": "'Ours / Theirs' significa: Nosso / Deles (pronomes possessivos que substituem substantivo).."
@@ -6189,46 +6189,46 @@ window.QUESTION_POOL_U3 = {
             "id": "u3_v_5",
             "question": "Qual termo corresponde a: \"Meu / Seu (pronomes possessivos).\"?",
             "options": [
-                "Sales targets",
-                "Mine / Yours",
+                "Our / Their",
                 "My / Your",
-                "Our / Their"
+                "Sales targets",
+                "Mine / Yours"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "'Mine / Yours' significa: Meu / Seu (pronomes possessivos).."
         },
         {
             "id": "u3_v_6",
             "question": "Qual termo corresponde a: \"Decisão estratégica.\"?",
             "options": [
-                "Our / Their",
-                "Sales targets",
                 "Decision",
-                "My / Your"
+                "Our / Their",
+                "My / Your",
+                "Sales targets"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'Decision' significa: Decisão estratégica.."
         },
         {
             "id": "u3_v_7",
             "question": "Qual termo corresponde a: \"Ele mesmo / Ela mesma.\"?",
             "options": [
-                "My / Your",
-                "Himself / Herself",
                 "Our / Their",
-                "Sales targets"
+                "My / Your",
+                "Sales targets",
+                "Himself / Herself"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "'Himself / Herself' significa: Ele mesmo / Ela mesma.."
         },
         {
             "id": "u3_v_8",
             "question": "Qual termo corresponde a: \"Nós mesmos.\"?",
             "options": [
-                "Our / Their",
-                "Ourselves",
                 "My / Your",
-                "Sales targets"
+                "Ourselves",
+                "Sales targets",
+                "Our / Their"
             ],
             "correctIndex": 1,
             "explanation": "'Ourselves' significa: Nós mesmos.."
@@ -6239,10 +6239,10 @@ window.QUESTION_POOL_U3 = {
             "id": "u3_g_1",
             "question": "Qual adjetivo possessivo completa a frase: 'This is _____ boss, Mr. Green.'?",
             "options": [
-                "me",
-                "my",
                 "mine",
-                "I"
+                "my",
+                "I",
+                "me"
             ],
             "correctIndex": 1,
             "explanation": "Adjetivos possessivos precedem substantivos: 'my boss'."
@@ -6251,12 +6251,12 @@ window.QUESTION_POOL_U3 = {
             "id": "u3_g_2",
             "question": "Como se diz 'a meta comercial deles'?",
             "options": [
-                "Theirs commercial target",
                 "Their commercial target",
-                "They commercial target",
-                "Them commercial target"
+                "Theirs commercial target",
+                "Them commercial target",
+                "They commercial target"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "Usamos o possessivo 'Their' antes do substantivo."
         },
         {
@@ -6264,23 +6264,23 @@ window.QUESTION_POOL_U3 = {
             "question": "Qual a diferença de 'my' e 'mine'?",
             "options": [
                 "'my' é formal e 'mine' é informal.",
+                "Não há diferença.",
                 "'my' é usado por homens e 'mine' por mulheres.",
-                "'my' acompanha o substantivo e 'mine' o substitui.",
-                "Não há diferença."
+                "'my' acompanha o substantivo e 'mine' o substitui."
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'my' exige substantivo (my car), 'mine' substitui o substantivo (this is mine)."
         },
         {
             "id": "u3_g_4",
             "question": "Como você afirma em um contrato que o projeto não é de sua empresa?",
             "options": [
+                "The project is not ours.",
                 "The project is not us.",
                 "The project is not we.",
-                "The project is not ours.",
                 "The project is not our."
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Usamos o pronome possessivo final 'ours' após o verbo."
         },
         {
@@ -6288,8 +6288,8 @@ window.QUESTION_POOL_U3 = {
             "question": "Qual pronome reflexivo concorda com 'They'?",
             "options": [
                 "themselves",
-                "yourselves",
                 "himself",
+                "yourselves",
                 "ourselves"
             ],
             "correctIndex": 0,
@@ -6300,35 +6300,35 @@ window.QUESTION_POOL_U3 = {
             "question": "Como descrever que o cliente gerencia suas compras sozinho?",
             "options": [
                 "The client manages purchases myself.",
-                "The client manages purchases himself.",
+                "The client manages purchases itself.",
                 "The client manages purchases ourselves.",
-                "The client manages purchases itself."
+                "The client manages purchases himself."
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "'himself' (ou 'herself'/'itself' se corporativo) concorda com o sujeito 'the client'."
         },
         {
             "id": "u3_g_7",
             "question": "Qual artigo indefinido usamos antes da palavra 'honest manager'?",
             "options": [
-                "nulo",
-                "a",
                 "an",
-                "the"
+                "nulo",
+                "the",
+                "a"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'Honest' começa com som vocálico (o 'h' é mudo), por isso exige 'an honest manager'."
         },
         {
             "id": "u3_g_8",
             "question": "Qual a alternativa gramaticalmente correta?",
             "options": [
-                "The executive office's",
-                "An executive offices",
+                "A executive office",
                 "An executive office",
-                "A executive office"
+                "An executive offices",
+                "The executive office's"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "Usamos 'an' antes de palavras iniciadas com som de vogal: 'An executive'."
         }
     ],
@@ -6348,11 +6348,11 @@ window.QUESTION_POOL_U3 = {
             "id": "u3_l_2",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: _____ office is in Chicago.",
             "options": [
+                "Theirs",
                 "Their",
-                "They",
-                "Theirs"
+                "They"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"Their office is in Chicago.\" (O escritório deles é em Chicago.)."
         },
         {
@@ -6360,8 +6360,8 @@ window.QUESTION_POOL_U3 = {
             "question": "Selecione a palavra correta para preencher a lacuna da frase: This commercial plan is not _____.",
             "options": [
                 "ours",
-                "our",
-                "us"
+                "us",
+                "our"
             ],
             "correctIndex": 0,
             "explanation": "A frase correta é: \"This commercial plan is not ours.\" (Este plano comercial não é nosso.)."
@@ -6381,9 +6381,9 @@ window.QUESTION_POOL_U3 = {
             "id": "u3_l_5",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: The director signed the contract _____.",
             "options": [
-                "myself",
+                "herself",
                 "himself",
-                "herself"
+                "myself"
             ],
             "correctIndex": 1,
             "explanation": "A frase correta é: \"The director signed the contract himself.\" (O diretor assinou o contrato ele mesmo.)."
@@ -6393,21 +6393,21 @@ window.QUESTION_POOL_U3 = {
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We managed the client setup _____.",
             "options": [
                 "yourselves",
-                "ourselves",
-                "themselves"
+                "themselves",
+                "ourselves"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"We managed the client setup ourselves.\" (Nós mesmos gerenciamos a configuração do cliente.)."
         },
         {
             "id": "u3_l_7",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We need _____ commerci_____l _____greement.",
             "options": [
-                "an",
+                "a",
                 "the",
-                "a"
+                "an"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"We need a commercial agreement.\" (Nós precisamos de um acordo comercial.)."
         },
         {
@@ -6426,19 +6426,19 @@ window.QUESTION_POOL_U3 = {
         {
             "question": "Como pronunciamos 'Their'?",
             "options": [
-                "dêr",
                 "θêr",
-                "fêr",
-                "ðêr (com TH sonoro)"
+                "dêr",
+                "ðêr (com TH sonoro)",
+                "fêr"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "Their pronuncia-se 'ðêr' com o TH sonoro entre os dentes."
         },
         {
             "question": "Como se pronuncia 'Ours'?",
             "options": [
-                "áu-ers",
                 "ó-urs",
+                "áu-ers",
                 "ôr-es",
                 "áu-erz"
             ],
@@ -6448,67 +6448,67 @@ window.QUESTION_POOL_U3 = {
         {
             "question": "Como pronunciamos 'Myself'?",
             "options": [
-                "mái-sélf",
                 "mi-sélf",
                 "mi-selfi",
+                "mái-sélf",
                 "mái-selfi"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "Myself pronuncia-se 'mái-sélf' com F seco final."
         },
         {
             "question": "Como se pronuncia o artigo 'The' antes de som de vogal (ex: the apple)?",
             "options": [
-                "ðá (som de da)",
-                "ðí (som de di)",
                 "ti",
-                "tê"
+                "ðá (som de da)",
+                "tê",
+                "ðí (som de di)"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Antes de som de vogal, 'the' pronuncia-se 'ðí'."
         },
         {
             "question": "Como se pronuncia o artigo 'The' antes de som de consoante (ex: the book)?",
             "options": [
-                "tê",
-                "ðí (som de di)",
+                "ti",
                 "ðə (som de dâ/schwa)",
-                "ti"
+                "ðí (som de di)",
+                "tê"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "Antes de som de consoante, 'the' pronuncia-se 'ðə' com som reduzido de schwa."
         },
         {
             "question": "Como pronunciamos a palavra 'Them'?",
             "options": [
+                "dém",
                 "ðém",
                 "fém",
-                "θém",
-                "dém"
+                "θém"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "Them pronuncia-se 'ðém' com TH sonoro."
         },
         {
             "question": "Como pronunciamos 'There is' de forma conectada?",
             "options": [
-                "ðê-ríz",
                 "dêr-íz",
                 "ðêr-ís",
+                "ðê-ríz",
                 "dê-rís"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "Connected speech: 'There is' soa como 'ðê-ríz' no fluxo normal da fala."
         },
         {
             "question": "Como se pronuncia 'Him'?",
             "options": [
-                "ím (com H mudo)",
                 "rém",
                 "rím (com H aspirado)",
+                "ím (com H mudo)",
                 "ém"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "Him tem o H aspirado (som de R em português): 'rím'."
         }
     ]
@@ -6522,8 +6522,8 @@ window.QUESTION_POOL_U4 = {
             "options": [
                 "In / On / At",
                 "Check",
-                "Schedule",
-                "Metrics"
+                "Metrics",
+                "Schedule"
             ],
             "correctIndex": 1,
             "explanation": "'Check' significa: Verificar, inspecionar ou monitorar.."
@@ -6532,12 +6532,12 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_v_2",
             "question": "Qual termo corresponde a: \"Agendar compromissos ou programar.\"?",
             "options": [
-                "In / On / At",
                 "Check",
-                "Schedule",
-                "Metrics"
+                "Metrics",
+                "In / On / At",
+                "Schedule"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'Schedule' significa: Agendar compromissos ou programar.."
         },
         {
@@ -6545,71 +6545,71 @@ window.QUESTION_POOL_U4 = {
             "question": "Qual termo corresponde a: \"Dados estatísticos de desempenho.\"?",
             "options": [
                 "Schedule",
-                "Metrics",
+                "Check",
                 "In / On / At",
-                "Check"
+                "Metrics"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "'Metrics' significa: Dados estatísticos de desempenho.."
         },
         {
             "id": "u4_v_4",
             "question": "Qual termo corresponde a: \"Preposições de tempo e lugar. In (cidades/países/meses), On (dias da semana/superfícies), At (horas exatas/endereços específicos).\"?",
             "options": [
-                "Metrics",
-                "Check",
                 "In / On / At",
-                "Schedule"
+                "Check",
+                "Schedule",
+                "Metrics"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'In / On / At' significa: Preposições de tempo e lugar. In (cidades/países/meses), On (dias da semana/superfícies), At (horas exatas/endereços específicos).."
         },
         {
             "id": "u4_v_5",
             "question": "Qual termo corresponde a: \"Viajar de avião / carro (preposição 'by' indica meio de transporte).\"?",
             "options": [
-                "By plane / car",
                 "Check",
-                "Metrics",
-                "Schedule"
+                "Schedule",
+                "By plane / car",
+                "Metrics"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "'By plane / car' significa: Viajar de avião / carro (preposição 'by' indica meio de transporte).."
         },
         {
             "id": "u4_v_6",
             "question": "Qual termo corresponde a: \"Matriz da empresa.\"?",
             "options": [
+                "Schedule",
                 "Check",
                 "Head office",
-                "Metrics",
-                "Schedule"
+                "Metrics"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'Head office' significa: Matriz da empresa.."
         },
         {
             "id": "u4_v_7",
             "question": "Qual termo corresponde a: \"E / Mas / Ou (conectivos lógicos).\"?",
             "options": [
+                "And / But / Or",
                 "Metrics",
-                "Schedule",
                 "Check",
-                "And / But / Or"
+                "Schedule"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "'And / But / Or' significa: E / Mas / Ou (conectivos lógicos).."
         },
         {
             "id": "u4_v_8",
             "question": "Qual termo corresponde a: \"Porque / Então (conectivos de causa e consequência).\"?",
             "options": [
-                "Because / So",
-                "Metrics",
+                "Schedule",
                 "Check",
-                "Schedule"
+                "Because / So",
+                "Metrics"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "'Because / So' significa: Porque / Então (conectivos de causa e consequência).."
         }
     ],
@@ -6618,10 +6618,10 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_g_1",
             "question": "Qual é a forma base do Simple Present para 'We' do verbo 'work'?",
             "options": [
-                "worker",
+                "working",
                 "works",
                 "work",
-                "working"
+                "worker"
             ],
             "correctIndex": 2,
             "explanation": "No presente simples, sujeitos plurais (We, They) e I/You usam a forma verbal pura: work."
@@ -6630,10 +6630,10 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_g_2",
             "question": "Como dizer 'Nós fazemos reuniões todos os dias'?",
             "options": [
-                "We holds meetings every day.",
+                "We does meetings every day.",
                 "We hold meetings every day.",
                 "We holding meetings every day.",
-                "We does meetings every day."
+                "We holds meetings every day."
             ],
             "correctIndex": 1,
             "explanation": "'We hold' (nós conduzimos/fazemos) é a conjugação no presente correto."
@@ -6642,9 +6642,9 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_g_3",
             "question": "Qual preposição de tempo usamos antes de horas (ex: 9:00 AM)?",
             "options": [
-                "by",
                 "on",
                 "in",
+                "by",
                 "at"
             ],
             "correctIndex": 3,
@@ -6654,12 +6654,12 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_g_4",
             "question": "Como agendar um call comercial na segunda às 10 horas?",
             "options": [
-                "In Monday in 10 AM",
-                "At Monday on 10 AM",
                 "By Monday at 10 AM",
-                "On Monday at 10 AM"
+                "On Monday at 10 AM",
+                "In Monday in 10 AM",
+                "At Monday on 10 AM"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "Usamos 'on' para dias de semana e 'at' para horas: 'on Monday at 10 AM'."
         },
         {
@@ -6667,33 +6667,33 @@ window.QUESTION_POOL_U4 = {
             "question": "Qual conectivo indica consequência ou conclusão?",
             "options": [
                 "because",
-                "but",
+                "so",
                 "still",
-                "so"
+                "but"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "'so' (então/portanto) introduz o resultado de uma causa."
         },
         {
             "id": "u4_g_6",
             "question": "Como conectar 'Queremos expandir' e 'Precisamos contratar mais vendedores'?",
             "options": [
-                "We want to expand, so we need to hire more sales reps.",
                 "We want to expand because we need to hire more sales reps.",
+                "We want to expand or we need to hire more sales reps.",
                 "We want to expand but we need to hire more sales reps.",
-                "We want to expand or we need to hire more sales reps."
+                "We want to expand, so we need to hire more sales reps."
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "A necessidade de contratação é a consequência do desejo de expansão, logo 'so' é o conectivo correto."
         },
         {
             "id": "u4_g_7",
             "question": "Qual a terminação correta para 'go' na 3ª pessoa do singular (He/She/It)?",
             "options": [
-                "gos",
+                "going",
                 "go",
                 "goes",
-                "going"
+                "gos"
             ],
             "correctIndex": 2,
             "explanation": "Verbos terminados em -O recebem -es na 3ª pessoa do singular: goes."
@@ -6702,10 +6702,10 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_g_8",
             "question": "Como dizer 'O gerente gerencia as vendas'?",
             "options": [
-                "The manager to manage the sales.",
+                "The manager manage the sales.",
                 "The manager manages the sales.",
                 "The manager managing the sales.",
-                "The manager manage the sales."
+                "The manager to manage the sales."
             ],
             "correctIndex": 1,
             "explanation": "Para 'The manager' (ele/ela), o verbo recebe flexão do S/ES: 'manages'."
@@ -6717,10 +6717,10 @@ window.QUESTION_POOL_U4 = {
             "question": "Selecione a palavra correta para preencher a lacuna da frase: I _____ my sales metrics daily.",
             "options": [
                 "checking",
-                "checks",
-                "check"
+                "check",
+                "checks"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"I check my sales metrics daily.\" (Eu checo minhas métricas de vendas diariamente.)."
         },
         {
@@ -6728,8 +6728,8 @@ window.QUESTION_POOL_U4 = {
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We _____ client demo calls weekly.",
             "options": [
                 "schedule",
-                "schedules",
-                "scheduling"
+                "scheduling",
+                "schedules"
             ],
             "correctIndex": 0,
             "explanation": "A frase correta é: \"We schedule client demo calls weekly.\" (Nós agendamos chamadas de demonstração com clientes semanalmente.)."
@@ -6749,22 +6749,22 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_l_4",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: The commercial presentati_____ is _____ Friday.",
             "options": [
+                "at",
                 "in",
-                "on",
-                "at"
+                "on"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"The commercial presentation is on Friday.\" (A apresentação comercial é na sexta-feira.)."
         },
         {
             "id": "u4_l_5",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: Our price is high _____ the quality is superior.",
             "options": [
-                "but",
                 "and",
-                "because"
+                "because",
+                "but"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"Our price is high but the quality is superior.\" (Nosso preço é alto, mas a qualidade é superior.)."
         },
         {
@@ -6782,22 +6782,22 @@ window.QUESTION_POOL_U4 = {
             "id": "u4_l_7",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: She _____ the commercial department.",
             "options": [
-                "manages",
+                "managing",
                 "manage",
-                "managing"
+                "manages"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"She manages the commercial department.\" (Ela gerencia o departamento comercial.)."
         },
         {
             "id": "u4_l_8",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: He _____ the contract with the supplier.",
             "options": [
-                "signs",
                 "signing",
+                "signs",
                 "sign"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"He signs the contract with the supplier.\" (Ele assina o contrato com o fornecedor.)."
         }
     ],
@@ -6805,10 +6805,10 @@ window.QUESTION_POOL_U4 = {
         {
             "question": "Qual a pronúncia da terminação -S na palavra 'works'?",
             "options": [
-                "/iz/ (sílaba extra)",
                 "/s/ mudo",
+                "/z/ (som de Z sonoro)",
                 "/s/ (som de S surdo)",
-                "/z/ (som de Z sonoro)"
+                "/iz/ (sílaba extra)"
             ],
             "correctIndex": 2,
             "explanation": "Works termina no som /k/ (surdo), logo o -S soa como /s/."
@@ -6817,8 +6817,8 @@ window.QUESTION_POOL_U4 = {
             "question": "Qual a pronúncia da terminação -S na palavra 'plays'?",
             "options": [
                 "/s/ (som de S surdo)",
-                "/s/ mudo",
                 "/iz/ (sílaba extra)",
+                "/s/ mudo",
                 "/z/ (som de Z sonoro)"
             ],
             "correctIndex": 3,
@@ -6827,56 +6827,56 @@ window.QUESTION_POOL_U4 = {
         {
             "question": "Qual a pronúncia da terminação -ES na palavra 'watches'?",
             "options": [
-                "/iz/ (sílaba extra)",
                 "/z/ (som de Z sonoro)",
+                "/iz/ (sílaba extra)",
                 "/s/ (som de S surdo)",
                 "/es/"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "Watches termina em som sibilante (/ch/), exigindo a sílaba extra /iz/."
         },
         {
             "question": "Como pronunciamos a palavra 'Schedule' no inglês americano?",
+            "options": [
+                "ské-djul",
+                "ché-dule",
+                "ské-dule",
+                "ché-djul"
+            ],
+            "correctIndex": 0,
+            "explanation": "No inglês americano, Schedule pronuncia-se 'ské-djul'."
+        },
+        {
+            "question": "Como pronunciamos a palavra 'Schedule' no inglês britânico?",
             "options": [
                 "ské-dule",
                 "ché-dule",
                 "ské-djul",
                 "ché-djul"
             ],
-            "correctIndex": 2,
-            "explanation": "No inglês americano, Schedule pronuncia-se 'ské-djul'."
-        },
-        {
-            "question": "Como pronunciamos a palavra 'Schedule' no inglês britânico?",
-            "options": [
-                "ské-djul",
-                "ské-dule",
-                "ché-djul",
-                "ché-dule"
-            ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "No inglês britânico, Schedule pronuncia-se 'ché-djul'."
         },
         {
             "question": "Como se pronuncia a preposição 'At'?",
             "options": [
-                "æt (com t seco)",
-                "éti",
+                "á-ti",
                 "át",
-                "á-ti"
+                "æt (com t seco)",
+                "éti"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "At termina no som seco do T, sem colocar 'i' ao final."
         },
         {
             "question": "Como se pronuncia 'Usually'?",
             "options": [
-                "iú-zi-a-li",
                 "u-su-a-li",
-                "iú-ju-a-li",
-                "u-ju-a-li"
+                "u-ju-a-li",
+                "iú-zi-a-li",
+                "iú-ju-a-li"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Usually pronuncia-se 'iú-ju-a-li'."
         },
         {
@@ -6900,95 +6900,95 @@ window.QUESTION_POOL_U5 = {
             "question": "Qual termo corresponde a: \"Preferir uma opção em detrimento de outra.\"?",
             "options": [
                 "Reservation",
-                "Host a dinner",
                 "Much / Many",
-                "Prefer"
+                "Prefer",
+                "Host a dinner"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "'Prefer' significa: Preferir uma opção em detrimento de outra.."
         },
         {
             "id": "u5_v_2",
             "question": "Qual termo corresponde a: \"Oferecer ou organizar um jantar.\"?",
             "options": [
-                "Reservation",
-                "Host a dinner",
+                "Prefer",
                 "Much / Many",
-                "Prefer"
+                "Reservation",
+                "Host a dinner"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "'Host a dinner' significa: Oferecer ou organizar um jantar.."
         },
         {
             "id": "u5_v_3",
             "question": "Qual termo corresponde a: \"Reserva de mesa.\"?",
             "options": [
-                "Prefer",
                 "Reservation",
+                "Prefer",
                 "Host a dinner",
                 "Much / Many"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Reservation' significa: Reserva de mesa.."
         },
         {
             "id": "u5_v_4",
             "question": "Qual termo corresponde a: \"Muito para incontáveis (singular) / Muitos para contáveis (plural).\"?",
             "options": [
-                "Host a dinner",
-                "Prefer",
                 "Much / Many",
+                "Prefer",
+                "Host a dinner",
                 "Reservation"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'Much / Many' significa: Muito para incontáveis (singular) / Muitos para contáveis (plural).."
         },
         {
             "id": "u5_v_5",
             "question": "Qual termo corresponde a: \"Conselho ou orientação (incontável em inglês, não tem plural advices).\"?",
             "options": [
+                "Reservation",
                 "Advice",
                 "Host a dinner",
-                "Reservation",
                 "Prefer"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'Advice' significa: Conselho ou orientação (incontável em inglês, não tem plural advices).."
         },
         {
             "id": "u5_v_6",
             "question": "Qual termo corresponde a: \"Informação (incontável, não existe informations).\"?",
             "options": [
-                "Host a dinner",
                 "Information",
+                "Host a dinner",
                 "Prefer",
                 "Reservation"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Information' significa: Informação (incontável, não existe informations).."
         },
         {
             "id": "u5_v_7",
             "question": "Qual termo corresponde a: \"Assistir ou monitorar visualmente.\"?",
             "options": [
-                "Watch",
-                "Host a dinner",
                 "Prefer",
-                "Reservation"
+                "Watch",
+                "Reservation",
+                "Host a dinner"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'Watch' significa: Assistir ou monitorar visualmente.."
         },
         {
             "id": "u5_v_8",
             "question": "Qual termo corresponde a: \"Anúncio publicitário ou propaganda televisiva comercial.\"?",
             "options": [
-                "Prefer",
+                "Commercial / Ad",
                 "Host a dinner",
-                "Reservation",
-                "Commercial / Ad"
+                "Prefer",
+                "Reservation"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "'Commercial / Ad' significa: Anúncio publicitário ou propaganda televisiva comercial.."
         }
     ],
@@ -6997,36 +6997,36 @@ window.QUESTION_POOL_U5 = {
             "id": "u5_g_1",
             "question": "Como se diz 'Eu gostaria de fazer uma reserva' em inglês?",
             "options": [
-                "I want table.",
                 "I would like to make a reservation.",
                 "I prefer booking table.",
+                "I want table.",
                 "I like reservation."
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'I would like to make a reservation' é a expressão mais polida em inglês."
         },
         {
             "id": "u5_g_2",
             "question": "Como propor educadamente um almoço de negócios ao seu cliente?",
             "options": [
-                "Lunch is good?",
-                "We lunch together?",
+                "Would you like to join me for a business lunch?",
                 "Hey, eat lunch with me?",
-                "Would you like to join me for a business lunch?"
+                "Lunch is good?",
+                "We lunch together?"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "'Would you like to join me for...' é o convite formal corporativo padrão."
         },
         {
             "id": "u5_g_3",
             "question": "Qual das opções abaixo é um substantivo incontável (uncountable)?",
             "options": [
-                "report",
-                "dollar",
                 "client",
-                "information"
+                "information",
+                "dollar",
+                "report"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "'information' é incontável e não aceita a forma plural 'informations'."
         },
         {
@@ -7045,9 +7045,9 @@ window.QUESTION_POOL_U5 = {
             "id": "u5_g_5",
             "question": "Como se traduz a frase 'Ela gosta de anúncios'?",
             "options": [
-                "She likes to watches advertisement.",
-                "She like advertisements.",
                 "She liking advertisement.",
+                "She like advertisements.",
+                "She likes to watches advertisement.",
                 "She likes advertisements."
             ],
             "correctIndex": 3,
@@ -7058,11 +7058,11 @@ window.QUESTION_POOL_U5 = {
             "question": "Como denominar o vídeo publicitário que vai ao ar na TV?",
             "options": [
                 "TV Movie",
-                "TV Commercial",
                 "TV Cinema",
+                "TV Commercial",
                 "TV Documentary"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "Vídeos promocionais de empresas na TV são chamados de 'TV commercials'."
         },
         {
@@ -7070,9 +7070,9 @@ window.QUESTION_POOL_U5 = {
             "question": "Qual é o comparativo correto para o adjetivo 'good'?",
             "options": [
                 "better",
+                "gooder",
                 "more good",
-                "best",
-                "gooder"
+                "best"
             ],
             "correctIndex": 0,
             "explanation": "'good' é um adjetivo irregular e seu comparativo é 'better'."
@@ -7082,11 +7082,11 @@ window.QUESTION_POOL_U5 = {
             "question": "Como dizer que sua solução é melhor que a do concorrente?",
             "options": [
                 "Our solution is gooder than competitor.",
+                "Our solution is more good than competitor.",
                 "Our solution is better than the competitor's.",
-                "Our solution is best than competitor.",
-                "Our solution is more good than competitor."
+                "Our solution is best than competitor."
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'better than' é o comparativo de superioridade correto para good."
         }
     ],
@@ -7106,11 +7106,11 @@ window.QUESTION_POOL_U5 = {
             "id": "u5_l_2",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We like to _____ dinners for clients.",
             "options": [
-                "eat",
                 "serve",
-                "host"
+                "host",
+                "eat"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"We like to host dinners for clients.\" (Nós gostamos de oferecer jantares para clientes.)."
         },
         {
@@ -7128,9 +7128,9 @@ window.QUESTION_POOL_U5 = {
             "id": "u5_l_4",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: How _____ information do you have?",
             "options": [
-                "few",
+                "many",
                 "much",
-                "many"
+                "few"
             ],
             "correctIndex": 1,
             "explanation": "A frase correta é: \"How much information do you have?\" (Quanta informação você tem?)."
@@ -7140,32 +7140,32 @@ window.QUESTION_POOL_U5 = {
             "question": "Selecione a palavra correta para preencher a lacuna da frase: I watch business _____ to learn.",
             "options": [
                 "documents",
-                "documentary",
-                "documentaries"
+                "documentaries",
+                "documentary"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"I watch business documentaries to learn.\" (Eu assisto documentários de negócios para aprender.)."
         },
         {
             "id": "u5_l_6",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: She enjoys creative marketing _____.",
             "options": [
-                "movies",
+                "ads",
                 "novels",
-                "ads"
+                "movies"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"She enjoys creative marketing ads.\" (Ela gosta de anúncios de marketing criativos.)."
         },
         {
             "id": "u5_l_7",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: This project is _____ profitable than the last one.",
             "options": [
-                "most",
+                "more",
                 "er",
-                "more"
+                "most"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"This project is more profitable than the last one.\" (Este projeto é mais lucrativo do que o anterior.)."
         },
         {
@@ -7173,8 +7173,8 @@ window.QUESTION_POOL_U5 = {
             "question": "Selecione a palavra correta para preencher a lacuna da frase: Our software is _____ than the competitor's.",
             "options": [
                 "faster",
-                "more fast",
-                "fastest"
+                "fastest",
+                "more fast"
             ],
             "correctIndex": 0,
             "explanation": "A frase correta é: \"Our software is faster than the competitor's.\" (Nosso software é mais rápido que o do concorrente.)."
@@ -7186,8 +7186,8 @@ window.QUESTION_POOL_U5 = {
             "options": [
                 "vedj-tá-bles",
                 "(Recommended) védj-tə-bəlz (3 sílabas)",
-                "ve-ge-ta-bles (4 sílabas)",
-                "ve-dji-tê-bolz"
+                "ve-dji-tê-bolz",
+                "ve-ge-ta-bles (4 sílabas)"
             ],
             "correctIndex": 1,
             "explanation": "Vegetables tem apenas 3 sílabas na pronúncia natural: 'védj-tə-bəlz'."
@@ -7196,19 +7196,19 @@ window.QUESTION_POOL_U5 = {
             "question": "Como pronunciamos 'Chocolate'?",
             "options": [
                 "tchóc-leit",
+                "tchóc-lãt",
                 "tchó-co-leit",
-                "tcho-co-la-te",
-                "tchóc-lãt"
+                "tcho-co-la-te"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "Chocolate pronuncia-se 'tchóc-lãt'."
         },
         {
             "question": "Como se pronuncia a palavra 'Salad'?",
             "options": [
                 "sæ-lãd",
-                "sa-lád",
                 "sê-lãd",
+                "sa-lád",
                 "sa-la-de"
             ],
             "correctIndex": 0,
@@ -7217,10 +7217,10 @@ window.QUESTION_POOL_U5 = {
         {
             "question": "Como pronunciamos 'Countable'?",
             "options": [
-                "côn-ta-ble",
+                "coun-ta-ble",
                 "cáun-tə-bol",
                 "cáun-tê-bol",
-                "coun-ta-ble"
+                "côn-ta-ble"
             ],
             "correctIndex": 1,
             "explanation": "Countable pronuncia-se 'cáun-tə-bol'."
@@ -7228,9 +7228,9 @@ window.QUESTION_POOL_U5 = {
         {
             "question": "Como se pronuncia 'Expensive'?",
             "options": [
-                "es-pên-sif",
-                "ecs-pên-siv",
                 "es-pen-sivi",
+                "ecs-pên-siv",
+                "es-pên-sif",
                 "ecs-pen-si-ve"
             ],
             "correctIndex": 1,
@@ -7239,8 +7239,8 @@ window.QUESTION_POOL_U5 = {
         {
             "question": "Como pronunciamos a palavra 'Best'?",
             "options": [
-                "bésti",
                 "bêste",
+                "bésti",
                 "bês",
                 "bést (com t seco final)"
             ],
@@ -7251,22 +7251,22 @@ window.QUESTION_POOL_U5 = {
             "question": "Como se pronuncia a palavra 'Worst' (pior)?",
             "options": [
                 "wór-sti",
-                "wãrst",
+                "wãr-sti",
                 "wost",
-                "wãr-sti"
+                "wãrst"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Worst pronuncia-se 'wãrst'."
         },
         {
             "question": "Como se pronuncia 'Restaurant' de forma nativa?",
             "options": [
+                "rés-trãnt",
                 "res-tó-ran-ti",
-                "rés-tã-rãn-te",
                 "res-tau-ran-te",
-                "rés-trãnt"
+                "rés-tã-rãn-te"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Restaurant pronuncia-se 'rés-trãnt' no inglês falado normal."
         }
     ]
@@ -7278,46 +7278,46 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_v_1",
             "question": "Qual termo corresponde a: \"Fui / Era / Estive / Estava (passado de To Be para I, He, She, It).\"?",
             "options": [
-                "Were",
                 "Was",
-                "Negotiation",
-                "Launched"
+                "Were",
+                "Launched",
+                "Negotiation"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Was' significa: Fui / Era / Estive / Estava (passado de To Be para I, He, She, It).."
         },
         {
             "id": "u6_v_2",
             "question": "Qual termo corresponde a: \"Fomos / Éramos / Estiveram / Estavam (passado de To Be para You, We, They).\"?",
             "options": [
-                "Was",
                 "Were",
+                "Was",
                 "Launched",
                 "Negotiation"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Were' significa: Fomos / Éramos / Estiveram / Estavam (passado de To Be para You, We, They).."
         },
         {
             "id": "u6_v_3",
             "question": "Qual termo corresponde a: \"Ato de negociar termos e preços comerciais.\"?",
             "options": [
-                "Was",
                 "Were",
                 "Launched",
-                "Negotiation"
+                "Negotiation",
+                "Was"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "'Negotiation' significa: Ato de negociar termos e preços comerciais.."
         },
         {
             "id": "u6_v_4",
             "question": "Qual termo corresponde a: \"Lançou / Lançamos (passado regular do verbo launch).\"?",
             "options": [
-                "Negotiation",
+                "Were",
                 "Was",
                 "Launched",
-                "Were"
+                "Negotiation"
             ],
             "correctIndex": 2,
             "explanation": "'Launched' significa: Lançou / Lançamos (passado regular do verbo launch).."
@@ -7326,48 +7326,48 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_v_5",
             "question": "Qual termo corresponde a: \"Ligou / Chamou (passado regular de call).\"?",
             "options": [
-                "Negotiation",
                 "Were",
                 "Called",
+                "Negotiation",
                 "Was"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "'Called' significa: Ligou / Chamou (passado regular de call).."
         },
         {
             "id": "u6_v_6",
             "question": "Qual termo corresponde a: \"Semana passada.\"?",
             "options": [
-                "Negotiation",
                 "Last week",
                 "Was",
+                "Negotiation",
                 "Were"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Last week' significa: Semana passada.."
         },
         {
             "id": "u6_v_7",
             "question": "Qual termo corresponde a: \"Pronúncia de -ED como 'T' após sons surdos (ex: fixed, worked).\"?",
             "options": [
-                "/t/ sound",
-                "Negotiation",
                 "Was",
-                "Were"
+                "Negotiation",
+                "Were",
+                "/t/ sound"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "'/t/ sound' significa: Pronúncia de -ED como 'T' após sons surdos (ex: fixed, worked).."
         },
         {
             "id": "u6_v_8",
             "question": "Qual termo corresponde a: \"Pronúncia de -ED como 'D' após sons sonoros (ex: called, planned).\"?",
             "options": [
-                "/d/ sound",
-                "Were",
+                "Was",
                 "Negotiation",
-                "Was"
+                "Were",
+                "/d/ sound"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "'/d/ sound' significa: Pronúncia de -ED como 'D' após sons sonoros (ex: called, planned).."
         }
     ],
@@ -7376,10 +7376,10 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_g_1",
             "question": "Qual a forma correta do verbo To Be no passado para 'We'?",
             "options": [
-                "are",
+                "been",
                 "was",
                 "were",
-                "been"
+                "are"
             ],
             "correctIndex": 2,
             "explanation": "Para We, You, They no passado simples, o verbo To Be é 'were'."
@@ -7388,24 +7388,24 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_g_2",
             "question": "Como você diria 'O diretor financeiro estava ausente ontem'?",
             "options": [
-                "The CFO were absent yesterday.",
                 "The CFO was absent yesterday.",
                 "The CFO been absent yesterday.",
+                "The CFO were absent yesterday.",
                 "The CFO is absent yesterday."
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "Para 'The CFO' (ele/ela), usamos a forma 'was' no passado."
         },
         {
             "id": "u6_g_3",
             "question": "Como formamos o passado simples da maioria dos verbos regulares em inglês?",
             "options": [
-                "Dobrando a primeira letra",
-                "Adicionando o sufixo -ed ao final do verbo",
+                "Alterando a vogal central",
                 "Usando o auxiliar did na afirmativa",
-                "Alterando a vogal central"
+                "Dobrando a primeira letra",
+                "Adicionando o sufixo -ed ao final do verbo"
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "Verbos regulares no passado simples afirmativo recebem a terminação '-ed'."
         },
         {
@@ -7413,9 +7413,9 @@ window.QUESTION_POOL_U6 = {
             "question": "Como relatar 'Ela atualizou o sistema de CRM ontem'?",
             "options": [
                 "She updated the CRM yesterday.",
+                "She update the CRM yesterday.",
                 "She updating CRM yesterday.",
-                "She did updated the CRM yesterday.",
-                "She update the CRM yesterday."
+                "She did updated the CRM yesterday."
             ],
             "correctIndex": 0,
             "explanation": "'updated' é o passado simples regular correto de update."
@@ -7424,8 +7424,8 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_g_5",
             "question": "Qual destes verbos no passado tem a terminação -ed pronunciada como uma sílaba extra /id/?",
             "options": [
-                "worked",
                 "called",
+                "worked",
                 "presented",
                 "helped"
             ],
@@ -7436,24 +7436,24 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_g_6",
             "question": "Qual palavra tem a pronúncia do -ed com som de /t/?",
             "options": [
-                "talked",
                 "signed",
                 "needed",
-                "started"
+                "started",
+                "talked"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "O som de k em talk é surdo, logo a pronúncia é /t/: talked."
         },
         {
             "id": "u6_g_7",
             "question": "Qual é o passado simples correto do verbo 'buy' (comprar)?",
             "options": [
-                "boughten",
+                "boughts",
                 "buyed",
-                "bought",
-                "boughts"
+                "boughten",
+                "bought"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'buy' é irregular e seu passado simples é 'bought'."
         },
         {
@@ -7461,8 +7461,8 @@ window.QUESTION_POOL_U6 = {
             "question": "Como expressar 'Nós fechamos (fizemos) um ótimo negócio ontem'?",
             "options": [
                 "We made a great deal yesterday.",
-                "We buyed a great deal yesterday.",
                 "We did made a great deal yesterday.",
+                "We buyed a great deal yesterday.",
                 "We maked a great deal yesterday."
             ],
             "correctIndex": 0,
@@ -7474,9 +7474,9 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_l_1",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: I _____ at the commercial office yesterday.",
             "options": [
-                "were",
+                "been",
                 "was",
-                "been"
+                "were"
             ],
             "correctIndex": 1,
             "explanation": "A frase correta é: \"I was at the commercial office yesterday.\" (Eu estava no escritório comercial ontem.)."
@@ -7485,44 +7485,44 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_l_2",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: They _____ ready for the negotiation.",
             "options": [
+                "was",
                 "were",
-                "are",
-                "was"
+                "are"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"They were ready for the negotiation.\" (Eles estavam prontos para a negociação.)."
         },
         {
             "id": "u6_l_3",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We _____ our commercial campaign last week.",
             "options": [
-                "launching",
                 "launch",
-                "launched"
+                "launched",
+                "launching"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"We launched our commercial campaign last week.\" (Nós lançamos nossa campanha comercial na semana passada.)."
         },
         {
             "id": "u6_l_4",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: He _____ the prospective client yesterday.",
             "options": [
+                "call",
                 "calling",
-                "called",
-                "call"
+                "called"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"He called the prospective client yesterday.\" (Ele ligou para o cliente em potencial ontem.)."
         },
         {
             "id": "u6_l_5",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We _____ the commercial contract details.",
             "options": [
+                "fixed",
                 "fixing",
-                "fix",
-                "fixed"
+                "fix"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"We fixed the commercial contract details.\" (Nós consertamos os detalhes do contrato comercial.)."
         },
         {
@@ -7540,11 +7540,11 @@ window.QUESTION_POOL_U6 = {
             "id": "u6_l_7",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We _____ the client at the conference.",
             "options": [
-                "met",
+                "meet",
                 "meeting",
-                "meet"
+                "met"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"We met the client at the conference.\" (Nós encontramos o cliente na conferência.)."
         },
         {
@@ -7552,8 +7552,8 @@ window.QUESTION_POOL_U6 = {
             "question": "Selecione a palavra correta para preencher a lacuna da frase: They _____ their solutions to a big group.",
             "options": [
                 "sold",
-                "selling",
-                "sell"
+                "sell",
+                "selling"
             ],
             "correctIndex": 0,
             "explanation": "A frase correta é: \"They sold their solutions to a big group.\" (Eles venderam suas soluções para um grande grupo.)."
@@ -7563,76 +7563,76 @@ window.QUESTION_POOL_U6 = {
         {
             "question": "Qual é a pronúncia do -ED na palavra 'worked'?",
             "options": [
-                "/ed/",
-                "/ɪd/ (sílaba extra)",
                 "/d/ (som de D seco)",
-                "/t/ (som de T seco)"
+                "/ed/",
+                "/t/ (som de T seco)",
+                "/ɪd/ (sílaba extra)"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "Worked termina com som surdo (/k/), logo o -ED soa como /t/."
         },
         {
             "question": "Qual é a pronúncia do -ED na palavra 'played'?",
             "options": [
-                "/ed/",
                 "/d/ (som de D seco)",
+                "/t/ (som de T seco)",
                 "/ɪd/ (sílaba extra)",
-                "/t/ (som de T seco)"
+                "/ed/"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "Played termina com som sonoro (vogal), logo o -ED soa como /d/."
         },
         {
             "question": "Qual é a pronúncia do -ED na palavra 'started'?",
             "options": [
-                "/ed/",
-                "/d/ (som de D seco)",
                 "/ɪd/ (sílaba extra)",
-                "/t/ (som de T seco)"
+                "/t/ (som de T seco)",
+                "/ed/",
+                "/d/ (som de D seco)"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Started termina com o som /t/, exigindo a sílaba extra /ɪd/."
         },
         {
             "question": "Qual é a pronúncia do -ED na palavra 'decided'?",
             "options": [
-                "/t/ (som de T seco)",
+                "/ɪd/ (sílaba extra)",
                 "/ed/",
                 "/d/ (som de D seco)",
-                "/ɪd/ (sílaba extra)"
+                "/t/ (som de T seco)"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Decided termina com o som /d/, exigindo a sílaba extra /ɪd/."
         },
         {
             "question": "Como pronunciamos a palavra 'Was'?",
             "options": [
+                "uás",
                 "wãs (com som de S)",
                 "wãz (com som de Z)",
-                "uás",
                 "uáz"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "Was pronuncia-se 'wãz' com o som de Z no final."
         },
         {
             "question": "Como pronunciamos a palavra 'Were'?",
             "options": [
-                "wãr",
-                "wér",
                 "uér",
-                "uêr"
+                "wér",
+                "uêr",
+                "wãr"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "Were pronuncia-se 'wãr' (rima com her)."
         },
         {
             "question": "Como se pronuncia 'Irregular'?",
             "options": [
-                "i-re-gu-lar",
+                "ai-re-gyu-lar",
                 "i-rê-gu-lar",
                 "i-ré-gyu-lar",
-                "ai-re-gyu-lar"
+                "i-re-gu-lar"
             ],
             "correctIndex": 2,
             "explanation": "Irregular pronuncia-se 'i-ré-gyu-lar'."
@@ -7641,11 +7641,11 @@ window.QUESTION_POOL_U6 = {
             "question": "Como se pronuncia a palavra 'Gone' (particípio de go)?",
             "options": [
                 "gõ-ni",
-                "góni",
                 "gôn",
-                "gón"
+                "gón",
+                "góni"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "Gone pronuncia-se 'gón' (o E final é mudo)."
         }
     ]
@@ -7657,46 +7657,46 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_v_1",
             "question": "Qual termo corresponde a: \"Verbo auxiliar usado para expressar decisões futuras espontâneas ou promessas.\"?",
             "options": [
-                "Tomorrow",
-                "Contract",
                 "Will",
-                "Be going to"
+                "Contract",
+                "Be going to",
+                "Tomorrow"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'Will' significa: Verbo auxiliar usado para expressar decisões futuras espontâneas ou promessas.."
         },
         {
             "id": "u7_v_2",
             "question": "Qual termo corresponde a: \"Amanhã.\"?",
             "options": [
-                "Will",
-                "Contract",
                 "Tomorrow",
-                "Be going to"
+                "Be going to",
+                "Will",
+                "Contract"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "'Tomorrow' significa: Amanhã.."
         },
         {
             "id": "u7_v_3",
             "question": "Qual termo corresponde a: \"Contrato legal de venda ou prestação de serviços.\"?",
             "options": [
-                "Contract",
-                "Be going to",
+                "Tomorrow",
                 "Will",
-                "Tomorrow"
+                "Contract",
+                "Be going to"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "'Contract' significa: Contrato legal de venda ou prestação de serviços.."
         },
         {
             "id": "u7_v_4",
             "question": "Qual termo corresponde a: \"Estrutura usada para planos futuros e intenções pré-definidas.\"?",
             "options": [
-                "Will",
+                "Contract",
                 "Tomorrow",
                 "Be going to",
-                "Contract"
+                "Will"
             ],
             "correctIndex": 2,
             "explanation": "'Be going to' significa: Estrutura usada para planos futuros e intenções pré-definidas.."
@@ -7705,48 +7705,48 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_v_5",
             "question": "Qual termo corresponde a: \"Visitar um cliente ou parceiro comercial.\"?",
             "options": [
-                "Visit",
-                "Will",
+                "Contract",
                 "Tomorrow",
-                "Contract"
+                "Will",
+                "Visit"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "'Visit' significa: Visitar um cliente ou parceiro comercial.."
         },
         {
             "id": "u7_v_6",
             "question": "Qual termo corresponde a: \"Apresentar ou demonstrar algo.\"?",
             "options": [
+                "Tomorrow",
                 "Present",
-                "Contract",
                 "Will",
-                "Tomorrow"
+                "Contract"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'Present' significa: Apresentar ou demonstrar algo.."
         },
         {
             "id": "u7_v_7",
             "question": "Qual termo corresponde a: \"Chuvoso / Ensolarado.\"?",
             "options": [
+                "Will",
                 "Tomorrow",
                 "Rainy / Sunny",
-                "Will",
                 "Contract"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'Rainy / Sunny' significa: Chuvoso / Ensolarado.."
         },
         {
             "id": "u7_v_8",
             "question": "Qual termo corresponde a: \"Inverno / Verão.\"?",
             "options": [
-                "Winter / Summer",
-                "Tomorrow",
                 "Will",
-                "Contract"
+                "Tomorrow",
+                "Contract",
+                "Winter / Summer"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "'Winter / Summer' significa: Inverno / Verão.."
         }
     ],
@@ -7755,9 +7755,9 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_g_1",
             "question": "Como se faz a negação de 'will'?",
             "options": [
+                "not will",
                 "don't will",
                 "willn't",
-                "not will",
                 "won't"
             ],
             "correctIndex": 3,
@@ -7767,46 +7767,46 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_g_2",
             "question": "Como prometer formalmente ao cliente que você enviará a proposta comercial amanhã?",
             "options": [
-                "I'll sending you proposal tomorrow.",
-                "I send you proposal tomorrow.",
                 "I going to send proposal tomorrow.",
-                "I will send you the proposal tomorrow."
+                "I will send you the proposal tomorrow.",
+                "I send you proposal tomorrow.",
+                "I'll sending you proposal tomorrow."
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "Para promessas comerciais em conversações de negócios, usamos 'will': 'I will send'."
         },
         {
             "id": "u7_g_3",
             "question": "Qual é a estrutura correta para expressar planos futuros com 'going to' para 'They'?",
             "options": [
-                "They will going to study.",
-                "They are going to study.",
+                "They going to study.",
                 "They is going to study.",
-                "They going to study."
+                "They will going to study.",
+                "They are going to study."
             ],
-            "correctIndex": 1,
+            "correctIndex": 3,
             "explanation": "A estrutura exige: sujeito + be (are) + going to + verbo."
         },
         {
             "id": "u7_g_4",
             "question": "Como expressar o plano agendado de fazer uma demonstração do produto às 14h?",
             "options": [
-                "We will demonstrate the product at 2 PM.",
                 "We are going to demonstrate the product at 2 PM.",
                 "We demonstrate the product at 2 PM.",
-                "We are demonstrate the product."
+                "We are demonstrate the product.",
+                "We will demonstrate the product at 2 PM."
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "Para planos estruturados e agendas corporativas, usamos 'going to': 'We are going to'."
         },
         {
             "id": "u7_g_5",
             "question": "Como se pergunta 'Como está o tempo?' em inglês?",
             "options": [
+                "Is it hot?",
                 "What is the climate?",
-                "How is the weather doing?",
                 "What's the weather like?",
-                "Is it hot?"
+                "How is the weather doing?"
             ],
             "correctIndex": 2,
             "explanation": "'What's the weather like?' é a expressão padrão para perguntar sobre as condições do tempo."
@@ -7815,9 +7815,9 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_g_6",
             "question": "Como justificar comercialmente um atraso devido a problemas climáticos extremos?",
             "options": [
+                "The weather is bad, sorry.",
                 "No delivery because of rain.",
                 "We don't deliver in winter.",
-                "The weather is bad, sorry.",
                 "We have delays due to severe weather conditions."
             ],
             "correctIndex": 3,
@@ -7827,12 +7827,12 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_g_7",
             "question": "Como se conjuga 'There to Be' no futuro simples?",
             "options": [
-                "There will be",
+                "There is going to be",
                 "There are going to be",
-                "There will have",
-                "There is going to be"
+                "There will be",
+                "There will have"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "A conjugação padrão de existir no futuro é 'There will be' para singular e plural."
         },
         {
@@ -7841,8 +7841,8 @@ window.QUESTION_POOL_U7 = {
             "options": [
                 "There will be a projector in the meeting room.",
                 "We will have been a projector.",
-                "There is a projector in the room.",
-                "Have a projector in the room."
+                "Have a projector in the room.",
+                "There is a projector in the room."
             ],
             "correctIndex": 0,
             "explanation": "There will be indica a existência futura ('haverá') de forma correta."
@@ -7853,11 +7853,11 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_l_1",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We _____ sign the new contract tomorrow.",
             "options": [
-                "would",
                 "will",
-                "going"
+                "going",
+                "would"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"We will sign the new contract tomorrow.\" (Nós assinaremos o novo contrato amanhã.)."
         },
         {
@@ -7875,11 +7875,11 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_l_3",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We are _____ to visit the prospective client.",
             "options": [
+                "will",
                 "go",
-                "going",
-                "will"
+                "going"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"We are going to visit the prospective client.\" (Nós vamos visitar o cliente em potencial (planejado).)."
         },
         {
@@ -7897,11 +7897,11 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_l_5",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: It will be _____ during our trade expo.",
             "options": [
-                "rainy",
                 "raining",
+                "rainy",
                 "rain"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"It will be rainy during our trade expo.\" (Estará chuvoso durante a nossa exposição comercial.)."
         },
         {
@@ -7919,22 +7919,22 @@ window.QUESTION_POOL_U7 = {
             "id": "u7_l_7",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: The showroom will _____ open tomorrow.",
             "options": [
-                "be",
                 "is",
+                "be",
                 "been"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"The showroom will be open tomorrow.\" (O showroom estará aberto amanhã.)."
         },
         {
             "id": "u7_l_8",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: There _____ be several international buyers.",
             "options": [
+                "have",
                 "are",
-                "will",
-                "have"
+                "will"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "A frase correta é: \"There will be several international buyers.\" (Haverá vários compradores internacionais.)."
         }
     ],
@@ -7942,78 +7942,78 @@ window.QUESTION_POOL_U7 = {
         {
             "question": "Como pronunciamos a contração 'I'll'?",
             "options": [
-                "áil (L velar)",
                 "aili",
                 "él",
-                "áio"
+                "áio",
+                "áil (L velar)"
             ],
-            "correctIndex": 0,
+            "correctIndex": 3,
             "explanation": "I'll pronuncia-se 'áil' com o L velar encostando no céu da boca."
         },
         {
             "question": "Como pronunciamos a palavra 'Won't' (negativa de will)?",
             "options": [
-                "uôunt",
-                "uónt",
+                "wôunt",
                 "wónt",
-                "wôunt"
+                "uôunt",
+                "uónt"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Won't pronuncia-se 'wôunt'."
         },
         {
             "question": "Como pronunciamos 'Gonna' (contração de going to)?",
             "options": [
                 "go-na",
-                "gun-na",
                 "góna",
+                "gun-na",
                 "gôna"
             ],
-            "correctIndex": 2,
+            "correctIndex": 1,
             "explanation": "Gonna pronuncia-se 'góna'."
         },
         {
             "question": "Como se pronuncia 'Weather' (tempo/clima)?",
             "options": [
-                "wé-ðər (com TH sonoro)",
+                "wé-ðar",
                 "wé-ter",
-                "wé-fer",
-                "wé-ðar"
+                "wé-ðər (com TH sonoro)",
+                "wé-fer"
             ],
-            "correctIndex": 0,
+            "correctIndex": 2,
             "explanation": "Weather pronuncia-se 'wé-ðər'."
         },
         {
             "question": "Como se pronuncia a palavra 'Autumn' (outono)?",
             "options": [
-                "ó-tumni",
                 "au-tuni",
                 "au-tumn",
-                "ó-təm (o N final é mudo)"
+                "ó-təm (o N final é mudo)",
+                "ó-tumni"
             ],
-            "correctIndex": 3,
+            "correctIndex": 2,
             "explanation": "Autumn pronuncia-se 'ó-təm', o N final é mudo."
         },
         {
             "question": "Como se pronuncia 'Airport'?",
             "options": [
                 "air-por-ti",
+                "êr-põrt",
                 "air-pór-ti",
-                "êr-pórt",
-                "êr-põrt"
+                "êr-pórt"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Airport pronuncia-se 'êr-pórt'."
         },
         {
             "question": "Como se pronuncia 'Hotel' em inglês?",
             "options": [
                 "róu-tel",
+                "o-tél",
                 "ó-tel",
-                "rou-tél (sílaba tônica final)",
-                "o-tél"
+                "rou-tél (sílaba tônica final)"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Hotel tem a sílaba tônica final e o H aspirado: 'rou-tél'."
         },
         {
@@ -8036,34 +8036,34 @@ window.QUESTION_POOL_U8 = {
             "id": "u8_v_1",
             "question": "Qual termo corresponde a: \"Ligando ou telefonando (Present Continuous).\"?",
             "options": [
-                "Sales proposal",
                 "Calling",
                 "Was / Were writing",
-                "Preparing"
+                "Preparing",
+                "Sales proposal"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "'Calling' significa: Ligando ou telefonando (Present Continuous).."
         },
         {
             "id": "u8_v_2",
             "question": "Qual termo corresponde a: \"Preparando propostas ou apresentações.\"?",
             "options": [
-                "Calling",
+                "Was / Were writing",
                 "Sales proposal",
-                "Preparing",
-                "Was / Were writing"
+                "Calling",
+                "Preparing"
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "'Preparing' significa: Preparando propostas ou apresentações.."
         },
         {
             "id": "u8_v_3",
             "question": "Qual termo corresponde a: \"Proposta comercial formal de valores.\"?",
             "options": [
-                "Preparing",
                 "Was / Were writing",
+                "Calling",
                 "Sales proposal",
-                "Calling"
+                "Preparing"
             ],
             "correctIndex": 2,
             "explanation": "'Sales proposal' significa: Proposta comercial formal de valores.."
@@ -8084,48 +8084,48 @@ window.QUESTION_POOL_U8 = {
             "id": "u8_v_5",
             "question": "Qual termo corresponde a: \"No transcorrer da chamada telefônica.\"?",
             "options": [
-                "Sales proposal",
+                "During the call",
                 "Calling",
-                "Preparing",
-                "During the call"
+                "Sales proposal",
+                "Preparing"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "'During the call' significa: No transcorrer da chamada telefônica.."
         },
         {
             "id": "u8_v_6",
             "question": "Qual termo corresponde a: \"Verba financeira disponível.\"?",
             "options": [
+                "Calling",
                 "Budget",
                 "Sales proposal",
-                "Calling",
                 "Preparing"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "'Budget' significa: Verba financeira disponível.."
         },
         {
             "id": "u8_v_7",
             "question": "Qual termo corresponde a: \"Estará realizando / organizando (Future Continuous).\"?",
             "options": [
+                "Calling",
                 "Preparing",
                 "Will be hosting",
-                "Sales proposal",
-                "Calling"
+                "Sales proposal"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'Will be hosting' significa: Estará realizando / organizando (Future Continuous).."
         },
         {
             "id": "u8_v_8",
             "question": "Qual termo corresponde a: \"Negociando propostas comerciais.\"?",
             "options": [
-                "Calling",
-                "Negotiating",
+                "Sales proposal",
                 "Preparing",
-                "Sales proposal"
+                "Negotiating",
+                "Calling"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "'Negotiating' significa: Negociando propostas comerciais.."
         }
     ],
@@ -8134,9 +8134,9 @@ window.QUESTION_POOL_U8 = {
             "id": "u8_g_1",
             "question": "Qual a estrutura padrão do Present Continuous?",
             "options": [
-                "Sujeito + have + particípio",
-                "Sujeito + verbo base",
                 "Sujeito + will + verbo",
+                "Sujeito + verbo base",
+                "Sujeito + have + particípio",
                 "Sujeito + verbo To Be + verbo-ING"
             ],
             "correctIndex": 3,
@@ -8146,58 +8146,58 @@ window.QUESTION_POOL_U8 = {
             "id": "u8_g_2",
             "question": "Como relatar ao gerente que você está finalizando o acordo agora?",
             "options": [
+                "I am finalizing the agreement right now.",
                 "I has been finalizing agreement.",
                 "I finalizing agreement.",
-                "I am finalizing the agreement right now.",
                 "I will finalizing agreement."
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "Ação acontecendo no momento da fala exige Present Continuous: 'I am finalizing'."
         },
         {
             "id": "u8_g_3",
             "question": "Qual conjunção é comumente usada para introduzir uma ação que interrompe outra no passado contínuo?",
             "options": [
+                "when",
                 "while",
-                "so",
                 "because",
-                "when"
+                "so"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Usamos 'when' (quando) para introduzir uma ação curta que interrompeu outra que estava acontecendo."
         },
         {
             "id": "u8_g_4",
             "question": "Como dizer 'Nós estávamos apresentando a proposta comercial quando o cliente chegou'?",
             "options": [
-                "We presenting proposal when client arrived.",
                 "We was presenting proposal when client arrived.",
-                "We were presenting the proposal when the client arrived.",
-                "We did presenting proposal when client arrived."
+                "We presenting proposal when client arrived.",
+                "We did presenting proposal when client arrived.",
+                "We were presenting the proposal when the client arrived."
             ],
-            "correctIndex": 2,
+            "correctIndex": 3,
             "explanation": "Para We usamos 'were' + verbo-ing: 'We were presenting'."
         },
         {
             "id": "u8_g_5",
             "question": "Qual a estrutura correta do Future Continuous?",
             "options": [
-                "will + verbo base",
-                "going to be + verbo",
+                "will be + verbo-ING",
                 "will have + particípio",
-                "will be + verbo-ING"
+                "will + verbo base",
+                "going to be + verbo"
             ],
-            "correctIndex": 3,
+            "correctIndex": 0,
             "explanation": "Forma-se com 'will be' + verbo principal no gerúndio (com terminação -ing)."
         },
         {
             "id": "u8_g_6",
             "question": "Como descrever o que você estará fazendo amanhã de manhã em prol de um cliente?",
             "options": [
-                "I will presenting our commercial solution.",
+                "I present commercial solution tomorrow morning.",
                 "I will be presenting our commercial solution tomorrow morning.",
                 "I will be present commercial solution.",
-                "I present commercial solution tomorrow morning."
+                "I will presenting our commercial solution."
             ],
             "correctIndex": 1,
             "explanation": "'I will be presenting' (estarei apresentando) é a conjugação do futuro contínuo correto."
@@ -8206,12 +8206,12 @@ window.QUESTION_POOL_U8 = {
             "id": "u8_g_7",
             "question": "Como formamos o imperativo negativo em inglês?",
             "options": [
+                "Usando 'Not' + verbo",
                 "Usando 'Do not' (ou 'Don't') + verbo na forma base",
-                "Adicionando -ing ao verbo",
                 "Usando 'No' + verbo",
-                "Usando 'Not' + verbo"
+                "Adicionando -ing ao verbo"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "O imperativo negativo padrão usa a estrutura 'Do not / Don't' + verbo no infinitivo sem to."
         },
         {
@@ -8219,8 +8219,8 @@ window.QUESTION_POOL_U8 = {
             "question": "Como dar uma instrução negativa de não alterar os preços padrão?",
             "options": [
                 "Don't change the standard prices.",
-                "No change standard prices.",
                 "Change not standard prices.",
+                "No change standard prices.",
                 "Not change the standard prices."
             ],
             "correctIndex": 0,
@@ -8243,31 +8243,31 @@ window.QUESTION_POOL_U8 = {
             "id": "u8_l_2",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: We are _____ the sales proposal.",
             "options": [
-                "prepares",
+                "preparing",
                 "prepare",
-                "preparing"
+                "prepares"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"We are preparing the sales proposal.\" (Nós estamos preparando a proposta de vendas.)."
         },
         {
             "id": "u8_l_3",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: I _____ writing the sales report when they called.",
             "options": [
-                "was",
                 "were",
+                "was",
                 "been"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"I was writing the sales report when they called.\" (Eu estava escrevendo o relatório de vendas quando eles ligaram.)."
         },
         {
             "id": "u8_l_4",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: They were _____ the budget during the call.",
             "options": [
-                "discuss",
+                "discussed",
                 "discussing",
-                "discussed"
+                "discuss"
             ],
             "correctIndex": 1,
             "explanation": "A frase correta é: \"They were discussing the budget during the call.\" (Eles estavam discutindo o orçamento durante a ligação.)."
@@ -8276,44 +8276,44 @@ window.QUESTION_POOL_U8 = {
             "id": "u8_l_5",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: This time tomorrow we will _____ hosting the commercial event.",
             "options": [
-                "be",
                 "been",
+                "be",
                 "is"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"This time tomorrow we will be hosting the commercial event.\" (A esta hora amanhã estaremos realizando o evento comercial.)."
         },
         {
             "id": "u8_l_6",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: They will be _____ during the afternoon.",
             "options": [
-                "negotiated",
                 "negotiating",
+                "negotiated",
                 "negotiate"
             ],
-            "correctIndex": 1,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"They will be negotiating during the afternoon.\" (Eles estarão negociando durante a tarde.)."
         },
         {
             "id": "u8_l_7",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: _____ the pricing tables immediately.",
             "options": [
-                "Reviewing",
+                "Review",
                 "Reviews",
-                "Review"
+                "Reviewing"
             ],
-            "correctIndex": 2,
+            "correctIndex": 0,
             "explanation": "A frase correta é: \"Review the pricing tables immediately.\" (Revise as tabelas de preços imediatamente.)."
         },
         {
             "id": "u8_l_8",
             "question": "Selecione a palavra correta para preencher a lacuna da frase: Do not _____ proposals without client approval.",
             "options": [
+                "sending",
                 "send",
-                "sends",
-                "sending"
+                "sends"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "A frase correta é: \"Do not send proposals without client approval.\" (Não envie propostas sem a aprovação do cliente.)."
         }
     ],
@@ -8321,20 +8321,20 @@ window.QUESTION_POOL_U8 = {
         {
             "question": "Como pronunciamos o sufixo -ING nas palavras?",
             "options": [
+                "-in",
                 "-íngue",
                 "-iŋ (G final é mudo)",
-                "-in",
                 "-íngui"
             ],
-            "correctIndex": 1,
+            "correctIndex": 2,
             "explanation": "No sufixo -ing, o G é mudo e o som é um N nasal (/iŋ/)."
         },
         {
             "question": "Como se pronuncia 'Headache' (dor de cabeça)?",
             "options": [
-                "hé-dei-tchi",
-                "ri-dé-a-tchi",
                 "ré-dei-tchi",
+                "ri-dé-a-tchi",
+                "hé-dei-tchi",
                 "hé-deic (som de K final)"
             ],
             "correctIndex": 3,
@@ -8343,8 +8343,8 @@ window.QUESTION_POOL_U8 = {
         {
             "question": "Como se pronuncia 'Cough' (tosse)?",
             "options": [
-                "cóg",
                 "có-gui",
+                "cóg",
                 "cóf (o gh tem som de F)",
                 "cofi"
             ],
@@ -8354,23 +8354,23 @@ window.QUESTION_POOL_U8 = {
         {
             "question": "Como se pronuncia a palavra 'Stomachache'?",
             "options": [
-                "es-to-ma-ca-che",
                 "stã-mã-quei-tchi",
-                "stó-ma-quei-tchi",
-                "stã-mã-quêic"
+                "stã-mã-quêic",
+                "es-to-ma-ca-che",
+                "stó-ma-quei-tchi"
             ],
-            "correctIndex": 3,
+            "correctIndex": 1,
             "explanation": "Stomachache pronuncia-se 'stã-mã-quêic'."
         },
         {
             "question": "Como se pronuncia 'Heart' (coração)?",
             "options": [
+                "hért",
                 "hârt (com H aspirado)",
                 "hãrt",
-                "hért",
                 "ãrt"
             ],
-            "correctIndex": 0,
+            "correctIndex": 1,
             "explanation": "Heart pronuncia-se 'hârt' com som de A aberto e H aspirado."
         },
         {
@@ -8387,9 +8387,9 @@ window.QUESTION_POOL_U8 = {
         {
             "question": "Como pronunciamos 'Breathe' (respirar)?",
             "options": [
-                "brí-ti",
-                "bríθ (com TH surdo)",
                 "briz",
+                "bríθ (com TH surdo)",
+                "brí-ti",
                 "bríð (com TH sonoro e E mudo)"
             ],
             "correctIndex": 3,

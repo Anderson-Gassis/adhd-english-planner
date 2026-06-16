@@ -1665,7 +1665,7 @@ function buildSyllabus() {
                         {
                             type: "intro",
                             title: "Hiperfoco em Verbos: Conceito 💡",
-                            content: toBionic(`<strong>${verbSeed.ruleTitle}</strong><br><br>${verbSeed.ruleDesc}<br><br><strong>Estrutura da Regra:</strong> ${verbSeed.formula.map(f => `<span style="padding:2px 6px; background:rgba(255,255,255,0.08); border-radius:4px; margin:0 2px; font-weight:bold; font-size:11px; border:1px solid rgba(255,255,255,0.15);">${f}</span>`).join(" ")}<br><br>Exemplo Principal: <em>"${verbSeed.en}"</em> (${verbSeed.pt})`),
+                            content: `<strong>${toBionic(verbSeed.ruleTitle)}</strong><br><br>${toBionic(verbSeed.ruleDesc)}<br><br><strong>Estrutura da Regra:</strong> ${verbSeed.formula.map(f => `<span style="padding:2px 6px; background:rgba(255,255,255,0.08); border-radius:4px; margin:0 2px; font-weight:bold; font-size:11px; border:1px solid rgba(255,255,255,0.15);">${toBionic(f)}</span>`).join(" ")}<br><br>Exemplo Principal: <em>"${toBionic(verbSeed.en)}"</em> (${toBionic(verbSeed.pt)})`,
                             audioText: verbSeed.en
                         },
                         {

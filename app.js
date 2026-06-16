@@ -4036,6 +4036,7 @@ function initAuthPortal() {
                         
                         state.activeUser = emailInput;
                         localStorage.setItem('adhd_active_user', emailInput);
+                        state.loadState();
                         
                         // Load from Supabase first
                         await pullStateFromSupabase();
@@ -4122,7 +4123,12 @@ function initAuthPortal() {
                         }
                     }).then(({ error }) => {
                         if (error) console.error("Supabase SignUp failed:", error.message);
-                        else console.log("Supabase User signed up successfully.");
+                        else {
+                            console.log("Supabase User signed up successfully.");
+                            setTimeout(() => {
+                                pushStateToSupabase();
+                            }, 1000);
+                        }
                     });
                 }
                 
@@ -4351,7 +4357,12 @@ function finishPlacementTest() {
             }
         }).then(({ error }) => {
             if (error) console.error("Supabase SignUp (placement) failed:", error.message);
-            else console.log("Supabase User signed up successfully (placement).");
+            else {
+                console.log("Supabase User signed up successfully (placement).");
+                setTimeout(() => {
+                    pushStateToSupabase();
+                }, 1000);
+            }
         });
     }
     
@@ -4513,15 +4524,15 @@ async function pushStateToSupabase() {
         
         const { error } = await supabaseClient
             .from('profiles')
-            .update({
+            .upsert({
+                id: user.id,
                 cefr_level: state.cefrLevel,
                 niche: state.niche,
                 xp: state.xp,
                 coins: state.coins,
                 streak_shields: state.streakShields,
                 progress_data: stateData
-            })
-            .eq('id', user.id);
+            });
             
         if (error) {
             console.error("Error updating profile state in Supabase:", error.message);
@@ -4551,6 +4562,25 @@ async function pullStateFromSupabase() {
         }
         
         if (profile) {
+            // Conflict resolution: compare local progress vs. database progress
+            const localXP = state.xp || 0;
+            const dbXP = profile.xp || 0;
+            
+            const hasLocalProgress = localXP > 0 || (state.courseProgress && typeof state.courseProgress === 'object' && Object.values(state.courseProgress).some(arr => Array.isArray(arr) && arr.length > 0));
+            const hasDbProgress = profile.progress_data && typeof profile.progress_data === 'object' && Object.keys(profile.progress_data).length > 0;
+            
+            if (hasLocalProgress && !hasDbProgress) {
+                console.log("[Supabase] Local progress exists but DB progress is empty. Pushing local state to DB.");
+                await pushStateToSupabase();
+                return;
+            }
+            
+            if (localXP > dbXP) {
+                console.log(`[Supabase] Local XP (${localXP}) is greater than DB XP (${dbXP}). Pushing local state to DB.`);
+                await pushStateToSupabase();
+                return;
+            }
+            
             // Update state fields
             state.cefrLevel = profile.cefr_level || "A1";
             state.niche = profile.niche || "Geral";
@@ -5457,14 +5487,14 @@ async function syncProfileToSupabase() {
         
         const { error } = await supabaseClient
             .from('profiles')
-            .update({
+            .upsert({
+                id: user.id,
                 cefr_level: state.cefrLevel,
                 niche: state.niche,
                 xp: state.xp,
                 coins: state.coins,
                 streak_shields: state.streakShields
-            })
-            .eq('id', user.id);
+            });
             
         if (error) {
             console.error("Error updating profile in Supabase:", error.message);

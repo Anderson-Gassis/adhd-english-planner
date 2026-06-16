@@ -1193,6 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDopamineShop();
     initAudioDebugger();
     initStreakShieldButton();
+    initVerbArena();
     
     // Audio speed change log
     const speedSelect = document.getElementById('audio-speed-select');

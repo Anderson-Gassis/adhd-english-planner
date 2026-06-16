@@ -1034,14 +1034,43 @@
                         <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Domine o Passado e Futuro através de métodos visuais e cinestésicos.</p>
                     </div>
                     <div class="arena-tabs" style="display: flex; gap: 10px;">
-                        <button class="btn btn-arena-tab active" data-arena-tab="timeline">📅 Linha do Tempo</button>
+                        <button class="btn btn-arena-tab active" data-arena-tab="rules">📖 Guia de Regras</button>
+                        <button class="btn btn-arena-tab" data-arena-tab="timeline">📅 Linha do Tempo</button>
                         <button class="btn btn-arena-tab" data-arena-tab="families">🧩 Famílias Sonoras</button>
                         <button class="btn btn-arena-tab" data-arena-tab="gym">🏋️ Academia de Sentenças</button>
                     </div>
                 </div>
 
+                <!-- VIEW 0: RULES GUIDE (Ponto de Entrada) -->
+                <div id="arena-view-rules" class="arena-view-pane card glass">
+                    <div class="card-header">
+                        <span class="icon">📖</span>
+                        <h2>Guia Visual de Regras (Start Here)</h2>
+                        <span class="badge-premium" style="margin-left: auto; background: rgba(32, 201, 151, 0.15); color: #20c997;">Etapa Inicial Obrigatória</span>
+                    </div>
+                    <p class="help-text" style="font-size: 13px; color: var(--text-muted);">
+                        Para falar inglês plenamente, você precisa entender como os verbos se comportam no <b>Passado</b> e no <b>Futuro</b>. Revise as regras abaixo clicando nas abas. Quando se sentir pronto, clique em "Iniciar Prática"!
+                    </p>
+
+                    <!-- Rules Tense Selector -->
+                    <div class="rules-tense-selectors" style="display: flex; gap: 8px; margin-top: 10px;">
+                        <button class="btn btn-outline btn-sm rules-lvl-btn active" data-rules-tab="past">Passado (Past Simple)</button>
+                        <button class="btn btn-outline btn-sm rules-lvl-btn" data-rules-tab="future">Futuro (Will & Going To)</button>
+                        <button class="btn btn-outline btn-sm rules-lvl-btn" data-rules-tab="advanced">Tempos Compostos (Perfect & Continuous)</button>
+                    </div>
+
+                    <!-- Rules Body Content -->
+                    <div id="rules-content-body" style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">
+                        <!-- Injected dynamically via JS -->
+                    </div>
+
+                    <div style="margin-top: 20px; border-top: 1px solid var(--border-glass); padding-top: 15px; display: flex; justify-content: flex-end;">
+                        <button class="btn btn-success" id="btn-start-verb-practice" style="min-width: 250px; font-weight: 700; height: 42px;" onclick="unlockVerbPractice()">⚡ Entendi as Regras! Iniciar Prática ➔</button>
+                    </div>
+                </div>
+
                 <!-- VIEW 1: TIMELINE BUILDER -->
-                <div id="arena-view-timeline" class="arena-view-pane card glass">
+                <div id="arena-view-timeline" class="arena-view-pane card glass hidden">
                     <div class="card-header">
                         <span class="icon">📅</span>
                         <h2>Construtor Temporal (Timeline Builder)</h2>
@@ -1104,7 +1133,10 @@
                     <!-- Actions and feedback -->
                     <div class="actions-feedback-area" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
                         <div id="timeline-feedback" class="verb-feedback hidden"></div>
-                        <button class="btn btn-success" id="btn-timeline-check" style="height: 42px; font-weight: 700;" onclick="checkTimelineAnswer()" disabled>Verificar Frase</button>
+                        <div style="display: flex; gap: 10px; width: 100%;">
+                            <button class="btn btn-success" id="btn-timeline-check" style="flex: 1; height: 42px; font-weight: 700;" onclick="checkTimelineAnswer()" disabled>Verificar Frase</button>
+                            <button class="btn btn-secondary" id="btn-timeline-rule-help" style="width: 140px; height: 42px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px;" onclick="showActiveRuleHelp('timeline')">💡 Ver Regra</button>
+                        </div>
                     </div>
                 </div>
 
@@ -1183,7 +1215,18 @@
                         <div id="gym-feedback" class="verb-feedback hidden"></div>
                         <div style="display: flex; gap: 10px; width: 100%;">
                             <button class="btn btn-success" id="btn-gym-check" style="flex: 1; height: 42px; font-weight: 700;" onclick="checkGymAnswer()" disabled>Verificar Resposta</button>
-                            <button class="btn btn-primary hidden" id="btn-gym-next" style="width: 160px; height: 42px; font-weight: 700;" onclick="nextGymExercise()">Próximo ➔</button>
+                            <button class="btn btn-secondary" id="btn-gym-rule-help" style="width: 130px; height: 42px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 4px;" onclick="showActiveRuleHelp('gym')">💡 Ver Regra</button>
+                            <button class="btn btn-primary hidden" id="btn-gym-next" style="width: 130px; height: 42px; font-weight: 700;" onclick="nextGymExercise()">Próximo ➔</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL FLUTUANTE DE AJUDA CONTEXTUAL -->
+                <div id="rule-help-modal" class="rule-help-overlay hidden">
+                    <div class="rule-help-content glass">
+                        <button class="btn-close-modal" id="btn-close-rule-help" onclick="closeRuleHelp()" style="top: 15px; right: 15px;">✕</button>
+                        <div id="rule-help-body">
+                            <!-- Conteúdo injetado dinamicamente via JS -->
                         </div>
                     </div>
                 </div>

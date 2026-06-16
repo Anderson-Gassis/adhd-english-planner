@@ -2586,3 +2586,143 @@ body {
     50% { filter: drop-shadow(0 0 8px var(--color-future)); }
     100% { filter: drop-shadow(0 0 2px var(--color-future)); }
 }
+
+/* ==========================================
+   FASE 2: GUIA DE REGRAS & AJUDA FLUTUANTE
+   ========================================== */
+.rules-tense-selectors {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.rules-lvl-btn {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+    padding: 8px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rules-lvl-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.rules-lvl-btn.active {
+    background: rgba(32, 201, 151, 0.15);
+    border-color: #20c997;
+    color: #20c997;
+    box-shadow: 0 0 10px rgba(32, 201, 151, 0.2);
+}
+
+/* Rule Card */
+.rule-card {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.rule-card:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--border-glass-hover);
+}
+
+.rule-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 8px;
+}
+
+.rule-card-header h3 {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+/* Formula blocks */
+.formula-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 6px;
+    margin: 8px 0;
+}
+
+.formula-block {
+    background: rgba(0, 188, 255, 0.08);
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    font-family: monospace;
+}
+
+.formula-block.operator {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 15px;
+    padding: 0;
+}
+
+.formula-block.complement {
+    background: rgba(255,255,255,0.03);
+    border-color: var(--border-glass);
+    color: var(--text-muted);
+}
+
+/* Modal flutuante de ajuda */
+.rule-help-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: ruleFadeIn 0.25s ease-out;
+}
+
+.rule-help-content {
+    max-width: 520px;
+    width: 90%;
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    position: relative;
+    border: 1px solid var(--border-glass);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    animation: ruleSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes ruleFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes ruleSlideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

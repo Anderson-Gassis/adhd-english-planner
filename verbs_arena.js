@@ -184,9 +184,111 @@ const VERBS_ARENA_DATA = {
     ]
 };
 
+// Rules database for visual guide and contextual help
+const RULES_DATA = {
+    past: [
+        {
+            title: "Passado Simples Regular (-ed)",
+            desc: "Usado para ações que começaram e terminaram no passado. Para a maioria dos verbos regulares, basta colocar <b>-ed</b> no final do verbo.",
+            formula: ["Sujeito", "+", "Verbo + ed", "+", "Complemento"],
+            example: "I worked yesterday.",
+            mnemonic: "Se o verbo termina em E, acrescente apenas D (like ➔ liked). Se termina em consoante + Y, troque por IED (study ➔ studied).",
+            tense: "past",
+            aspect: "simple"
+        },
+        {
+            title: "Passado Simples Irregular (Forma Própria)",
+            desc: "Verbos irregulares não seguem a regra do '-ed'. Eles mudam de escrita completamente ou continuam iguais. Devem ser aprendidos por associação e repetição.",
+            formula: ["Sujeito", "+", "Verbo Irregular", "+", "Complemento"],
+            example: "We went to the office.",
+            mnemonic: "Não coloque ED neles! Go vira went, buy vira bought, write vira wrote, go vira went.",
+            tense: "past",
+            aspect: "simple-irregular"
+        }
+    ],
+    future: [
+        {
+            title: "Futuro com WILL (Previsões & Decisões)",
+            desc: "Usado para decisões rápidas de momento, promessas, ofertas imediatas ou previsões genéricas.",
+            formula: ["Sujeito", "+", "will", "+", "Verbo Base", "+", "Complemento"],
+            example: "I will call you later.",
+            mnemonic: "O verbo principal sempre fica na forma normal, sem 'to' e sem alteração (will go, will call).",
+            tense: "future",
+            aspect: "simple"
+        },
+        {
+            title: "Futuro com GOING TO (Planos & Intenções)",
+            desc: "Usado para planos estruturados no futuro, decisões já planejadas antes de falar, ou previsões com base em evidências atuais.",
+            formula: ["Sujeito", "+", "am / is / are", "+", "going to", "+", "Verbo Base", "+", "Complemento"],
+            example: "I am going to study English tomorrow.",
+            mnemonic: "Não esqueça de flexionar o verbo to be (am/is/are) correspondente ao sujeito antes do going to!",
+            tense: "future",
+            aspect: "going-to"
+        }
+    ],
+    advanced: [
+        {
+            title: "Passado Contínuo (Past Continuous)",
+            desc: "Ações que estavam acontecendo em um momento específico do passado, frequentemente interrompidas por outra ação rápida.",
+            formula: ["Sujeito", "+", "was / were", "+", "Verbo + ing", "+", "Complemento"],
+            example: "I was working when you called.",
+            mnemonic: "Use WAS para I/He/She/It e WERE para You/We/They.",
+            tense: "past",
+            aspect: "continuous"
+        },
+        {
+            title: "Passado Perfeito (Past Perfect)",
+            desc: "Ação no passado que ocorreu ANTES de outra ação também no passado.",
+            formula: ["Sujeito", "+", "had", "+", "Particípio Passado", "+", "Complemento"],
+            example: "They had already left when I arrived.",
+            mnemonic: "O passado perfeito é o passado do passado! A estrutura sempre leva HAD.",
+            tense: "past",
+            aspect: "perfect"
+        },
+        {
+            title: "Futuro Contínuo (Future Continuous)",
+            desc: "Ação em andamento que estará ocorrendo em um momento específico no futuro.",
+            formula: ["Sujeito", "+", "will be", "+", "Verbo + ing", "+", "Complemento"],
+            example: "This time tomorrow we will be flying to London.",
+            mnemonic: "Use a estrutura fixa WILL BE e adicione ING ao verbo principal.",
+            tense: "future",
+            aspect: "continuous"
+        },
+        {
+            title: "Futuro Perfeito (Future Perfect)",
+            desc: "Ação que estará completamente concluída antes de um limite de tempo no futuro.",
+            formula: ["Sujeito", "+", "will have", "+", "Particípio Passado", "+", "Complemento"],
+            example: "By Friday I will have finished the project.",
+            mnemonic: "Costuma vir acompanhado de expressões com 'By' (By next year, By tomorrow).",
+            tense: "future",
+            aspect: "perfect"
+        },
+        {
+            title: "Condicional do Passado (Third Conditional)",
+            desc: "Situações hipotéticas ou arrependimentos no passado que não podem mais ser alterados.",
+            formula: ["If", "+", "Sujeito", "+", "had + Particípio", ",", "Sujeito", "+", "would have + Particípio"],
+            example: "If I had known I would have arrived earlier.",
+            mnemonic: "Se trata de um passado imaginário: 'Se eu tivesse feito isso, aquilo teria acontecido'.",
+            tense: "past",
+            aspect: "conditional"
+        },
+        {
+            title: "Futuro Perfeito Contínuo",
+            desc: "Expressa a duração acumulada de uma ação até um determinado ponto no futuro.",
+            formula: ["Sujeito", "+", "will have been", "+", "Verbo + ing", "+", "Complemento"],
+            example: "By December I will have been working here for five years.",
+            mnemonic: "Combina a ideia de conclusão no futuro (will have) com a continuidade (been working).",
+            tense: "future",
+            aspect: "perfect-continuous"
+        }
+    ]
+};
+
 // Global state of the Verb Arena
 const verbArenaState = {
-    activeActivity: "timeline", // "timeline", "families", "gym"
+    activeActivity: "rules", // default starting tab
+    rulesTab: "past",
+    rulesPracticeUnlocked: false,
     // Timeline activity states
     timelineSelectedVerb: null,
     timelineSelectedTense: "past",
@@ -221,10 +323,17 @@ function initVerbArena() {
     const arenaTabs = document.querySelectorAll('.btn-arena-tab');
     arenaTabs.forEach(tab => {
         tab.addEventListener('click', () => {
+            const target = tab.dataset.arenaTab;
+            
+            // ADHD Scaffolding: Lock practice if they haven't unlocked yet
+            if (target !== "rules" && !verbArenaState.rulesPracticeUnlocked) {
+                alert("🔒 Por favor, revise as regras básicas no 'Guia de Regras' e clique em 'Iniciar Prática' para liberar os exercícios!");
+                return;
+            }
+
             arenaTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             
-            const target = tab.dataset.arenaTab;
             verbArenaState.activeActivity = target;
             
             // Switch views
@@ -232,7 +341,9 @@ function initVerbArena() {
             document.getElementById(`arena-view-${target}`).classList.remove('hidden');
             
             // Render specific activity
-            if (target === "timeline") {
+            if (target === "rules") {
+                renderRulesActivity();
+            } else if (target === "timeline") {
                 renderTimelineActivity();
             } else if (target === "families") {
                 initFamiliesActivity();
@@ -242,8 +353,162 @@ function initVerbArena() {
         });
     });
 
-    // Default load Activity 1
-    renderTimelineActivity();
+    // Default load Rules Activity
+    renderRulesActivity();
+}
+
+/* ==========================================
+   ACTIVITY 0: RULES GUIDE (GUIA DE REGRAS INTERATIVO)
+   ========================================== */
+function renderRulesActivity() {
+    const rulesTabs = document.querySelectorAll('.rules-lvl-btn');
+    rulesTabs.forEach(tab => {
+        tab.onclick = () => {
+            rulesTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            verbArenaState.rulesTab = tab.dataset.rulesTab;
+            renderRulesBody();
+        };
+    });
+
+    renderRulesBody();
+}
+
+function renderRulesBody() {
+    const container = document.getElementById('rules-content-body');
+    if (!container) return;
+
+    const rules = RULES_DATA[verbArenaState.rulesTab];
+    container.innerHTML = '';
+
+    rules.forEach(r => {
+        const card = document.createElement('div');
+        card.className = "rule-card glass";
+        
+        // Build formula tags
+        const formulaHtml = r.formula.map(f => {
+            let cl = "formula-block";
+            if (f === "+" || f === "," || f === "/") cl += " operator";
+            else if (f.toLowerCase() === "complemento") cl += " complement";
+            return `<span class="${cl}">${f}</span>`;
+        }).join("");
+
+        card.innerHTML = `
+            <div class="rule-card-header">
+                <span style="font-size:16px;">💡</span>
+                <h3>${r.title}</h3>
+            </div>
+            <p style="font-size:13px; line-height:1.4; color:#dfdfdf;">${r.desc}</p>
+            <div class="formula-container">
+                <span style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-right:8px;">Estrutura:</span>
+                ${formulaHtml}
+            </div>
+            <div class="rule-example" style="margin-top:4px; font-size:13px; display:flex; align-items:center; gap:8px;">
+                <strong>Exemplo Prático:</strong>
+                <em style="color:var(--secondary); font-weight:600;">"${r.example}"</em>
+                <button class="btn btn-sm btn-icon-only btn-tts" style="background:none; border:none; color:var(--secondary); cursor:pointer; padding:2px; font-size:14px;" onclick="speakEnglish('${r.example}')" title="Ouvir pronúncia">🔊</button>
+            </div>
+            <div class="rule-mnemonic" style="margin-top:6px; font-size:12px; padding:8px 12px; background:rgba(255,255,255,0.02); border-radius:4px; border-left:3px solid var(--warning); color:var(--warning); line-height: 1.3;">
+                <strong>Mnemônico TDAH:</strong> ${r.mnemonic}
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function unlockVerbPractice() {
+    verbArenaState.rulesPracticeUnlocked = true;
+    
+    // Play dopamine feedback
+    if (window.confetti) window.confetti.start(1000);
+    if (typeof audioPlayer !== 'undefined' && audioPlayer) audioPlayer.playDopamineTone();
+    
+    // Switch to timeline practice automatically
+    const timelineTab = document.querySelector('.btn-arena-tab[data-arena-tab="timeline"]');
+    if (timelineTab) timelineTab.click();
+}
+
+/* ==========================================
+   HELP OVERLAY LOGIC (SUPORTE TDAH EM TEMPO REAL)
+   ========================================== */
+function showActiveRuleHelp(activityType) {
+    let targetTense = '';
+    let targetAspect = '';
+
+    if (activityType === 'timeline') {
+        targetTense = verbArenaState.timelineSelectedTense; // 'past' or 'future'
+        // For timeline builder, let's check if selected verb is irregular
+        const verb = verbArenaState.timelineSelectedVerb;
+        if (targetTense === 'past') {
+            targetAspect = (verb && verb.type === 'irregular') ? 'simple-irregular' : 'simple';
+        } else {
+            targetAspect = 'simple';
+        }
+    } else if (activityType === 'gym') {
+        const list = VERBS_ARENA_DATA.sentences.filter(s => s.level === verbArenaState.gymLevel);
+        const ex = list[verbArenaState.gymIndex];
+        if (ex) {
+            targetTense = ex.tense; // 'past' or 'future'
+            targetAspect = ex.aspect; // 'simple', 'continuous', 'perfect', 'conditional', etc.
+        }
+    }
+
+    // Find rule in RULES_DATA
+    let matchingRule = null;
+    
+    // Flatten all rules to search
+    const allRules = [...RULES_DATA.past, ...RULES_DATA.future, ...RULES_DATA.advanced];
+    
+    matchingRule = allRules.find(r => r.tense === targetTense && r.aspect === targetAspect);
+    
+    // Fallback if not found exact aspect (e.g. simple-irregular fallback to simple)
+    if (!matchingRule) {
+        matchingRule = allRules.find(r => r.tense === targetTense);
+    }
+
+    const helpBody = document.getElementById('rule-help-body');
+    const modal = document.getElementById('rule-help-modal');
+    if (!helpBody || !modal) return;
+
+    if (matchingRule) {
+        const formulaHtml = matchingRule.formula.map(f => {
+            let cl = "formula-block";
+            if (f === "+" || f === "," || f === "/") cl += " operator";
+            else if (f.toLowerCase() === "complemento") cl += " complement";
+            return `<span class="${cl}">${f}</span>`;
+        }).join("");
+
+        helpBody.innerHTML = `
+            <h3 style="font-family: var(--font-heading); font-size: 18px; color: var(--secondary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">📖 Regra: ${matchingRule.title}</h3>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4; margin-bottom: 14px;">${matchingRule.desc}</p>
+            <div class="formula-container" style="margin-bottom: 14px;">
+                <span style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-right: 8px;">Estrutura:</span>
+                ${formulaHtml}
+            </div>
+            <div style="font-size: 13px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <strong>Exemplo:</strong>
+                <em style="color: var(--secondary); font-weight: 600;">"${matchingRule.example}"</em>
+                <button class="btn btn-sm btn-icon-only btn-tts" style="background:none; border:none; color:var(--secondary); cursor:pointer; padding:2px; font-size:14px;" onclick="speakEnglish('${matchingRule.example}')">🔊</button>
+            </div>
+            <div style="font-size: 12px; padding: 10px; background: rgba(255,159,67,0.08); border-left: 3px solid var(--warning); border-radius: 4px; color: var(--warning); line-height: 1.3;">
+                <strong>Macete de Ajuda:</strong> ${matchingRule.mnemonic}
+            </div>
+            <button class="btn btn-primary w-full" style="margin-top: 18px; height: 38px;" onclick="closeRuleHelp()">Voltar para o Exercício</button>
+        `;
+    } else {
+        helpBody.innerHTML = `
+            <h3>Dica Rápida</h3>
+            <p>Conjugue o verbo de acordo com a instrução de tempo (passado/futuro) indicada na questão. Atente para verbos irregulares que mudam completamente de grafia.</p>
+            <button class="btn btn-primary w-full" style="margin-top: 15px;" onclick="closeRuleHelp()">Voltar</button>
+        `;
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeRuleHelp() {
+    const modal = document.getElementById('rule-help-modal');
+    if (modal) modal.classList.add('hidden');
 }
 
 /* ==========================================

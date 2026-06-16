@@ -5,78 +5,9 @@
  */
 
 const VERBS_ARENA_DATA = {
-    // Irregular verb phonetic families for Activity 2
-    families: [
-        {
-            id: "i-a-u",
-            name: "Grupo I-A-U (Sons do Vogal)",
-            pattern: "Inicia com I ➔ Passado com A ➔ Particípio com U",
-            color: "var(--primary)",
-            verbs: [
-                { base: "sing", past: "sang", participle: "sung", meaning: "cantar" },
-                { base: "drink", past: "drank", participle: "drunk", meaning: "beber" },
-                { base: "swim", past: "swam", participle: "swum", meaning: "nadar" },
-                { base: "ring", past: "rang", participle: "rung", meaning: "tocar (sino/telefone)" },
-                { base: "sink", past: "sank", participle: "sunk", meaning: "afundar" }
-            ]
-        },
-        {
-            id: "d-t",
-            name: "Grupo D ➔ T",
-            pattern: "Troca o final 'D' por 'T' no passado e particípio",
-            color: "var(--secondary)",
-            verbs: [
-                { base: "send", past: "sent", participle: "sent", meaning: "enviar" },
-                { base: "spend", past: "spent", participle: "spent", meaning: "gastar/passar tempo" },
-                { base: "build", past: "built", participle: "built", meaning: "construir" },
-                { base: "bend", past: "bent", participle: "bent", meaning: "dobrar" },
-                { base: "lend", past: "lent", participle: "lent", meaning: "emprestar" }
-            ]
-        },
-        {
-            id: "o-e-o",
-            name: "Grupo O-E-O",
-            pattern: "Base com OW ➔ Passado com EW ➔ Particípio com OWN",
-            color: "var(--warning)",
-            verbs: [
-                { base: "grow", past: "grew", participle: "grown", meaning: "crescer" },
-                { base: "know", past: "knew", participle: "known", meaning: "saber/conhecer" },
-                { base: "throw", past: "threw", participle: "thrown", meaning: "lançar/atirar" },
-                { base: "blow", past: "blew", participle: "blown", meaning: "soprar" },
-                { base: "draw", past: "drew", participle: "drawn", meaning: "desenhar" }
-            ]
-        },
-        {
-            id: "e-o-o",
-            name: "Grupo E-O-O",
-            pattern: "Vogal muda para O no passado e no particípio (adiciona -en)",
-            color: "var(--success)",
-            verbs: [
-                { base: "break", past: "broke", participle: "broken", meaning: "quebrar" },
-                { base: "speak", past: "spoke", participle: "spoken", meaning: "falar" },
-                { base: "choose", past: "chose", participle: "chosen", meaning: "escolher" },
-                { base: "steal", past: "stole", participle: "stolen", meaning: "roubar" },
-                { base: "freeze", past: "froze", participle: "frozen", meaning: "congelar" }
-            ]
-        },
-        {
-            id: "no-change",
-            name: "Grupo Sem Alteração",
-            pattern: "Verbos idênticos nas 3 formas",
-            color: "var(--danger)",
-            verbs: [
-                { base: "cut", past: "cut", participle: "cut", meaning: "cortar" },
-                { base: "put", past: "put", participle: "put", meaning: "colocar" },
-                { base: "hit", past: "hit", participle: "hit", meaning: "bater/atingir" },
-                { base: "hurt", past: "hurt", participle: "hurt", meaning: "machucar" },
-                { base: "cost", past: "cost", participle: "cost", meaning: "custar" }
-            ]
-        }
-    ],
-
     // Sentences Gym categorized by level & tense
     sentences: [
-        // LEVEL 1: A1-A2 (Básico)
+        // LEVEL 1: A1-A2 (Básico - 10 items)
         {
             level: "A1-A2",
             tense: "past",
@@ -117,8 +48,68 @@ const VERBS_ARENA_DATA = {
             explanation: "Usamos <b>will + verbo</b> no infinitivo (sem 'to') para decisões imediatas ou previsões no futuro.",
             pronunciation: "They will call you later."
         },
-
-        // LEVEL 2: B1-B2 (Intermediário)
+        {
+            level: "A1-A2",
+            tense: "present",
+            aspect: "simple",
+            instruction: "Monte a frase no PRESENTE SIMPLES: 'Ele trabalha em uma startup de tecnologia.'",
+            words: ["He", "works", "at", "a", "technology", "startup", "work", "working", "worked"],
+            correctOrder: ["He", "works", "at", "a", "technology", "startup"],
+            explanation: "Para a 3ª pessoa do singular (He), o verbo <b>work</b> ganha o sufixo <b>-s</b> (<b>works</b>).",
+            pronunciation: "He works at a technology startup."
+        },
+        {
+            level: "A1-A2",
+            tense: "present",
+            aspect: "simple",
+            instruction: "Monte a frase no PRESENTE SIMPLES: 'Ela vai ao banco nas segundas-feiras.'",
+            words: ["She", "goes", "to", "the", "bank", "on", "Mondays", "go", "going", "went"],
+            correctOrder: ["She", "goes", "to", "the", "bank", "on", "Mondays"],
+            explanation: "Verbos terminados em -o (como go) ganham <b>-es</b> na 3ª pessoa do singular (<b>goes</b>).",
+            pronunciation: "She goes to the bank on Mondays."
+        },
+        {
+            level: "A1-A2",
+            tense: "present",
+            aspect: "continuous",
+            instruction: "Monte a frase no PRESENTE CONTÍNUO: 'Eu estou usando o ambiente de homologação agora.'",
+            words: ["I", "am", "using", "the", "staging", "environment", "now", "use", "uses", "used"],
+            correctOrder: ["I", "am", "using", "the", "staging", "environment", "now"],
+            explanation: "O Presente Contínuo descreve ações que ocorrem exatamente agora, estruturado por <b>be (am) + verbo-ing (using)</b>.",
+            pronunciation: "I am using the staging environment now."
+        },
+        {
+            level: "A1-A2",
+            tense: "present",
+            aspect: "continuous",
+            instruction: "Monte a frase no PRESENTE CONTÍNUO: 'Eles estão programando uma nova funcionalidade.'",
+            words: ["They", "are", "coding", "a", "new", "feature", "code", "codes", "coded"],
+            correctOrder: ["They", "are", "coding", "a", "new", "feature"],
+            explanation: "Como o sujeito é 'They', usamos a flexão <b>are</b> do verbo be seguido do verbo com ing (<b>coding</b>).",
+            pronunciation: "They are coding a new feature."
+        },
+        {
+            level: "A1-A2",
+            tense: "present",
+            aspect: "simple",
+            instruction: "Monte a frase no PRESENTE com o verbo to be: 'Nós estamos prontos para a reunião diária.'",
+            words: ["We", "are", "ready", "for", "the", "daily", "meeting", "is", "am", "was"],
+            correctOrder: ["We", "are", "ready", "for", "the", "daily", "meeting"],
+            explanation: "O sujeito plural <b>We</b> exige a flexão <b>are</b> no presente simples.",
+            pronunciation: "We are ready for the daily meeting."
+        },
+        {
+            level: "A1-A2",
+            tense: "past",
+            aspect: "simple",
+            instruction: "Monte a frase NEGATIVA no passado: 'Ele não enviou o e-mail.'",
+            words: ["He", "did", "not", "send", "the", "email", "sent", "does", "no"],
+            correctOrder: ["He", "did", "not", "send", "the", "email"],
+            explanation: "Na forma negativa do passado, usamos o auxiliar <b>did not / didn't</b> e o verbo volta para a forma base (<b>send</b>).",
+            pronunciation: "He did not send the email."
+        },
+        
+        // LEVEL 2: B1-B2 (Intermediário - 10 items)
         {
             level: "B1-B2",
             tense: "past",
@@ -126,7 +117,7 @@ const VERBS_ARENA_DATA = {
             instruction: "Monte a frase no PASSADO CONTÍNUO: 'Eu estava trabalhando quando você ligou.'",
             words: ["I", "was", "working", "when", "you", "called", "were", "call", "did"],
             correctOrder: ["I", "was", "working", "when", "you", "called"],
-            explanation: "O Passado Contínuo (<b>was working</b>) descreve uma ação em andamento que foi interrompida por outra pontual no passado simples (<b>called</b>).",
+            explanation: "O Passado Contínuo (<b>was working</b>) descreve uma ação em andamento que foi interrompida por outra no passado simples (<b>called</b>).",
             pronunciation: "I was working when you called."
         },
         {
@@ -156,11 +147,71 @@ const VERBS_ARENA_DATA = {
             instruction: "Monte a frase no FUTURO PERFEITO: 'Até sexta-feira, eu terei terminado o projeto.'",
             words: ["By", "Friday", "I", "will", "have", "finished", "the", "project", "had", "finish", "to"],
             correctOrder: ["By", "Friday", "I", "will", "have", "finished", "the", "project"],
-            explanation: "O Futuro Perfeito (<b>will have finished</b>) é usado para expressar uma ação que estará concluída <i>antes</i> de um limite temporal no futuro (<i>by Friday</i>).",
+            explanation: "O Futuro Perfeito (<b>will have finished</b>) expressa uma ação que estará concluída <i>antes</i> de um limite temporal no futuro (<i>by Friday</i>).",
             pronunciation: "By Friday I will have finished the project."
         },
+        {
+            level: "B1-B2",
+            tense: "present",
+            aspect: "perfect",
+            instruction: "Monte a frase no PRESENTE PERFEITO: 'Nossa empresa passou por um crescimento rápido.'",
+            words: ["Our", "company", "has", "experienced", "rapid", "growth", "have", "experienceded", "grow"],
+            correctOrder: ["Our", "company", "has", "experienced", "rapid", "growth"],
+            explanation: "O Presente Perfeito (<b>has experienced</b>) é usado para relatar experiências ou eventos que afetam o presente.",
+            pronunciation: "Our company has experienced rapid growth."
+        },
+        {
+            level: "B1-B2",
+            tense: "past",
+            aspect: "continuous",
+            instruction: "Monte a frase no passado contínuo interrompido: 'Nós estávamos testando o servidor quando ele travou.'",
+            words: ["We", "were", "testing", "the", "server", "when", "it", "crashed", "was", "test", "crashes"],
+            correctOrder: ["We", "were", "testing", "the", "server", "when", "it", "crashed"],
+            explanation: "Ação prolongada (<b>were testing</b>) interrompida por uma ação simples (<b>crashed</b>) no passado.",
+            pronunciation: "We were testing the server when it crashed."
+        },
+        {
+            level: "B1-B2",
+            tense: "future",
+            aspect: "perfect",
+            instruction: "Monte a frase no futuro perfeito: 'Nós teremos entregado o projeto até o próximo mês.'",
+            words: ["We", "will", "have", "delivered", "the", "project", "by", "next", "month", "delivereded", "has", "deliver"],
+            correctOrder: ["We", "will", "have", "delivered", "the", "project", "by", "next", "month"],
+            explanation: "A estrutura de futuro perfeito (<b>will have delivered</b>) indica um resultado concluído antes do marco temporal (<b>by next month</b>).",
+            pronunciation: "We will have delivered the project by next month."
+        },
+        {
+            level: "B1-B2",
+            tense: "present",
+            aspect: "perfect",
+            instruction: "Monte a frase de duração: 'Ela trabalha aqui há três anos.'",
+            words: ["She", "has", "worked", "here", "for", "three", "years", "have", "works", "working"],
+            correctOrder: ["She", "has", "worked", "here", "for", "three", "years"],
+            explanation: "Como a ação iniciou no passado e permanece ativa, usamos o Present Perfect (<b>has worked</b>) acompanhado de <b>for</b> (duração).",
+            pronunciation: "She has worked here for three years."
+        },
+        {
+            level: "B1-B2",
+            tense: "past",
+            aspect: "perfect",
+            instruction: "Monte a frase de prevenção no passado: 'Ele tinha feito backup dos arquivos antes do ataque.'",
+            words: ["He", "had", "backed", "up", "the", "files", "before", "the", "attack", "has", "back", "backed-up"],
+            correctOrder: ["He", "had", "backed", "up", "the", "files", "before", "the", "attack"],
+            explanation: "Ação concluída (<b>had backed up</b>) antes de outro evento passado (<b>attack</b>).",
+            pronunciation: "He had backed up the files before the attack."
+        },
+        {
+            level: "B1-B2",
+            tense: "future",
+            aspect: "simple",
+            instruction: "Monte a frase com promessa futura: 'O time de suporte irá lhe ajudar em breve.'",
+            words: ["The", "support", "team", "will", "assist", "you", "shortly", "going", "to", "assisted"],
+            correctOrder: ["The", "support", "team", "will", "assist", "you", "shortly"],
+            explanation: "Usamos <b>will assist</b> para expressar previsões ou promessas de suporte futuro.",
+            pronunciation: "The support team will assist you shortly."
+        },
 
-        // LEVEL 3: C1-C2 (Avançado/Nativo)
+        // LEVEL 3: C1-C2 (Avançado/Nativo - 10 items)
         {
             level: "C1-C2",
             tense: "past",
@@ -180,12 +231,103 @@ const VERBS_ARENA_DATA = {
             correctOrder: ["By", "December", "I", "will", "have", "been", "working", "here", "for", "five", "years"],
             explanation: "O Futuro Perfeito Contínuo (<b>will have been working</b>) enfatiza a <i>duração</i> de uma ação até um determinado ponto no futuro.",
             pronunciation: "By December I will have been working here for five years."
+        },
+        {
+            level: "C1-C2",
+            tense: "present",
+            aspect: "inversion",
+            instruction: "Monte a frase com inversão literária/formal: 'Raramente eles implantam código sem testes automatizados.'",
+            words: ["Seldom", "do", "they", "deploy", "code", "without", "automated", "testing", "does", "deployed"],
+            correctOrder: ["Seldom", "do", "they", "deploy", "code", "without", "automated", "testing"],
+            explanation: "Após advérbios restritivos negativos (como <b>Seldom</b>), invertemos o auxiliar (<b>do</b>) com o sujeito (<b>they</b>) para ênfase formal.",
+            pronunciation: "Seldom do they deploy code without automated testing."
+        },
+        {
+            level: "C1-C2",
+            tense: "past",
+            aspect: "inversion",
+            instruction: "Monte a frase de condição invertida (sem 'if'): 'Se tivessem nos informado, teríamos ajudado.'",
+            words: ["Had", "they", "informed", "us", "we", "would", "have", "helped", "If", "hadn't"],
+            correctOrder: ["Had", "they", "informed", "us", "we", "would", "have", "helped"],
+            explanation: "A inversão de condicionais no passado omite o 'if' e traz o auxiliar <b>Had</b> para a frente do sujeito (<b>Had they informed us</b>).",
+            pronunciation: "Had they informed us we would have helped."
+        },
+        {
+            level: "C1-C2",
+            tense: "past",
+            aspect: "conditional",
+            instruction: "Monte a frase com double-had: 'Ele teria escrito o script se tivesse tido tempo.'",
+            words: ["He", "would", "have", "written", "the", "script", "if", "he", "had", "had", "time", "has", "wrote"],
+            correctOrder: ["He", "would", "have", "written", "the", "script", "if", "he", "had", "had", "time"],
+            explanation: "O Past Perfect do verbo 'have' exige a estrutura auxiliar <b>had</b> + particípio <b>had</b> (tido), resultando na escrita 'had had'.",
+            pronunciation: "He would have written the script if he had had time."
+        },
+        {
+            level: "C1-C2",
+            tense: "future",
+            aspect: "perfect-continuous",
+            instruction: "Monte a frase no futuro contínuo perfeito: 'À meia-noite, nós estaremos programando há dez horas.'",
+            words: ["By", "midnight", "we", "will", "have", "been", "coding", "for", "ten", "hours", "codinged", "had", "be"],
+            correctOrder: ["By", "midnight", "we", "will", "have", "been", "coding", "for", "ten", "hours"],
+            explanation: "O Future Perfect Continuous enfatiza a duração acumulada (<b>will have been coding</b>) no marco futuro (<b>by midnight</b>).",
+            pronunciation: "By midnight we will have been coding for ten hours."
+        },
+        {
+            level: "C1-C2",
+            tense: "future",
+            aspect: "inversion",
+            instruction: "Monte a frase de forte restrição negativa: 'Em circunstância alguma nós concordaremos com estes termos.'",
+            words: ["Under", "no", "circumstances", "will", "we", "agree", "to", "these", "terms", "we", "will", "agreeing"],
+            correctOrder: ["Under", "no", "circumstances", "will", "we", "agree", "to", "these", "terms"],
+            explanation: "A frase adverbial negativa <b>Under no circumstances</b> atrai a inversão do auxiliar de futuro (<b>will</b>) antes do sujeito (<b>we</b>).",
+            pronunciation: "Under no circumstances will we agree to these terms."
+        },
+        {
+            level: "C1-C2",
+            tense: "past",
+            aspect: "conditional",
+            instruction: "Monte a frase com condicional de be no particípio: 'Se o servidor estivesse online, nós teríamos visto.'",
+            words: ["If", "the", "server", "had", "been", "online", "we", "would", "have", "seen", "it", "was", "saw"],
+            correctOrder: ["If", "the", "server", "had", "been", "online", "we", "would", "have", "seen", "it"],
+            explanation: "Uso de <b>had been</b> (particípio de be) combinado com <b>would have seen</b> (particípio de see) no Third Conditional.",
+            pronunciation: "If the server had been online we would have seen it."
+        },
+        {
+            level: "C1-C2",
+            tense: "present",
+            aspect: "inversion",
+            instruction: "Monte a frase com inversão no Present Perfect: 'Raramente eu vi um projeto tão bem estruturado.'",
+            words: ["Rarely", "have", "I", "seen", "such", "a", "well-structured", "project", "I", "has", "saw"],
+            correctOrder: ["Rarely", "have", "I", "seen", "such", "a", "well-structured", "project"],
+            explanation: "A inversão após o advérbio <b>Rarely</b> desloca o auxiliar <b>have</b> para antes do sujeito <b>I</b>.",
+            pronunciation: "Rarely have I seen such a well-structured project."
+        },
+        {
+            level: "C1-C2",
+            tense: "future",
+            aspect: "inversion",
+            instruction: "Monte a inversão proibitiva de segurança: 'Em circunstância alguma você deve fazer deploy de código sem testes.'",
+            words: ["Under", "no", "circumstances", "should", "you", "deploy", "code", "without", "testing", "deployed", "must", "not"],
+            correctOrder: ["Under", "no", "circumstances", "should", "you", "deploy", "code", "without", "testing"],
+            explanation: "Inversão com o auxiliar modal <b>should</b> posicionado antes do sujeito <b>you</b> após <b>Under no circumstances</b>.",
+            pronunciation: "Under no circumstances should you deploy code without testing."
         }
     ]
 };
 
 // Rules database for visual guide and contextual help
 const RULES_DATA = {
+    present: [
+        {
+            title: "Presente Simples (Present Simple)",
+            desc: "Usado para expressar hábitos, rotinas, fatos gerais ou verdades universais. Com he/she/it, adicionamos <b>-s</b>, <b>-es</b> ou <b>-ies</b> no final.",
+            formula: ["Sujeito", "+", "Verbo (+s/es/ies para He/She/It)", "+", "Complemento"],
+            example: "He works every day.",
+            mnemonic: "He/She/It no presente ganha 'S' (like -> likes, go -> goes, study -> studies). Para negativos e perguntas, use DO/DOES.",
+            tense: "present",
+            aspect: "simple"
+        }
+    ],
     past: [
         {
             title: "Passado Simples Regular (-ed)",
@@ -287,16 +429,12 @@ const RULES_DATA = {
 // Global state of the Verb Arena
 const verbArenaState = {
     activeActivity: "rules", // default starting tab
-    rulesTab: "past",
+    rulesTab: "present",
     rulesPracticeUnlocked: false,
     // Timeline activity states
     timelineSelectedVerb: null,
-    timelineSelectedTense: "past",
+    timelineSelectedTense: "present",
     timelineAssembledWords: [],
-    // Families activity states
-    familiesSelectedVerb: null,
-    familiesCorrectCount: 0,
-    familiesErrorStreak: 0,
     // Gym activity states
     gymLevel: "A1-A2",
     gymIndex: 0,
@@ -306,11 +444,21 @@ const verbArenaState = {
 
 // Available verbs for Activity 1 (Timeline Builder)
 const TIMELINE_VERBS = [
-    { base: "go", past: "went", future: "will go", meaning: "ir", type: "irregular", sentencePast: "She went to the bank yesterday.", sentenceFuture: "She will go to the bank tomorrow." },
-    { base: "work", past: "worked", future: "will work", meaning: "trabalhar", type: "regular", sentencePast: "I worked from home last Monday.", sentenceFuture: "I will work from home tomorrow." },
-    { base: "write", past: "wrote", future: "will write", meaning: "escrever", type: "irregular", sentencePast: "He wrote an email to his boss this morning.", sentenceFuture: "He will write a report tomorrow." },
-    { base: "buy", past: "bought", future: "will buy", meaning: "comprar", type: "irregular", sentencePast: "They bought a new software package yesterday.", sentenceFuture: "They will buy new devices next month." },
-    { base: "call", past: "called", future: "will call", meaning: "ligar", type: "regular", sentencePast: "We called a meeting two hours ago.", sentenceFuture: "We will call you in a few minutes." }
+    { base: "go", present: "goes", past: "went", future: "will go", meaning: "ir", type: "irregular", sentencePresent: "She goes to the bank on Mondays.", sentencePast: "She went to the bank yesterday.", sentenceFuture: "She will go to the bank tomorrow." },
+    { base: "work", present: "works", past: "worked", future: "will work", meaning: "trabalhar", type: "regular", sentencePresent: "I work from home every Friday.", sentencePast: "I worked from home last Monday.", sentenceFuture: "I will work from home tomorrow." },
+    { base: "write", present: "writes", past: "wrote", future: "will write", meaning: "escrever", type: "irregular", sentencePresent: "He writes the weekly progress report.", sentencePast: "He wrote an email to his boss this morning.", sentenceFuture: "He will write a report tomorrow." },
+    { base: "buy", present: "buys", past: "bought", future: "will buy", meaning: "comprar", type: "irregular", sentencePresent: "They buy new software packages regularly.", sentencePast: "They bought a new software package yesterday.", sentenceFuture: "They will buy new devices next month." },
+    { base: "call", present: "calls", past: "called", future: "will call", meaning: "ligar", type: "regular", sentencePresent: "We call a meeting every Monday morning.", sentencePast: "We called a meeting two hours ago.", sentenceFuture: "We will call you in a few minutes." },
+    { base: "study", present: "studies", past: "studied", future: "will study", meaning: "estudar", type: "regular", sentencePresent: "She studies English vocabulary daily.", sentencePast: "She studied the layout yesterday afternoon.", sentenceFuture: "She will study the certification course tomorrow." },
+    { base: "code", present: "codes", past: "coded", future: "will code", meaning: "programar", type: "regular", sentencePresent: "He codes backend APIs in Python.", sentencePast: "He coded the payment module last week.", sentenceFuture: "He will code the user interface next sprint." },
+    { base: "use", present: "uses", past: "used", future: "will use", meaning: "usar", type: "regular", sentencePresent: "The team uses Git for version control.", sentencePast: "The designer used Figma for the mockups.", sentenceFuture: "We will use the staging database tomorrow." },
+    { base: "speak", present: "speaks", past: "spoke", future: "will speak", meaning: "falar", type: "irregular", sentencePresent: "She speaks English in team meetings.", sentencePast: "We spoke with the manager this morning.", sentenceFuture: "They will speak with the client tomorrow." },
+    { base: "make", present: "makes", past: "made", future: "will make", meaning: "fazer", type: "irregular", sentencePresent: "He makes presentations for the stakeholders.", sentencePast: "They made a critical mistake in production.", sentenceFuture: "We will make progress on the project." },
+    { base: "find", present: "finds", past: "found", future: "will find", meaning: "encontrar", type: "irregular", sentencePresent: "She finds bugs very quickly.", sentencePast: "I found a database error last night.", sentenceFuture: "They will find the root cause soon." },
+    { base: "send", present: "sends", past: "sent", future: "will send", meaning: "enviar", type: "irregular", sentencePresent: "He sends the report to the client daily.", sentencePast: "We sent the email two hours ago.", sentenceFuture: "I will send the files tomorrow." },
+    { base: "build", present: "builds", past: "built", future: "will build", meaning: "construir", type: "irregular", sentencePresent: "Our team builds scalable tech products.", sentencePast: "They built a new mobile app last year.", sentenceFuture: "We will build a payment gateway next." },
+    { base: "check", present: "checks", past: "checked", future: "will check", meaning: "verificar", type: "regular", sentencePresent: "She checks the server logs every morning.", sentencePast: "I checked the backup files yesterday.", sentenceFuture: "They will check the system status later." },
+    { base: "test", present: "tests", past: "tested", future: "will test", meaning: "testar", type: "regular", sentencePresent: "The QA team tests the application thoroughly.", sentencePast: "We tested the payment flow yesterday afternoon.", sentenceFuture: "He will test the new update tomorrow." }
 ];
 
 /**
@@ -345,8 +493,6 @@ function initVerbArena() {
                 renderRulesActivity();
             } else if (target === "timeline") {
                 renderTimelineActivity();
-            } else if (target === "families") {
-                initFamiliesActivity();
             } else if (target === "gym") {
                 initGymActivity();
             }
@@ -457,7 +603,7 @@ function showActiveRuleHelp(activityType) {
     let matchingRule = null;
     
     // Flatten all rules to search
-    const allRules = [...RULES_DATA.past, ...RULES_DATA.future, ...RULES_DATA.advanced];
+    const allRules = [...RULES_DATA.present, ...RULES_DATA.past, ...RULES_DATA.future, ...RULES_DATA.advanced];
     
     matchingRule = allRules.find(r => r.tense === targetTense && r.aspect === targetAspect);
     
@@ -540,12 +686,26 @@ function renderTimelineActivity() {
     }
 
     // Set up Tense selectors
+    const btnPresent = document.getElementById('timeline-tense-present');
     const btnPast = document.getElementById('timeline-tense-past');
     const btnFuture = document.getElementById('timeline-tense-future');
     
-    if (btnPast && btnFuture) {
+    if (btnPresent && btnPast && btnFuture) {
+        btnPresent.classList.toggle('active', verbArenaState.timelineSelectedTense === 'present');
+        btnPast.classList.toggle('active', verbArenaState.timelineSelectedTense === 'past');
+        btnFuture.classList.toggle('active', verbArenaState.timelineSelectedTense === 'future');
+
+        btnPresent.onclick = () => {
+            btnPresent.classList.add('active');
+            btnPast.classList.remove('active');
+            btnFuture.classList.remove('active');
+            verbArenaState.timelineSelectedTense = "present";
+            updateTimelineWorkspace();
+        };
+
         btnPast.onclick = () => {
             btnPast.classList.add('active');
+            btnPresent.classList.remove('active');
             btnFuture.classList.remove('active');
             verbArenaState.timelineSelectedTense = "past";
             updateTimelineWorkspace();
@@ -553,6 +713,7 @@ function renderTimelineActivity() {
 
         btnFuture.onclick = () => {
             btnFuture.classList.add('active');
+            btnPresent.classList.remove('active');
             btnPast.classList.remove('active');
             verbArenaState.timelineSelectedTense = "future";
             updateTimelineWorkspace();
@@ -583,19 +744,15 @@ function updateTimelineWorkspace() {
 
     // 1. Update Timeline Graphic Indicator (Color highlight)
     if (timelineGraphic) {
-        const pastDot = timelineGraphic.querySelector('.past-marker');
-        const futureDot = timelineGraphic.querySelector('.future-marker');
-        const pastLine = timelineGraphic.querySelector('.past-line');
-        const futureLine = timelineGraphic.querySelector('.future-line');
-
-        timelineGraphic.className = `timeline-line-graphic ${tense === 'past' ? 'highlight-past' : 'highlight-future'}`;
+        timelineGraphic.className = `timeline-line-graphic highlight-${tense}`;
     }
 
     // 2. Render Grammar tip
     if (grammarTip) {
-        let conjugated = tense === 'past' ? verb.past : verb.future;
         let explanation = "";
-        if (tense === 'past') {
+        if (tense === 'present') {
+            explanation = `Para o presente simples de <b>${verb.base}</b>, usamos a forma base <strong>${verb.base}</strong> para I/You/We/They, ou <strong>${verb.present}</strong> para He/She/It (adicionando -s, -es ou -ies).`;
+        } else if (tense === 'past') {
             if (verb.type === 'irregular') {
                 explanation = `O verbo <b>${verb.base}</b> é <strong>irregular</strong> no passado. Sua forma muda para <strong style="color:var(--color-past);">${verb.past}</strong> (não use "-ed"!).`;
             } else {
@@ -608,12 +765,18 @@ function updateTimelineWorkspace() {
     }
 
     // 3. Prepare sentence options
-    const targetSentence = tense === 'past' ? verb.sentencePast : verb.sentenceFuture;
+    let targetSentence = "";
+    if (tense === 'present') targetSentence = verb.sentencePresent;
+    else if (tense === 'past') targetSentence = verb.sentencePast;
+    else if (tense === 'future') targetSentence = verb.sentenceFuture;
+
     const targetWords = targetSentence.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(" ");
     
     // Mix target words and add a couple of distractor words
     let distractors = [];
-    if (tense === 'past') {
+    if (tense === 'present') {
+        distractors = ["will", "did", "yesterday", "tomorrow"];
+    } else if (tense === 'past') {
         distractors = ["will", verb.base + "s", "tomorrow"];
     } else {
         distractors = ["did", verb.past, "yesterday"];
@@ -693,7 +856,10 @@ function checkTimelineAnswer() {
     const tense = verbArenaState.timelineSelectedTense;
     if (!verb) return;
 
-    const targetSentence = tense === 'past' ? verb.sentencePast : verb.sentenceFuture;
+    let targetSentence = "";
+    if (tense === 'present') targetSentence = verb.sentencePresent;
+    else if (tense === 'past') targetSentence = verb.sentencePast;
+    else if (tense === 'future') targetSentence = verb.sentenceFuture;
     // Strip punctuation for matching
     const cleanTarget = targetSentence.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
     
@@ -739,135 +905,7 @@ function checkTimelineAnswer() {
 }
 
 
-/* ==========================================
-   ACTIVITY 2: SOUND FAMILIES (FAMÍLIAS SONORAS)
-   ========================================== */
-function initFamiliesActivity() {
-    const cardPool = document.getElementById('families-card-pool');
-    const groupContainers = document.getElementById('families-groups-grid');
-    if (!cardPool || !groupContainers) return;
 
-    verbArenaState.familiesCorrectCount = 0;
-    verbArenaState.familiesSelectedVerb = null;
-    
-    // Render columns representing the families
-    groupContainers.innerHTML = '';
-    VERBS_ARENA_DATA.families.forEach(fam => {
-        const col = document.createElement('div');
-        col.className = "family-column glass";
-        col.style.borderTop = `4px solid ${fam.color}`;
-        col.dataset.familyId = fam.id;
-        col.innerHTML = `
-            <div class="family-col-header">
-                <h3>${fam.name}</h3>
-                <span class="family-pattern">${fam.pattern}</span>
-            </div>
-            <div class="family-slot-area" id="family-slot-${fam.id}">
-                <!-- Placed cards will appear here -->
-            </div>
-        `;
-        
-        // Add click handler to place selected card
-        col.addEventListener('click', () => {
-            if (verbArenaState.familiesSelectedVerb) {
-                placeVerbInFamily(verbArenaState.familiesSelectedVerb, fam.id);
-            }
-        });
-
-        groupContainers.appendChild(col);
-    });
-
-    // Pick 2 verbs from each family to create a pool of 10 card challenges
-    let challengeVerbs = [];
-    VERBS_ARENA_DATA.families.forEach(fam => {
-        // Shuffle verbs inside family
-        const shuffledVerbs = [...fam.verbs].sort(() => 0.5 - Math.random());
-        // Take 2
-        challengeVerbs.push({ ...shuffledVerbs[0], familyId: fam.id });
-        challengeVerbs.push({ ...shuffledVerbs[1], familyId: fam.id });
-    });
-
-    // Shuffle pool
-    challengeVerbs.sort(() => 0.5 - Math.random());
-
-    // Render Cards in Pool
-    cardPool.innerHTML = '';
-    challengeVerbs.forEach((v, idx) => {
-        const card = document.createElement('div');
-        card.className = "family-verb-card glass";
-        card.textContent = `${v.base.toUpperCase()}`;
-        card.dataset.idx = idx;
-        card.dataset.familyId = v.familyId;
-        card.title = `Conjugação: ${v.base} - ${v.past} - ${v.participle} (${v.meaning})`;
-        
-        card.addEventListener('click', (e) => {
-            e.stopPropagation(); // Avoid placing immediately on parent click
-            
-            // Remove previous active selection
-            document.querySelectorAll('.family-verb-card').forEach(c => c.classList.remove('selected'));
-            
-            card.classList.add('selected');
-            verbArenaState.familiesSelectedVerb = {
-                cardElement: card,
-                verb: v
-            };
-        });
-
-        cardPool.appendChild(card);
-    });
-}
-
-function placeVerbInFamily(selectedObj, targetFamilyId) {
-    const { cardElement, verb } = selectedObj;
-    const targetSlot = document.getElementById(`family-slot-${targetFamilyId}`);
-    
-    if (!targetSlot) return;
-
-    if (verb.familyId === targetFamilyId) {
-        // CORRECT PLACE!
-        cardElement.classList.remove('selected');
-        cardElement.className = "family-placed-tag";
-        cardElement.innerHTML = `
-            <strong>${verb.base} ➔ ${verb.past} ➔ ${verb.participle}</strong>
-            <span class="tts-btn-small" onclick="speakEnglish('${verb.base}, ${verb.past}, ${verb.participle}')">🔊</span>
-        `;
-        
-        // Append to column slot
-        targetSlot.appendChild(cardElement);
-        verbArenaState.familiesSelectedVerb = null;
-        verbArenaState.familiesCorrectCount++;
-
-        if (typeof audioPlayer !== 'undefined' && audioPlayer) audioPlayer.playDopamineTone();
-        speakEnglish(`${verb.base}, ${verb.past}, ${verb.participle}`);
-
-        // Check if game complete (10 items)
-        if (verbArenaState.familiesCorrectCount === 10) {
-            setTimeout(() => {
-                if (window.confetti) window.confetti.start(1500);
-                alert("🎉 Incrível! Você organizou todas as famílias sonoras dos verbos irregulares! (+50 XP/DM)");
-                if (typeof state !== 'undefined' && state) state.addXP(50);
-                initFamiliesActivity(); // Reload
-            }, 600);
-        }
-    } else {
-        // ERROR PLACE
-        cardElement.classList.add('error-shake');
-        if (typeof audioPlayer !== 'undefined' && audioPlayer && audioPlayer.audioCtx) {
-            // Short error sound
-            const osc = audioPlayer.audioCtx.createOscillator();
-            const gain = audioPlayer.audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioPlayer.audioCtx.destination);
-            osc.frequency.setValueAtTime(150, audioPlayer.audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.08, audioPlayer.audioCtx.currentTime);
-            osc.start();
-            osc.stop(audioPlayer.audioCtx.currentTime + 0.15);
-        }
-        setTimeout(() => {
-            cardElement.classList.remove('error-shake');
-        }, 500);
-    }
-}
 
 
 /* ==========================================

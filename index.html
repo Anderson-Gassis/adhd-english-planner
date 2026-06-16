@@ -1036,7 +1036,6 @@
                     <div class="arena-tabs" style="display: flex; gap: 10px;">
                         <button class="btn btn-arena-tab active" data-arena-tab="rules">📖 Guia de Regras</button>
                         <button class="btn btn-arena-tab" data-arena-tab="timeline">📅 Linha do Tempo</button>
-                        <button class="btn btn-arena-tab" data-arena-tab="families">🧩 Famílias Sonoras</button>
                         <button class="btn btn-arena-tab" data-arena-tab="gym">🏋️ Academia de Sentenças</button>
                     </div>
                 </div>
@@ -1054,7 +1053,8 @@
 
                     <!-- Rules Tense Selector -->
                     <div class="rules-tense-selectors" style="display: flex; gap: 8px; margin-top: 10px;">
-                        <button class="btn btn-outline btn-sm rules-lvl-btn active" data-rules-tab="past">Passado (Past Simple)</button>
+                        <button class="btn btn-outline btn-sm rules-lvl-btn active" data-rules-tab="present">Presente (Present Simple)</button>
+                        <button class="btn btn-outline btn-sm rules-lvl-btn" data-rules-tab="past">Passado (Past Simple)</button>
                         <button class="btn btn-outline btn-sm rules-lvl-btn" data-rules-tab="future">Futuro (Will & Going To)</button>
                         <button class="btn btn-outline btn-sm rules-lvl-btn" data-rules-tab="advanced">Tempos Compostos (Perfect & Continuous)</button>
                     </div>
@@ -1092,8 +1092,9 @@
                     <div class="tense-selector-group" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
                         <span style="font-size: 12px; font-weight: 600; color: var(--secondary);">2. Escolha o Tempo Verbal:</span>
                         <div class="btn-group" style="display: inline-flex; align-self: flex-start;">
-                            <button class="btn btn-sm btn-outline active" id="timeline-tense-past" style="min-width: 120px;">Passado (Past)</button>
-                            <button class="btn btn-sm btn-outline" id="timeline-tense-future" style="min-width: 120px;">Futuro (Future)</button>
+                            <button class="btn btn-sm btn-outline active" id="timeline-tense-present" style="min-width: 100px;">Presente (Present)</button>
+                            <button class="btn btn-sm btn-outline" id="timeline-tense-past" style="min-width: 100px;">Passado (Past)</button>
+                            <button class="btn btn-sm btn-outline" id="timeline-tense-future" style="min-width: 100px;">Futuro (Future)</button>
                         </div>
                     </div>
 
@@ -1140,30 +1141,6 @@
                     </div>
                 </div>
 
-                <!-- VIEW 2: SOUND FAMILIES -->
-                <div id="arena-view-families" class="arena-view-pane card glass hidden">
-                    <div class="card-header">
-                        <span class="icon">🧩</span>
-                        <h2>Famílias de Sons Irregulares</h2>
-                        <span class="badge-premium" style="margin-left: auto;">+50 XP ao completar tudo</span>
-                    </div>
-                    <p class="help-text" style="font-size: 13px; color: var(--text-muted);">
-                        Agrupe os verbos irregulares com base em seus padrões de pronúncia e fonética (ex: <i>sing-sang-sung</i> pertence ao grupo <b>I-A-U</b>). Selecione um card e clique na coluna correta para posicionar.
-                    </p>
-
-                    <!-- Pool of unsorted verbs -->
-                    <div class="cards-pool-wrapper" style="margin-top: 15px;">
-                        <span style="font-size: 12px; font-weight: 600; color: var(--secondary);">Selecione um Verbo:</span>
-                        <div id="families-card-pool" class="word-blocks-pool" style="margin-top: 8px; min-height: 50px; padding: 10px; border-radius: var(--radius-md); background: rgba(255,255,255,0.01); display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-                            <!-- Verbs rendered dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Target columns -->
-                    <div id="families-groups-grid" class="families-grid" style="margin-top: 24px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;">
-                        <!-- 5 columns rendered dynamically -->
-                    </div>
-                </div>
 
                 <!-- VIEW 3: SENTENCE GYM -->
                 <div id="arena-view-gym" class="arena-view-pane card glass hidden">

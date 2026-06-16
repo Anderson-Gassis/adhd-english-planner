@@ -2228,6 +2228,7 @@ body {
    VERBS ARENA SPECIFIC STYLES (TDAH SPEC)
    ========================================== */
 :root {
+    --color-present: #20c997;
     --color-past: #00bcff;
     --color-future: #ff9f43;
     --color-regular: #b583ff;
@@ -2284,7 +2285,7 @@ body {
 }
 
 .timeline-line-graphic .past-marker { left: 15%; }
-.timeline-line-graphic .present-marker { left: 50%; background: #20c997; }
+.timeline-line-graphic .present-marker { left: 50%; background: var(--color-present); }
 .timeline-line-graphic .future-marker { left: 85%; }
 
 .timeline-line-graphic .timeline-line-fill {
@@ -2327,6 +2328,12 @@ body {
 
 .timeline-line-graphic.highlight-future .future-line {
     width: 35%;
+}
+
+.timeline-line-graphic.highlight-present .present-marker {
+    background: var(--color-present);
+    box-shadow: 0 0 12px var(--color-present);
+    transform: translate(-50%, -50%) scale(1.4);
 }
 
 /* Word Blocks (Cinestésico) */

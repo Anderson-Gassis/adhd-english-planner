@@ -473,10 +473,10 @@ class StateManager {
         this.learnedWordsCount = 0;
 
         // CEFR Progress & Niche
-        this.cefrLevel = "A1";
+        this.cefrLevel = "INTRO";
         this.niche = "Geral";
         this.passedExams = [];
-        this.courseProgress = { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
+        this.courseProgress = { "INTRO": [], "U1": [], "U2": [], "U3": [], "U4": [], "U5": [], "U6": [], "U7": [], "U8": [] };
         
         if (this.activeUser) {
             this.loadState();
@@ -533,16 +533,41 @@ class StateManager {
 
             // Load CEFR & Niche metadata
             const uData = this.users[this.activeUser] || {};
-            this.cefrLevel = uData.cefrLevel || "A1";
+            this.cefrLevel = uData.cefrLevel || "INTRO";
             this.niche = uData.niche || "Geral";
             this.passedExams = uData.passedExams || [];
             try {
-                this.courseProgress = JSON.parse(localStorage.getItem(prefix + 'course_progress')) || { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
+                this.courseProgress = JSON.parse(localStorage.getItem(prefix + 'course_progress')) || { "INTRO": [], "U1": [], "U2": [], "U3": [], "U4": [], "U5": [], "U6": [], "U7": [], "U8": [] };
                 if (Array.isArray(this.courseProgress) || typeof this.courseProgress !== 'object') {
-                    this.courseProgress = { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
+                    this.courseProgress = { "INTRO": [], "U1": [], "U2": [], "U3": [], "U4": [], "U5": [], "U6": [], "U7": [], "U8": [] };
                 }
             } catch(e) {
-                this.courseProgress = { "A1": [], "A2": [], "B1": [], "B2": [], "C1/C2": [] };
+                this.courseProgress = { "INTRO": [], "U1": [], "U2": [], "U3": [], "U4": [], "U5": [], "U6": [], "U7": [], "U8": [] };
+            }
+            
+            // Automatic migration of old CEFR levels to the new Sandra Bassani units
+            const migrationMap = {
+                "A1": "U1",
+                "A2": "U3",
+                "B1": "U5",
+                "B2": "U7",
+                "C1/C2": "U8"
+            };
+            if (migrationMap[this.cefrLevel]) {
+                this.cefrLevel = migrationMap[this.cefrLevel];
+            }
+            this.passedExams = this.passedExams.map(lvl => migrationMap[lvl] || lvl);
+            
+            const oldKeys = ["A1", "A2", "B1", "B2", "C1/C2"];
+            const hasOldKeys = oldKeys.some(k => this.courseProgress[k] !== undefined);
+            if (hasOldKeys) {
+                const newProgress = { "INTRO": [], "U1": [], "U2": [], "U3": [], "U4": [], "U5": [], "U6": [], "U7": [], "U8": [] };
+                if (this.courseProgress["A1"]) newProgress["U1"] = this.courseProgress["A1"];
+                if (this.courseProgress["A2"]) newProgress["U2"] = this.courseProgress["A2"];
+                if (this.courseProgress["B1"]) newProgress["U3"] = this.courseProgress["B1"];
+                if (this.courseProgress["B2"]) newProgress["U5"] = this.courseProgress["B2"];
+                if (this.courseProgress["C1/C2"]) newProgress["U7"] = this.courseProgress["C1/C2"];
+                this.courseProgress = newProgress;
             }
         } catch (e) {
             console.error("Falha ao ler localStorage", e);
@@ -4029,7 +4054,7 @@ function initAuthPortal() {
                         state.users[emailInput] = {
                             password: passwordInput,
                             niche: "Geral",
-                            cefrLevel: "A1",
+                            cefrLevel: "INTRO",
                             passedExams: []
                         };
                         localStorage.setItem('adhd_users', JSON.stringify(state.users));
@@ -4091,11 +4116,11 @@ function initAuthPortal() {
                 
                 startPlacementTest();
             } else {
-                // Register directly as A1
+                // Register directly as INTRO
                 state.users[emailInput] = {
                     password: passwordInput,
                     niche: nicheInput,
-                    cefrLevel: "A1",
+                    cefrLevel: "INTRO",
                     passedExams: []
                 };
                 localStorage.setItem('adhd_users', JSON.stringify(state.users));
@@ -4104,7 +4129,7 @@ function initAuthPortal() {
                 localStorage.setItem('adhd_active_user', emailInput);
                 state.loadState();
                 
-                state.cefrLevel = "A1";
+                state.cefrLevel = "INTRO";
                 state.niche = nicheInput;
                 state.passedExams = [];
                 state.saveState();
@@ -4117,7 +4142,7 @@ function initAuthPortal() {
                         options: {
                             data: {
                                 name: emailInput,
-                                cefr_level: "A1",
+                                cefr_level: "INTRO",
                                 niche: nicheInput
                             }
                         }
@@ -4147,7 +4172,7 @@ function initAuthPortal() {
                 window.confetti.start();
                 setTimeout(() => window.confetti.stop(), 2000);
                 
-                alert(`Perfil seguro com E-mail (${emailInput}) criado com sucesso no nível A1!`);
+                alert(`Perfil seguro com E-mail (${emailInput}) criado com sucesso no nível INTRO!`);
             }
         });
     }
@@ -4302,15 +4327,17 @@ function handlePlacementAnswer(selectedIdx) {
 }
 
 function finishPlacementTest() {
-    let startingLevel = "A1";
+    let startingLevel = "INTRO";
     if (placementScore >= 9) {
-        startingLevel = "C1/C2";
+        startingLevel = "U8";
     } else if (placementScore >= 7) {
-        startingLevel = "B2";
+        startingLevel = "U6";
     } else if (placementScore >= 5) {
-        startingLevel = "B1";
+        startingLevel = "U4";
     } else if (placementScore >= 3) {
-        startingLevel = "A2";
+        startingLevel = "U2";
+    } else if (placementScore >= 1) {
+        startingLevel = "U1";
     }
     
     const username = tempRegistration.username;
@@ -4324,7 +4351,7 @@ function finishPlacementTest() {
     };
     
     // Unblock past exams
-    const allLevels = ["A1", "A2", "B1", "B2", "C1/C2"];
+    const allLevels = ["INTRO", "U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8"];
     const startIdx = allLevels.indexOf(startingLevel);
     for (let i = 0; i < startIdx; i++) {
         state.users[username].passedExams.push(allLevels[i]);
@@ -4390,11 +4417,15 @@ function finishPlacementTest() {
    COURSE MAP & LEVEL EXAMS ENGINE
    ========================================== */
 const CEFR_LEVELS_INFO = [
-    { id: "A1", name: "A1 - Iniciante (Beginner)", desc: "Compreensão de frases simples, saudações básicas e apresentação pessoal no presente." },
-    { id: "A2", name: "A2 - Básico (Elementary)", desc: "Descrição de rotinas, passado simples, direções e comunicação de necessidades cotidianas." },
-    { id: "B1", name: "B1 - Intermediário (Intermediate)", desc: "Relatos de experiências, hipóteses, planos futuros e compreensão de pontos principais no trabalho." },
-    { id: "B2", name: "B2 - Pós-Intermediário (Upper-Intermediate)", desc: "Argumentação lógica, conversas fluídas sobre temas abstratos e terminologias da sua área profissional." },
-    { id: "C1/C2", name: "C1/C2 - Avançado (Advanced/Mastery)", desc: "Uso fluente e flexível do inglês para fins acadêmicos e corporativos complexos. Comunicação natural." }
+    { id: "INTRO", name: "Introdução", desc: "O Alfabeto (The Alphabet) e Sons Básicos do Inglês." },
+    { id: "U1", name: "Unidade 1", desc: "Os Primeiros Passos (Cumprimentos, Tratamentos, Falando de Você, Nacionalidades, Família, Profissões, Descrição Física)." },
+    { id: "U2", name: "Unidade 2", desc: "Fazendo Perguntas Pessoais (Caso Genitivo, Pronomes Interrogativos, Meios de Transporte, Vestuário, Dias/Meses, Números, Horas)." },
+    { id: "U3", name: "Unidade 3", desc: "Perguntas Pessoais Sobre Terceiros (Adjetivos/Pronomes Possessivos, Pronomes Reflexivos, Artigos, There to Be)." },
+    { id: "U4", name: "Unidade 4", desc: "Rotina e Ações Habituais (Simple Present, Preposições, Conectivos, Advérbios, Regras do S/ES)." },
+    { id: "U5", name: "Unidade 5", desc: "Falando de Gostos e Preferências (Restaurantes, Comidas, Cinema/TV, Substantivos Contáveis/Incontáveis, Comparativo, Superlativo)." },
+    { id: "U6", name: "Unidade 6", desc: "Falando de Ações Passadas (Simple Past, Was/Were, Verbos Regulares/Irregulares, Pronúncia do -ED, Present Perfect)." },
+    { id: "U7", name: "Unidade 7", desc: "Falando de Ações Futuras (Simple Future - Will, Going To, Clima, Estações do Ano, Viagens)." },
+    { id: "U8", name: "Unidade 8", desc: "Tempos Progressivos e Imperativo (Presente/Passado/Futuro Contínuo, Imperativo, Partes do Corpo e Saúde)." }
 ];
 
 const EXAM_FALLBACK_QUESTIONS = {
@@ -4582,11 +4613,22 @@ async function pullStateFromSupabase() {
             }
             
             // Update state fields
-            state.cefrLevel = profile.cefr_level || "A1";
+            state.cefrLevel = profile.cefr_level || "INTRO";
             state.niche = profile.niche || "Geral";
             state.xp = profile.xp || 0;
             state.coins = profile.coins || 0;
             state.streakShields = profile.streak_shields || 0;
+            
+            const migrationMap = {
+                "A1": "U1",
+                "A2": "U3",
+                "B1": "U5",
+                "B2": "U7",
+                "C1/C2": "U8"
+            };
+            if (migrationMap[state.cefrLevel]) {
+                state.cefrLevel = migrationMap[state.cefrLevel];
+            }
             
             if (profile.progress_data && typeof profile.progress_data === 'object' && Object.keys(profile.progress_data).length > 0) {
                 const pd = profile.progress_data;
@@ -4601,8 +4643,25 @@ async function pullStateFromSupabase() {
                 if (pd.shieldedDays) state.shieldedDays = pd.shieldedDays;
                 if (pd.knownWords) state.knownWords = pd.knownWords;
                 if (pd.learnedWordsCount) state.learnedWordsCount = pd.learnedWordsCount;
-                if (pd.passedExams) state.passedExams = pd.passedExams;
-                if (pd.courseProgress) state.courseProgress = pd.courseProgress;
+                
+                if (pd.passedExams) {
+                    state.passedExams = pd.passedExams.map(lvl => migrationMap[lvl] || lvl);
+                }
+                
+                if (pd.courseProgress) {
+                    state.courseProgress = pd.courseProgress;
+                    const oldKeys = ["A1", "A2", "B1", "B2", "C1/C2"];
+                    const hasOldKeys = oldKeys.some(k => state.courseProgress[k] !== undefined);
+                    if (hasOldKeys) {
+                        const newProgress = { "INTRO": [], "U1": [], "U2": [], "U3": [], "U4": [], "U5": [], "U6": [], "U7": [], "U8": [] };
+                        if (state.courseProgress["A1"]) newProgress["U1"] = state.courseProgress["A1"];
+                        if (state.courseProgress["A2"]) newProgress["U2"] = state.courseProgress["A2"];
+                        if (state.courseProgress["B1"]) newProgress["U3"] = state.courseProgress["B1"];
+                        if (state.courseProgress["B2"]) newProgress["U5"] = state.courseProgress["B2"];
+                        if (state.courseProgress["C1/C2"]) newProgress["U7"] = state.courseProgress["C1/C2"];
+                        state.courseProgress = newProgress;
+                    }
+                }
             }
             
             // Save locally to commit loaded state
@@ -4662,11 +4721,15 @@ let currentStudyLessonObj = null;
 
 function getVictoryMessage(levelId) {
     const messages = {
-        "A1": "Você acabou de destravar a capacidade de se apresentar e mapear sua rotina inteiramente em inglês. Você não é mais um zero à esquerda no idioma.",
-        "A2": "Parabéns! Agora você consegue viajar para qualquer lugar do mundo sem passar fome ou ficar preso na imigração. Você já sabe o básico funcional.",
-        "B1": "Sua mente parou de traduzir palavra por palavra e você começou a formular os blocos de pensamento diretamente em inglês! A independência é sua.",
-        "B2": "Você concluiu o nível corporativo! Agora você percebe que consegue conduzir uma reunião inteira em inglês com segurança técnica e persuasão.",
-        "C1/C2": "Você atingiu a maestria executiva! Você tem a epifania de que não é apenas fluente, mas sim uma liderança respeitável e articulada internacionalmente."
+        "INTRO": "Parabéns! Você dominou o alfabeto e os sons fundamentais do inglês. Agora você está pronto para dar os primeiros passos!",
+        "U1": "Excelente! Você concluiu a Unidade 1. Agora consegue se apresentar, falar de onde é, descrever sua família e sua ocupação profissional.",
+        "U2": "Sensacional! Você concluiu a Unidade 2. Agora domina perguntas pessoais, meios de transporte, roupas, calendário e horas.",
+        "U3": "Incrível! Você concluiu a Unidade 3. Agora sabe falar sobre terceiros, usar possessivos e descrever a existência de coisas com there to be.",
+        "U4": "Maravilhoso! Você concluiu a Unidade 4. Agora consegue expressar sua rotina diária e atividades habituais em inglês no Simple Present.",
+        "U5": "Parabéns! Você concluiu a Unidade 5. Agora consegue falar de seus gostos, fazer pedidos em restaurantes e usar comparativos/superlativos.",
+        "U6": "Espetacular! Você concluiu a Unidade 6. Agora sabe falar de ações que aconteceram no passado no Simple Past e no Present Perfect.",
+        "U7": "Fantástico! Você concluiu a Unidade 7. Agora consegue planejar viagens, falar sobre o clima e fazer previsões com o Simple Future.",
+        "U8": "Maestria Atingida! Você concluiu todas as unidades do livro de Sandra Bassani! Agora domina os tempos contínuos, o imperativo e expressões de saúde."
     };
     return messages[levelId] || "Parabéns por concluir esta jornada de estudos!";
 }
@@ -5736,7 +5799,7 @@ function showExamResults() {
         
         state.addXP(200); // 200 XP reward
         
-        const allLevels = ["A1", "A2", "B1", "B2", "C1/C2"];
+        const allLevels = ["INTRO", "U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8"];
         const currentIdx = allLevels.indexOf(activeExamLevel);
         
         if (!state.passedExams.includes(activeExamLevel)) {
@@ -5746,7 +5809,7 @@ function showExamResults() {
         if (currentIdx < allLevels.length - 1) {
             state.cefrLevel = allLevels[currentIdx + 1];
         } else {
-            state.cefrLevel = "C1/C2";
+            state.cefrLevel = "U8";
         }
         state.saveState();
         
